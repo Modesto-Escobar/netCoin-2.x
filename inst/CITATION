@@ -1,0 +1,17 @@
+bibentry(bibtype = "Article",
+  title        = "Network Coincidence Analysis: The {netCoin} {R} Package",
+  author       = c(person(given = "Modesto",
+                          family = "Escobar",
+                          email = "modesto@usal.es"),
+                   person(given = "Luis",
+                          family = "Martinez-Uribe")),
+  journal      = "Journal of Statistical Software",
+  year         = "2020",
+  volume       = "93",
+  number       = "11",
+  pages        = "1--32",
+  doi          = "10.18637/jss.v093.i11",
+
+  header       = "To cite netCoin in publications use:"
+)
+

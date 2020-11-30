@@ -1,0 +1,63 @@
+---
+output: github_document
+---
+
+```{r, include=FALSE}
+library(netCoin)
+```
+
+# netCoin <img src="man/figures/hexa_netCoin.png" align="right" alt="" width="200" />
+
+
+<!-- badges: start -->
+`r badger::badge_cran_download("netCoin", "last-month", "green")`
+`r badger::badge_cran_release("netCoin", "orange")`
+`r badger::badge_doi("10.18637/jss.v093.i11", "yellow")`
+`r badger::badge_lifecycle("maturing", "blue")`
+<!-- badges: end -->
+
+This package integrates traditional statistical techniques with automatic learning and social network analysis tools for the purpose of obtaining visual and interactive displays of data.
+
+# Installation
+
+To install the last version of the package:
+
+```{r, eval=FALSE}
+# Install development version
+devtools::install_github("Modesto-Escobar/netCoin-1.0")
+```
+
+The stable version is available in CRAN:
+
+```{r, eval=FALSE}
+# Install CRAN version
+install.packages("netCoin")
+```
+
+# Usage
+
+The most simple way to run the coincidence analysis from survey data is to use the `surCoin()` function which produces a HTML with a dynamic network:
+
+```{r, eval=FALSE}
+data(ess)
+
+plot(surCoin(data = ess, variables = c("Gender", "Social participation"))) # plot network object
+```
+
+```{r, include=FALSE}
+data(ess)
+
+plot(surCoin(data = ess, variables = c("Gender", "Social participation")), 
+dir = "docs/articles/pkgdown/index/html/index1/") # plot network object
+```
+
+
+<iframe width="850" height="850" src="articles/pkgdown/index/html/index1/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+# Citation 
+
+To cite this package `citation("netCoin")`:
+
+Escobar M, Martinez-Uribe L (2020). “Network Coincidence Analysis: The netCoin R Package.” Journal of Statistical Software, *93*(11), 1-32. doi: 10.18637/jss.v093.i11 (URL: https://doi.org/10.18637/jss.v093.i11)
+
+

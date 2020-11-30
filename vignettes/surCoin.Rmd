@@ -1,0 +1,168 @@
+---
+title: "surCoin"
+author: Pablo Cabrera-Álvarez and Modesto Escobar
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{surCoin}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(netCoin)
+library(htmltools)
+data("ess")
+```
+
+The function `surCoin()`, starting from a data frame, generates a list (an object of class `netCoin`) containing the nodes, links, and options resulting from the coincidence analysis. This object can be plotted to generate an interactive graph.
+
+# Loading data
+
+For this example we will use the `ess` sample data which is loaded with the package. This data frame contains a simple random sample of 1,000 people with a small subset of the variables from the 8th round of the **European Social Survey** (ESS) in Europe:
+
+1. Gender (female, male).
+2. Age (15-29, 30-39, 40-49, 50-59, 60-69, 70 and more).
+3. Social participation in the last 12 months (yes, no).
+4. Political participation in the last 12 months (yes, no).
+5. Country and probability weight.
+
+```{r}
+head(ess)
+```
+
+# Simple surCoin
+
+The most simple way to run a **coincidence analysis** is to use `surCoin()` including the data and a vector (`set`) with the names of the variables to be used in the analysis. In this case we add `Gender`, `Age`, `Social participation` and `Political participation`:
+
+```{r}
+set <- c("Social participation", "Political participation", "Gender", "Age")
+essCoin <- surCoin(data = ess, variables = set)
+essCoin
+```
+
+An **interactive plot** of the coincidence analysis can be produced using the `plot()` function. Note that the output is an html page that will open in the default browser.
+
+```{r eval=FALSE, warning=FALSE}
+plot(essCoin)
+```
+
+```{r echo=FALSE, out.width='98%'}
+knitr::include_graphics("ess-a.png")
+```
+
+# Customising surCoin
+
+## Dealing with dichotomous variables
+
+For binary variables we may want to **represent only one category** and hide the counterpart. For instance, the variable about social participation (`Social participation`) has two categories and we want just to represent the cases who have participated socially:
+
+```{r eval=FALSE, warning=FALSE}
+essCoin <- surCoin(data = ess, 
+                    variables = set,
+                    dichotomies = c("Social participation", "Political participation"),
+                    valueDicho = "Yes"
+                    )
+plot(essCoin)
+```
+
+```{r echo=FALSE, out.width='98%'}
+knitr::include_graphics("ess-b.png")
+```
+
+## Analysis and stats
+
+`surCoin()` allows for the use of **weights**. Also different **procedures** can be used to assess the strength of the coincidences, the default is `haberman` or adjusted residuals. A full list of the measures available can be found in the function specification. In this case we will set the weight to `cweight` and ask for three different measures: frequencies (`f`), Conditional relative frequencies (`i`) and adjusted residuals (`h`).
+
+```{r eval=FALSE, warning=FALSE}
+essCoin <- surCoin(data = ess, 
+                    variables = set,
+                    dichotomies = c("Social participation", "Political participation"),
+                    valueDicho = "Yes",
+                    weight = "cweight",
+                    procedures = c("f", "i", "h"),
+                    )
+plot(essCoin)
+```
+
+```{r echo=FALSE, out.width='98%'}
+knitr::include_graphics("ess-c.png")
+```
+
+## Output
+
+Some aspects of the **output can be customised**, for example, we may want to use the argument `exogenous` to exclude the relationships amongst the categories of a variable or supress those categories without any relation with others with the argument `degreeFilter`. In this case we will set gender (`Gender`) and age (`Age`) as exogenous.
+
+```{r eval=FALSE, warning=FALSE}
+essCoin <- surCoin(data = ess, 
+                    variables = set,
+                    dichotomies = c("Social participation", "Political participation"),
+                    valueDicho = "Yes",
+                    weight = "cweight",
+                    procedures = c("f", "i", "h"),
+                    exogenous = c("Gender", "Age"),
+                    degreeFilter = 1,
+                    )
+plot(essCoin)
+```
+
+```{r echo=FALSE, out.width='98%'}
+knitr::include_graphics("ess-d.png")
+```
+
+# Using netCoin to enhance output
+
+To customise the coincidence analysis you can use any of the `netCoin()` arguments. Even more you can use the netCoin function with the previous `essCoin` object as input, instead of `data` and `variables`. For instance, we may want to use the aesthetics color to differentiate the nodes. Each node will take a different fill color if we set the argument `color` to the variable `"name"`. In addition, we can also establish the size of the nodes based on the relative freqencies, to do this the argument size must equal `"%"` The variable `name` in the nodes dataset refers to the name of each node, a combination of the variable name and the category. You can access the nodes data frame from the surCoin object:
+
+```{r eval=FALSE, warning=FALSE}
+essCoin <- netCoin(essCoin, 
+                    color = "variable",
+                    size = "%")
+print(essCoin$nodes[1:5,], row.names=FALSE)
+
+plot(essCoin)
+```
+
+```{r eval=FALSE, echo=FALSE, out.width='98%'}
+knitr::include_graphics("ess-e.png")
+```
+
+## Differentiate variables using  netCoin aesthetics
+
+You may want to differentiate the nodes from their degree using an aesthetics like color or shape. To do this we need to write "degree" in the aesthetics, as the column `degree` is present automatically in the nodes dataset.
+
+```{r eval=FALSE, warning=FALSE}
+essCoin <- netCoin(essCoin, 
+                    shape = "degree")
+
+plot(essCoin)
+```
+
+```{r echo=FALSE, out.width='98%'}
+knitr::include_graphics("ess-f.png")
+```
+
+# Save and transform surCoin
+
+You may want to save the output of `surCoin()` or transform the object to be used in igraph.
+
+## Save output
+
+To **save the output** we use the argument `dir` to set the directory where we want the html page to be stored.
+
+```{r eval=FALSE}
+essCoin <- netCoin(essCoin, 
+                    dir = "./temp/ess/"
+                    )
+```
+
+## Export as an igraph object
+
+Finally, if you wanted to generate an **igraph object** , you could use the function `toIgraph` applied to the `netCoin` object, named `essCoin` in this example.
+
+```{r eval=FALSE}
+essCoin.igraph <- toIgraph(essCoin)
+```

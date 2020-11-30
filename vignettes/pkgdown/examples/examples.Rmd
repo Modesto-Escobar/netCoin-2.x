@@ -1,0 +1,45 @@
+---
+title: "Examples"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, include=FALSE}
+library(htmltools)
+```
+
+This page contain some examples implemented using netCoin.
+
+## Survey data
+
+### Alcohol consumption and smoking in Europe using the European Social Survey Round 6
+<iframe width="850" height="850" src="https://sociocav.usal.es/me/EuroVice/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+### Voting intention using data from the Spanish Center for Sociological Research
+<iframe width="850" height="850" src="https://sociocav.usal.es/me/CIS/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+## Big data
+
+### Dynamic network of the Twitter hashtag #votarem
+<iframe width="850" height="850" src="https://sociocav.usal.es/me/EG6/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
+### Dynamic network of the Twitter hashtag #Cuéntalo
+<iframe width="850" height="850" src="https://sociocav.usal.es/me/cuentalo2/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+### Content analysis of feminist blogs
+<iframe width="850" height="850" src="https://sociocav.usal.es/me/Cristina/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
+### British Library catalogue network
+<iframe width="850" height="850" src="https://sociocav.usal.es/me/BL/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+### History of Science using data from Wikipedia
+<iframe width="850" height="850" src="https://sociocav.usal.es/me/Scientists/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
+
+
+
+

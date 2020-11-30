@@ -1,0 +1,77 @@
+destination: docs
+news:
+- one_page: false
+navbar:
+  title: "netCoin"
+  type: inverse
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Quick start"
+      href: articles/pkgdown/vignettes/netCoin.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Vignettes"
+      menu:
+        - text: "surCoin"
+          href: articles/pkgdown/vignettes/surCoin.html
+    - text: "Examples"
+      href: articles/pkgdown/examples/examples.html
+      
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/Modesto-Escobar/netCoin-1.0
+
+reference:
+- title: Package
+  contents:
+  - netCoin-package
+- title: Coincidence analysis
+  desc: To run a coincience analysis
+  contents:
+  - allNet
+  - barCoin
+  - coin
+  - glmCoin
+  - gridGallery
+  - netCoin
+  - netCorr
+  - pathCoin
+  - surCoin
+  - surScat
+  - timeCoin
+- title: Utilities
+  desc: Auxiliary functions
+  contents:
+  - '`asNodes`'
+  - '`coocur`'
+  - '`dichotomize`'
+  - '`distant`'
+  - '`edgeList`'
+  - '`expectedList`'
+  - '`fromIgraph`'
+  - '`incTime`'
+  - '`layoutCircle`'
+  - '`layoutGrid`'
+  - '`lower`'
+  - '`mobileEdges`'
+  - '`multigraphCreate`'
+  - '`propCoin`'
+  - '`savePajek`'
+  - '`saveGhml`'
+  - '`shinyCoin`'
+  - '`sim`'
+  - '`toIgraph`'
+- title: Sample data
+  desc: ~
+  contents:
+  - Galapagos
+  - dice
+  - events
+  - ess
+  - families
+  - finches
+  - links
+  - sociologists
+
+
