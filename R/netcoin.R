@@ -6,11 +6,11 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         community = NULL, layout = NULL,
         name = NULL, label = NULL, group = NULL, labelSize = NULL,
         size = NULL, color = NULL, shape = NULL, legend = NULL,
-        orderA = NULL, orderD = NULL, ntext = NULL, info = NULL,
+        sort = NULL, decreasing = FALSE, ntext = NULL, info = NULL,
         image = NULL, imageNames = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
-        linkBipolar = FALSE, linkFilter = NULL,
+        intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
         repulsion = 25, distance = 10, zoom = 1,
         fixed = showCoordinates, limits = NULL,
         main = NULL, note = NULL, showCoordinates = FALSE, showArrows = FALSE,
@@ -82,8 +82,8 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     legend <- getOpt("nodeLegend","legend")
     ntext <- getOpt("nodeText","ntext")
     info <- getOpt("nodeInfo","info")
-    orderA <- getOpt("nodeOrderA","orderA")
-    orderD <- getOpt("nodeOrderD","orderD")
+    sort <- getOpt("nodeOrder","sort")
+    decreasing <- getOpt("decreasing")
     image <- getOpt("imageItems","image")
     imageNames <- getOpt("imageNames")
 
@@ -91,6 +91,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     lweight <- getOpt("linkWeight","lweight")
     lcolor <- getOpt("linkColor","lcolor")
     ltext <- getOpt("linkText","ltext")
+    intensity <- getOpt("linkIntensity","intensity")
   }else{
     source <- "Source"
     target <- "Target"
@@ -107,12 +108,12 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         community, layout,
         name, label, group, labelSize,
         size, color, shape, legend,
-        orderA, orderD, ntext, info,
+        sort, decreasing, ntext, info,
         image, imageNames,
         nodeBipolar, nodeFilter, degreeFilter,
         source, target,
         lwidth, lweight, lcolor, ltext,
-        linkBipolar, linkFilter,
+        intensity, linkBipolar, linkFilter,
         repulsion, distance, zoom,
         fixed, limits,
         main, note, showCoordinates, showArrows,

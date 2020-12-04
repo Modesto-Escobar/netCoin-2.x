@@ -14,11 +14,11 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
         community = NULL, layout = NULL,
         name = NULL, label = NULL, group = NULL, labelSize = NULL,
         size = NULL, color = NULL, shape = NULL, legend = NULL,
-        orderA = NULL, orderD = NULL, ntext = NULL, info = NULL,
+        sort = NULL, decreasing = FALSE, ntext = NULL, info = NULL,
         image = NULL, imageNames = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
-        linkBipolar = FALSE, linkFilter = NULL,
+        intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
         repulsion = 25, distance = 10, zoom = 1,
         fixed = showCoordinates, limits = NULL,
         main = NULL, note = NULL, showCoordinates = FALSE, showArrows = FALSE,
@@ -43,8 +43,9 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
 \item{legend}{name of the vector with the variable to represent as a legend in the nodes data frame.}
 \item{ntext}{name of the vector with html text in the nodes data frame.}
 \item{info}{name of the vector with information to display in a panel in the nodes data frame.}
-\item{orderA}{name of the vector with node ascending order in the nodes data frame.}
-\item{orderD}{name of the vector with node descending order in the nodes data frame.}
+\item{sort}{name of the vector with node order in the nodes data frame (only for heatmap).}
+\item{decreasing}{decreasing or increasing sort of the nodes (only for heatmap).}
+\item{intensity}{name of the vector with intensity variable in the links data frame (only for heatmap).}
 \item{lwidth}{name of the vector with width variable in the links data frame.}
 \item{lweight}{name of the vector with weight variable in the links data frame.}
 \item{lcolor}{name of the vector with color variable in the links data frame.}
