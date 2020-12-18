@@ -30,11 +30,11 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     options <- nodes$options
     nodes <- nodes$nodes
 
-    arguments <- as.list(match.call())
+    arguments <- names(as.list(match.call()))
 
     getOpt <- function(opt,item=opt){
-      if(item %in% names(arguments)){
-        return(arguments[[item]])
+      if(item %in% arguments){
+        return(get0(item))
       }else{
         if(!is.null(options[[opt]])){
           return(options[[opt]])
@@ -45,8 +45,6 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     }
 
     name <- getOpt("nodeName","name")
-    source <- getOpt("linkSource","source")
-    target <- getOpt("linkTarget","target")
 
     cex <- getOpt("cex")
     distance <- getOpt("distance")
@@ -93,8 +91,6 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     ltext <- getOpt("linkText","ltext")
     intensity <- getOpt("linkIntensity","intensity")
   }else{
-    source <- "Source"
-    target <- "Target"
     name <- nameByLanguage(name,language,nodes)
     if(!is.null(nodes)){
       if (all(inherits(nodes,c("tbl_df","tbl","data.frame"),TRUE))) nodes<-as.data.frame(nodes) # convert haven objects
@@ -111,7 +107,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         sort, decreasing, ntext, info,
         image, imageNames,
         nodeBipolar, nodeFilter, degreeFilter,
-        source, target,
+        "Source", "Target",
         lwidth, lweight, lcolor, ltext,
         intensity, linkBipolar, linkFilter,
         repulsion, distance, zoom,
