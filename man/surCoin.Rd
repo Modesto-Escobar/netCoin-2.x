@@ -75,8 +75,21 @@ Modesto Escobar, Department of Sociology and Communication, University of Salama
 }
 \examples{
 # A data frame with two variables Gender and Opinion
-frame<-data.frame(Gender=c(rep("Man",3),rep("Woman",3)),
-                  Opinion=c("Yes","Yes","No","No","No","Yes"))
+frame <- data.frame(Gender=c(rep("Man",3),rep("Woman",3)),
+                    Opinion=c("Yes","Yes","No","No","No","Yes"))
 surCoin(frame,commonlabel="") # network object
+
+# A data frame with two variables (Gender and Hand) and nodes
+input <- data.frame(
+  Gender = c("Women", "Men", "Men", "Women", "Women","Men",
+             "Men", "Men", "Women", "Women", "Men", "Women"),
+  Hand   = c("Right", "Left","Right", "Right", "Right", "Right",
+             "Left", "Right", "Right", "Left","Right", "Right"))
+nodes <- data.frame(
+  name  = c("Gender:Men","Gender:Women", "Hand:Left", "Hand:Right"),
+  label = c("Women(50\u25)","Men(50\u25)",
+            "Left hand(25\u25)", "Right hand(75\u25)"))
+G <- surCoin(input, nodes=nodes, proc=c("h","i"), label="label",
+             ltext="i", showArrows=TRUE, maxL=.99)
 }
 

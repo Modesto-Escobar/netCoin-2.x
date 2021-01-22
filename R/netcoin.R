@@ -24,6 +24,30 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     stop("You must explicit a nodes or links data frame, or a netCoin object.")
   }
 
+  setAttr <- function(name,nodes){
+    item <- get0(name)
+    if(is.list(item) && !is.data.frame(item)){
+      checkedlist <- list()
+      for(k in names(item)){
+        if(!k %in% colnames(nodes) || !(is.character(nodes[[k]]) || is.factor(nodes[[k]]))){
+          warning(paste0(name,": the names in the list must match character columns of the nodes, but '",k,"' doesn't"))
+        }else{
+          if(!is.character(item[[k]]) || is.null(names(item[[k]]))){
+            warning(paste0(name,": each item in the list must be a named character vector describing value-",name,", but '",k,"' doesn't"))
+          }else{
+            checkedlist[[k]] <- unname(item[[k]][nodes[[k]]])
+          }
+        }
+      }
+      if(length(checkedlist)){
+        item <- as.data.frame(checkedlist)
+      }else{
+        item <- NULL
+      }
+    }
+    return(item)
+  }
+
   if(inherits(nodes,"netCoin")){
     links <- nodes$links
     tree <- nodes$tree
@@ -99,6 +123,9 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
       if (all(inherits(links,c("tbl_df","tbl","data.frame"),TRUE))) links<-as.data.frame(links) # convert haven objects
     }
   }
+
+  color <- setAttr("color",nodes)
+  shape <- setAttr("shape",nodes)
 
   net <- network_rd3(nodes, links, tree,
         community, layout,
@@ -861,8 +888,8 @@ sim<-function (input, procedures="Jaccard", level=.95, distance=FALSE, minimum=1
   }
   if ("F" %in% method) s$coincidences <- a
   if ("X" %in% method) s$relative <- a/N*100
-  if ("I" %in% method) s$sConditional <-a/(a+b)*100
-  if ("0" %in% method) s$tConditional <-a/(a+c)*100
+  if ("I" %in% method) s$sConditional <-a/(a+c)*100
+  if ("0" %in% method) s$tConditional <-a/(a+b)*100
   if ("U" %in% method) {
     Z <- 1-pt(sqrt(N) * (a * d - b * c)/sqrt((a + b) * (a + c) * (b + d) *  (d + c)),N)
     s$c.conditional<-matrix(ifelse(b+c==0, 8,
