@@ -1202,11 +1202,11 @@ savePajek<-function(net, file="file.net", arcs=NULL, edges=NULL, partitions= NUL
   close(connec)
 }
 
-saveGhml <- function(netCoin, file="netCoin.graphml"){
-  if(!inherits(netCoin, "netCoin")) stop("This program only works with netCoin objects")
+saveGhml <- function(net, file="netCoin.graphml"){
+  if(!inherits(net, "netCoin")) stop("This program only works with netCoin objects")
   if(!grepl("\\.",file))file<-paste0(file,".graphml")
-  graph <- toIgraph(netCoin)
-  write_graph(netCoin, file=file, format="graphml")
+  graph <- toIgraph(net)
+  write_graph(graph, file=file, format="graphml")
 }
 
 expectedList<- function(data, names=NULL, min=1, confidence=FALSE) {
@@ -1687,3 +1687,9 @@ meanPer<-function(data, variables, frame, name=names(frame[1]), frequency= FALSE
   return(frame[frame.order,c(name,adds,columns)])
 }
 
+# igraph -> netCoin
+fromIgraph <- function(G, ...){
+  net <- rD3plot::fromIgraph(G, ...)
+  class(net) <- c("netCoin",class(net))
+  return(net)
+}

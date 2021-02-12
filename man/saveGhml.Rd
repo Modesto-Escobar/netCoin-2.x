@@ -8,10 +8,10 @@
 The function creates a file with vertices and arcs or edges of a netCoin object. 
 }
 \usage{
-saveGhml(netCoin, file="netCoin.graphml")
+saveGhml(net, file="netCoin.graphml")
 }
 \arguments{
-\item{netCoin}{A netCoin object.}
+\item{net}{A netCoin object.}
 \item{file}{The name of the file. If not extension, .gexf is used as default.}
 }
 \author{
