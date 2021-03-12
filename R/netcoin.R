@@ -24,30 +24,6 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     stop("You must explicit a nodes or links data frame, or a netCoin object.")
   }
 
-  setAttr <- function(name,nodes){
-    item <- get0(name)
-    if(is.list(item) && !is.data.frame(item)){
-      checkedlist <- list()
-      for(k in names(item)){
-        if(!k %in% colnames(nodes) || !(is.character(nodes[[k]]) || is.factor(nodes[[k]]))){
-          warning(paste0(name,": the names in the list must match character columns of the nodes, but '",k,"' doesn't"))
-        }else{
-          if(!is.character(item[[k]]) || is.null(names(item[[k]]))){
-            warning(paste0(name,": each item in the list must be a named character vector describing value-",name,", but '",k,"' doesn't"))
-          }else{
-            checkedlist[[k]] <- unname(item[[k]][nodes[[k]]])
-          }
-        }
-      }
-      if(length(checkedlist)){
-        item <- as.data.frame(checkedlist)
-      }else{
-        item <- NULL
-      }
-    }
-    return(item)
-  }
-
   if(inherits(nodes,"netCoin")){
     links <- nodes$links
     tree <- nodes$tree
@@ -124,8 +100,8 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     }
   }
 
-  color <- setAttr("color",nodes)
-  shape <- setAttr("shape",nodes)
+  color <- setAttrByValueKey("color",color,nodes)
+  shape <- setAttrByValueKey("shape",shape,nodes)
 
   net <- network_rd3(nodes, links, tree,
         community, layout,
@@ -147,6 +123,29 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         language, dir)
   class(net) <- c("netCoin",class(net))
   return(net)
+}
+
+setAttrByValueKey <- function(name,item,nodes){
+    if(is.list(item) && !is.data.frame(item)){
+      checkedlist <- list()
+      for(k in names(item)){
+        if(!k %in% colnames(nodes) || !(is.character(nodes[[k]]) || is.factor(nodes[[k]]))){
+          warning(paste0(name,": the names in the list must match character columns of the nodes, but '",k,"' doesn't"))
+        }else{
+          if(!is.character(item[[k]]) || is.null(names(item[[k]]))){
+            warning(paste0(name,": each item in the list must be a named character vector describing value-",name,", but '",k,"' doesn't"))
+          }else{
+            checkedlist[[k]] <- unname(item[[k]][nodes[[k]]])
+          }
+        }
+      }
+      if(length(checkedlist)){
+        item <- as.data.frame(checkedlist)
+      }else{
+        item <- NULL
+      }
+    }
+    return(item)
 }
 
 
