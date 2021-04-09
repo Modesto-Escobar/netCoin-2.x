@@ -11,8 +11,8 @@ Object of class \code{gallery_rd3}.
 \usage{
 gallery(nodes, name = NULL, label = NULL, color = NULL,
     ntext = NULL, info = NULL, image = NULL,
-    zoom = 1, main = NULL, note = NULL, help = NULL,
-    roundedItems = FALSE,
+    zoom = 1, main = NULL, note = NULL, showLegend = TRUE,
+    help = NULL, helpOn = FALSE, roundedItems = FALSE,
     language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
@@ -26,7 +26,9 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{ntext}{name of the vector with html text in the nodes data frame.}
 \item{info}{name of the vector with information to display in a panel in the nodes data frame.}
 \item{image}{name of the vector with image files in the nodes data frame.}
+\item{showLegend}{a logical value true if the legend is to be shown.}
 \item{help}{help text of the graph.}
+\item{helpOn}{Should the help be shown at the beginning?}
 \item{roundedItems}{Display items with rounded borders.}
 \item{language}{a character vector (es=spanish; en=english; ca=catalan).}
 \item{dir}{a "character" string representing the directory where the web files will be saved.}

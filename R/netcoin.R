@@ -103,24 +103,24 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
   color <- setAttrByValueKey("color",color,nodes)
   shape <- setAttrByValueKey("shape",shape,nodes)
 
-  net <- network_rd3(nodes, links, tree,
-        community, layout,
-        name, label, group, labelSize,
-        size, color, shape, legend,
-        sort, decreasing, ntext, info,
-        image, imageNames,
-        nodeBipolar, nodeFilter, degreeFilter,
-        "Source", "Target",
-        lwidth, lweight, lcolor, ltext,
-        intensity, linkBipolar, linkFilter,
-        repulsion, distance, zoom,
-        fixed, limits,
-        main, note, showCoordinates, showArrows,
-        showLegend, frequencies, showAxes,
-        axesLabels, scenarios, help, helpOn,
-        mode, controls, cex,
-        background, defaultColor,
-        language, dir)
+  net <- network_rd3(nodes = nodes, links = links, tree = tree,
+        community = community, layout = layout,
+        name = name, label = label, group = group, labelSize = labelSize,
+        size = size, color = color, shape = shape, legend = legend,
+        sort = sort, decreasing = decreasing, ntext = ntext, info = info,
+        image = image, imageNames = imageNames,
+        nodeBipolar = nodeBipolar, nodeFilter = nodeFilter, degreeFilter = degreeFilter,
+        source = "Source", target = "Target",
+        lwidth = lwidth, lweight = lweight, lcolor = lcolor, ltext = ltext,
+        intensity = intensity, linkBipolar = linkBipolar, linkFilter = linkFilter,
+        repulsion = repulsion, distance = distance, zoom = zoom,
+        fixed = fixed, limits = limits,
+        main = main, note = note, showCoordinates = showCoordinates, showArrows = showArrows,
+        showLegend = showLegend, frequencies = frequencies, showAxes = showAxes,
+        axesLabels = axesLabels, scenarios = scenarios, help = help, helpOn = helpOn,
+        mode = mode, controls = controls, cex = cex,
+        background = background, defaultColor = defaultColor,
+        language = language, dir = dir)
   class(net) <- c("netCoin",class(net))
   return(net)
 }

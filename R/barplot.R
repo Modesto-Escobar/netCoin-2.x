@@ -142,14 +142,14 @@ barCoin<-function(data, variables = colnames(data), commonlabel = NULL,
     }
         
 # preparing bar graph
-    bar <- barplot_rd3(O, E, name, select,
+    bar <- barplot_rd3(O, E, name = name, select = select,
         source = "Source", target = "Target",
-        label, text, color,
+        label = label, text = text, color = color,
         incidences = "incidences", coincidences = "coincidences",
-        expected, confidence, level, significance,
-        sort, decreasing,
-        scalebar, defaultColor, note, cex,
-        language, dir)
+        expected = expected, confidence = confidence, level = level, significance = significance,
+        sort = sort, decreasing = decreasing,
+        scalebar = scalebar, defaultColor = defaultColor, note = note, cex = cex,
+        language = language, dir = dir)
     class(bar) <- c("barCoin",class(bar))
     return(bar)
   }
