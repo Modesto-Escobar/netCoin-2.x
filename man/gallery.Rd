@@ -12,7 +12,8 @@ Object of class \code{gallery_rd3}.
 gallery(nodes, name = NULL, label = NULL, color = NULL,
     ntext = NULL, info = NULL, image = NULL,
     zoom = 1, main = NULL, note = NULL, showLegend = TRUE,
-    help = NULL, helpOn = FALSE, roundedItems = FALSE,
+    help = NULL, helpOn = FALSE, description = NULL,
+    roundedItems = FALSE,
     language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
@@ -29,6 +30,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{showLegend}{a logical value true if the legend is to be shown.}
 \item{help}{help text of the graph.}
 \item{helpOn}{Should the help be shown at the beginning?}
+\item{description}{a character string indicating a desription text for the graph.}
 \item{roundedItems}{Display items with rounded borders.}
 \item{language}{a character vector (es=spanish; en=english; ca=catalan).}
 \item{dir}{a "character" string representing the directory where the web files will be saved.}
