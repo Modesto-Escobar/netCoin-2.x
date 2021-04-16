@@ -11,9 +11,10 @@ Object of class \code{gallery_rd3}.
 \usage{
 gallery(nodes, name = NULL, label = NULL, color = NULL,
     ntext = NULL, info = NULL, image = NULL,
-    zoom = 1, main = NULL, note = NULL, showLegend = TRUE,
+    zoom = 1, itemsPerRow = NULL,
+    main = NULL, note = NULL, showLegend = TRUE,
     help = NULL, helpOn = FALSE, description = NULL,
-    roundedItems = FALSE,
+    descriptionWidth = NULL, roundedItems = FALSE,
     language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
@@ -22,6 +23,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{label}{name of the vector with labels in the nodes data frame.}
 \item{color}{name of the vector with color variable in the nodes data frame.}
 \item{zoom}{a number between 0.1 and 10 to start displaying zoom.}
+\item{itemsPerRow}{number of items in each row.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
 \item{ntext}{name of the vector with html text in the nodes data frame.}
@@ -31,6 +33,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{help}{help text of the graph.}
 \item{helpOn}{Should the help be shown at the beginning?}
 \item{description}{a character string indicating a desription text for the graph.}
+\item{descriptionWidth}{a percentage indicating a width for the description panel (25 by default).}
 \item{roundedItems}{Display items with rounded borders.}
 \item{language}{a character vector (es=spanish; en=english; ca=catalan).}
 \item{dir}{a "character" string representing the directory where the web files will be saved.}
