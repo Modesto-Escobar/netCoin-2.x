@@ -1054,13 +1054,6 @@ summary.barCoin <- function(object, ...){
   summaryNet(object)
 }
 
-summary.timeCoin <- function(object, ...){
-  cat(dim(object$nodes)[1], "categories.\n")
-  cat(object$options$start, "'s distribution:","\n",sep="")
-  print(summary(object$nodes[[object$options$start]]))
-  cat(object$options$end, "'s distribution:","\n",sep="")
-  print(summary(object$nodes[[object$options$end]]))
-}
 
 summaryNet <- function(x){
   cat(dim(x$nodes)[1], "nodes and", dim(x$links)[1], "links.\n")
