@@ -47,5 +47,7 @@ Modesto Escobar, Department of Sociology and Communication, University of Salama
 data(sociologists)
 dyncohort(sociologists, start="birth")
 # Condider 15 year dynamic cohort:
-dyncohort(sociologists, start="birth", year=15)
+sociologists$picture <- system.file("extdata", sociologists$picture,
+        package="netCoin") # copy path to the picture field
+dyncohort(sociologists, start="birth", year=15, image="picture", imageName="name")
 }

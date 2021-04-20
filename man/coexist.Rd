@@ -45,7 +45,9 @@ Modesto Escobar, Department of Sociology and Communication, University of Salama
 \examples{
 # With sociologists data.
 data(sociologists)
-coexist(sociologists, start="birth", end="death")
+coexist(sociologists, start="birth", end="death", igraph=TRUE)
 # Omit as coexistence the 15 firts years of life, and produce an igraph object:
-coexist(sociologists, start="birth", end="death", minusstart=15, igraph=TRUE)
+sociologists$picture <- system.file("extdata", sociologists$picture,
+        package="netCoin") # copy path to the picture field
+coexist(sociologists, start="birth", end="death", plusstart=15, image="picture", imageName="name")
 }
