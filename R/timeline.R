@@ -5,7 +5,7 @@ timeCoin <- function(periods, name = "name", start = "start", end = "end", group
                      cex = 1, language = c("en","es","ca"), dir = NULL){
   time <- timeline_rd3(periods, name = name, start = start, end = end,
                        group = group, text = text, main = main, note = note, info = info,
-                       events = events, eventChild = eventNames, eventParent = eventPeriod,
+                       events = events, eventNames = eventNames, eventPeriod = eventPeriod,
                        eventTime = eventTime, eventColor = eventColor, eventShape = eventShape,
                        cex = cex, language = language, dir = dir)
   class(time) <- c("timeCoin",class(time))
@@ -13,10 +13,10 @@ timeCoin <- function(periods, name = "name", start = "start", end = "end", group
 }
 
 summary.timeCoin <- function(object, ...){
-  cat(dim(object$nodes)[1], "categories.\n")
+  cat(dim(object$periods)[1], "categories.\n")
   cat(object$options$start, "'s distribution:","\n",sep="")
-  print(summary(object$nodes[[object$options$start]]))
+  print(summary(object$periods[[object$options$start]]))
   cat(object$options$end, "'s distribution:","\n",sep="")
-  print(summary(object$nodes[[object$options$end]]))
+  print(summary(object$periods[[object$options$end]]))
 }
 

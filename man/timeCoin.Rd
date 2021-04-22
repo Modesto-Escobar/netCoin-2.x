@@ -11,8 +11,8 @@ Object of class \code{timeCoin}.
 \usage{
 timeCoin(periods, name = "name", start = "start", end = "end", group = NULL,
          text = NULL, main = NULL, note = NULL, info = NULL, 
-         events = NULL, eventNames = "name", eventPeriod = "period", eventTime = "date",
-         eventColor = NULL, eventShape = NULL,
+         events = NULL, eventNames = "name", eventPeriod = "period",
+         eventTime = "date", eventColor = NULL, eventShape = NULL,
          cex = 1, language = c("en","es","ca"), dir = NULL)
 }
 \arguments{

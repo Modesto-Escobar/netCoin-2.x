@@ -15,7 +15,7 @@ coexist(periods, name="name", start="start", end="end",
 \item{end}{name of the vector with ends in the periods data frame.}
 \item{inform}{vector of the names of the periods data frame to be taken into account.}
 \item{plusstart}{number of years to be trimmed at the beginning of each period.}
-\item{minusend}{number of years to be trimmd at the end of each period,}
+\item{minusend}{number of years to be trimmed at the end of each period.}
 \item{igraph}{produces an igraph object instead of a netCoin class.}
 \item{...}{Any \link{netCoin} argument.}
 }
@@ -45,8 +45,9 @@ Modesto Escobar, Department of Sociology and Communication, University of Salama
 \examples{
 # With sociologists data.
 data(sociologists)
+# Produce an igraph object:
 coexist(sociologists, start="birth", end="death", igraph=TRUE)
-# Omit as coexistence the 15 firts years of life, and produce an igraph object:
+# Omit as coexistence the 15 firts years of life:
 sociologists$picture <- system.file("extdata", sociologists$picture,
         package="netCoin") # copy path to the picture field
 coexist(sociologists, start="birth", end="death", plusstart=15, image="picture", imageName="name")
