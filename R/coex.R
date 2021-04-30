@@ -22,7 +22,7 @@ coexist <- function(periods, name="name", start="start", end="end", inform=names
 
 # coexisten is the edgeList of coexistence
   coexistence <- edgeList(coin(datos), procedures=c("F"), criteria="F", min=1)
-  arguments <- list(nodes=periods[, inform], links=coexistence, ...)
+  arguments <- list(nodes=periods[, inform], links=coexistence, name=name, ...)
   xNx <- do.call(netCoin, arguments)
   if (igraph) return(toIgraph(xNx)) else return(xNx)
 }
@@ -36,7 +36,7 @@ dyncohort <- function(periods, name="name", start="start", inform=names(periods)
   cogeneradin<-edgeList(D, procedures="shape")
   cogeneradin$value <- 2+years-cogeneradin$value
   colnames(cogeneradin)<-c("Source","Target","Prox.")
-  arguments <- list(nodes=periods[, inform], links=cogeneradin, ...)
+  arguments <- list(nodes=periods[, inform], links=cogeneradin, name=name, ...)
   xNx <- do.call(netCoin, arguments)
   if (igraph) return(toIgraph(xNx)) else return(xNx)
 }

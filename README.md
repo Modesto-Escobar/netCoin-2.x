@@ -1,3 +1,6 @@
+[![CRAN Version](https://www.r-pkg.org/badges/version/netCoin)](https://cran.r-project.org/package=netCoin)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/netCoin)](https://cran.r-project.org/package=netCoin)
+
 # netCoin-2.x
 
 This project's aim is to integrate traditional statistical techniques with automatic learning and social network analysis tools for the purpose of obtaining visual and interactive displays of big data. The interdisciplinary team involved has the following objectives:
