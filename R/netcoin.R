@@ -1679,9 +1679,3 @@ meanPer<-function(data, variables, frame, name=names(frame[1]), frequency= FALSE
   return(frame[frame.order,c(name,adds,columns)])
 }
 
-# igraph -> netCoin
-fromIgraph <- function(G, ...){
-  net <- rD3plot::fromIgraph(G, ...)
-  class(net) <- c("netCoin",class(net))
-  return(net)
-}
