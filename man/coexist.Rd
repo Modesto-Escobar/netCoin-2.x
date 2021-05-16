@@ -6,14 +6,14 @@
 }
 \usage{
 coexist(periods, name="name", start="start", end="end", 
-        inform=names(periods), plusstart=0, minusend=0, igraph=FALSE, ...)
+        fields=names(periods), plusstart=0, minusend=0, igraph=FALSE, ...)
 }
 \arguments{
 \item{periods}{a data frame with at least three vectors with name, start and end of the periods.}
 \item{name}{name of the vector with names in the periods data frame.}
 \item{start}{name of the vector with starts in the periods data frame.}
 \item{end}{name of the vector with ends in the periods data frame.}
-\item{inform}{vector of the names of the periods data frame to be taken into account.}
+\item{fields}{vector of the names of the periods data frame to be taken into account.}
 \item{plusstart}{number of years to be trimmed at the beginning of each period.}
 \item{minusend}{number of years to be trimmed at the end of each period.}
 \item{igraph}{produces an igraph object instead of a netCoin class.}

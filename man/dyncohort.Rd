@@ -5,14 +5,14 @@
 \code{dyncohort} produces interactive graphs representing dynamic cohorts. Two periods or lifes belongs to the same cohort if there are a difference of years in their start less or equal to a given number. In case of people's life, 15 or 25 are appropiate quantities to set. If year is equal to 0, a cohort is defined a those periods or lifes that begin at the same year. 
 }
 \usage{
-dyncohort(periods, name="name", start="start", inform=names(periods), 
+dyncohort(periods, name="name", start="start", fields=names(periods), 
           years=0, igraph=FALSE, ...)
 }
 \arguments{
 \item{periods}{a data frame with at least two vectors with name and start of the periods or lives.}
 \item{name}{name of the vector with names in the data frame.}
 \item{start}{name of the vector with starts in the data frame.}
-\item{inform}{vector of the names of the periods data frame to be taken into account.}
+\item{fields}{vector of the names of the periods data frame to be taken into account.}
 \item{years}{number of years to be considered as length of the cohort.}
 \item{igraph}{produces an igraph object instead of a netCoin class.}
 \item{...}{Any \link{netCoin} argument.}

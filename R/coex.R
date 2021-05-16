@@ -2,7 +2,7 @@
 # Sat Apr 03 18:46:49 2021 ------------------------------
 # Páginas de sociólogos
 
-coexist <- function(periods, name="name", start="start", end="end", inform=names(periods), 
+coexist <- function(periods, name="name", start="start", end="end", fields=names(periods), 
                     plusstart=0, minusend=0, igraph=FALSE, ...){
 
   periods <- periods[!(is.na(periods[[start]]) | duplicated(periods[[name]])),]
@@ -22,12 +22,12 @@ coexist <- function(periods, name="name", start="start", end="end", inform=names
 
 # coexisten is the edgeList of coexistence
   coexistence <- edgeList(coin(datos), procedures=c("F"), criteria="F", min=1)
-  arguments <- list(nodes=periods[, inform], links=coexistence, name=name, ...)
+  arguments <- list(nodes=periods[, fields], links=coexistence, name=name, ...)
   xNx <- do.call(netCoin, arguments)
   if (igraph) return(toIgraph(xNx)) else return(xNx)
 }
 
-dyncohort <- function(periods, name="name", start="start", inform=names(periods), years=0, igraph=FALSE, ...) {
+dyncohort <- function(periods, name="name", start="start", fields=names(periods), years=0, igraph=FALSE, ...) {
   D<-matrix(NA, nrow=nrow(periods), ncol=nrow(periods))
   colnames(D) <- rownames(D) <- periods[[name]]
   for(i in 1:nrow(periods))D[i,]=ifelse(abs(periods[[start]][i]-t(periods[[start]]))<=years,abs(periods[[start]][i]-t(periods[[start]])+1),0)
@@ -36,7 +36,7 @@ dyncohort <- function(periods, name="name", start="start", inform=names(periods)
   cogeneradin<-edgeList(D, procedures="shape")
   cogeneradin$value <- 2+years-cogeneradin$value
   colnames(cogeneradin)<-c("Source","Target","Prox.")
-  arguments <- list(nodes=periods[, inform], links=cogeneradin, name=name, ...)
+  arguments <- list(nodes=periods[, fields], links=cogeneradin, name=name, ...)
   xNx <- do.call(netCoin, arguments)
   if (igraph) return(toIgraph(xNx)) else return(xNx)
 }
