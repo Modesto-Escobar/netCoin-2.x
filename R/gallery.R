@@ -3,8 +3,8 @@ gallery <- function(nodes, name = NULL, label = NULL, color = NULL,
     itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE,
     help = NULL, helpOn = FALSE, description = NULL,
-    descriptionWidth = NULL, roundedItems = FALSE,
-    language = c("en", "es", "ca"), dir = NULL){
+    descriptionWidth = NULL, roundedItems = FALSE, controls = 1:2,
+    cex = 1, language = c("en", "es", "ca"), dir = NULL){
   color <- setAttrByValueKey("color",color,nodes)
   return(gallery_rd3(nodes, name = name, label = label, color = color,
                      ntext = ntext, info = info, image = image,
@@ -13,7 +13,7 @@ gallery <- function(nodes, name = NULL, label = NULL, color = NULL,
                      frequencies = frequencies,
                      help = help, helpOn = helpOn, description = description,
                      descriptionWidth = descriptionWidth, roundedItems = roundedItems,
-                     language = language, dir = dir))
+                     controls = 1:2, cex = cex, language = language, dir = dir))
 }
 
 asGallery <- function(net){
@@ -24,7 +24,7 @@ asGallery <- function(net){
       color = options$nodeColor, ntext = options$nodeText, info = options$nodeInfo, image = options$imageItems,
       zoom = options$zoom, main = options$main, note = options$note,
       showLegend = options$showLegend, frequencies = options$frequencies,
-      help = options$help, helpOn = options$helpOn, language = options$language)
+      help = options$help, helpOn = options$helpOn, cex = options$cex, language = options$language)
     return(gallery)
   }else{
     stop("net: must be a network object")

@@ -14,8 +14,8 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
     itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE,
     help = NULL, helpOn = FALSE, description = NULL,
-    descriptionWidth = NULL, roundedItems = FALSE,
-    language = c("en", "es", "ca"), dir = NULL)
+    descriptionWidth = NULL, roundedItems = FALSE, controls = 1:2,
+    cex = 1, language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least three columns of names, start and end.}
@@ -36,6 +36,8 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{description}{a character string indicating a desription text for the graph.}
 \item{descriptionWidth}{a percentage indicating a width for the description panel (25 by default).}
 \item{roundedItems}{Display items with rounded borders.}
+\item{controls}{a numeric vector indicating which controls will be shown. 1 = topbar, 2 = export buttons. NULL hide all controls, negative values deny each control and 0 deny all.}
+\item{cex}{number indicating the amount by which plotting text should be scaled relative to the default.}
 \item{language}{a character string indicating the language of the graph (en=english (default); es=spanish; ca=catalan).}
 \item{dir}{a character string representing the directory where the web files will be saved.}
 }
