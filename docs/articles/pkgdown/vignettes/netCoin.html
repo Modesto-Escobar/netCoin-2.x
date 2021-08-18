@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
       </span>
     </div>
 
@@ -67,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/Modesto-Escobar/netCoin-1.0">
+  <a href="https://github.com/Modesto-Escobar/netCoin-2.x">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -82,7 +82,7 @@
 
       
 
-      </header><script src="netCoin_files/header-attrs-2.3/header-attrs.js"></script><script src="netCoin_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="netCoin_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>netCoin</h1>
@@ -203,9 +203,9 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 <h3 class="hasAnchor">
 <a href="#basic-coincidence-analysis-with-dice-roll-data" class="anchor"></a>Basic coincidence analysis with dice roll data</h3>
 <p>Once the netCoin package has been installed and loaded, let’s now load the dice data and have a look at it:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dice</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dice</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dice</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dice</span><span class="op">)</span></code></pre></div>
 <pre><code>##    dice 1 2 3 4 5 6 odd even small large
 ## V1    1 1 0 0 0 0 0   1    0     1     0
 ## V2    2 0 1 0 0 0 0   0    1     1     0
@@ -215,8 +215,8 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 ## V6    5 0 0 0 0 1 0   1    0     0     1</code></pre>
 <p>It contains the results of rolling a dice 100 times. The scenarios here are each dice roll. The events are the possible results, i.e. each of the numbers from 1 to 6 as well as odd or even and small(&lt;4) or large(&gt;3). Thus the first column contains the numeric result, the following 6 columns represent each of the dice roll possible outcomes with 1’s and 0’s. Finally, the last four columns also contain 0’s and 1’s for representing whether the result is odd or even, small or large.</p>
 <p>Columns 2 to 11 can be considered the incidence matrix <span class="math inline">\(\mathbf{I}\)</span></p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dice</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dice</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##    1 2 3 4 5 6 odd even small large
 ## V1 1 0 0 0 0 0   1    0     1     0
 ## V2 0 1 0 0 0 0   0    1     1     0
@@ -225,9 +225,9 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 ## V5 0 1 0 0 0 0   0    1     1     0
 ## V6 0 0 0 0 1 0   1    0     0     1</code></pre>
 <p>Using the <code>coin</code> function the coincidence matrix <span class="math inline">\(\mathbf{C}\)</span> can be obtained:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">C</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/coin.html">coin</a></span><span class="op">(</span><span class="va">dice</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="co"># coincidence matrix</span>
-<span class="va">C</span></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">C</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/coin.html">coin</a></span><span class="op">(</span><span class="va">dice</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="co"># coincidence matrix</span>
+<span class="va">C</span></code></pre></div>
 <pre><code>## n= 100
 ##        1  2  3  4  5  6 odd even small large
 ## 1     15                                    
@@ -241,14 +241,14 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 ## small 15 13 26  0  0  0  41   13    54      
 ## large  0  0  0 18 13 15  13   33     0    46</code></pre>
 <p>The nodes and edges can be calculated from the coincidence matrix <span class="math inline">\(\mathbf{C}\)</span> and then the network object can be generated</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/asNodes.html">asNodes</a></span><span class="op">(</span><span class="va">C</span><span class="op">)</span> <span class="co"># node data frame</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/asNodes.html">asNodes</a></span><span class="op">(</span><span class="va">C</span><span class="op">)</span> <span class="co"># node data frame</span>
 <span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/edgeList.html">edgeList</a></span><span class="op">(</span><span class="va">C</span><span class="op">)</span> <span class="co"># edge data frame</span>
-<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">E</span><span class="op">)</span> <span class="co"># network object</span></pre></div>
+<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">E</span><span class="op">)</span> <span class="co"># network object</span></code></pre></div>
 <p>The network to be visualised is created using the following command which generates a folder with an <strong>index.html</strong> file to open with a browser that will display the interface shown below:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">E</span>, dir <span class="op">=</span> <span class="st">"dice"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">E</span>, dir <span class="op">=</span> <span class="st">"dice"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/netCoin1/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -256,9 +256,9 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 <h3 class="hasAnchor">
 <a href="#multigraph-coincidence-analysis-with-data-of-families-of-renaissance-italy" class="anchor"></a>Multigraph coincidence analysis with data of families of Renaissance Italy</h3>
 <p>The following example uses data about families of Renaissance Italy from Padgett &amp; Ansell (1983). It consists of a dataframe (families) with information about italian families of the renaissance, and another dataframe (links) with the marriage and business links between families.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"families"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"links"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"families"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"links"</span><span class="op">)</span></code></pre></div>
 <p>The previous <code>coin</code>, <code>edgeList</code>, <code>asNodes</code> and <code>netCoin</code> functions can be executed together with the <code>allNet</code> function where several parameters can be specifyed:</p>
 <ul>
 <li>incidence - a dataframe that contains the incidence matrix.</li>
@@ -272,8 +272,8 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 <li>subtitle - lower title of the graph.</li>
 </ul>
 <p>With the following commands two networks are generated that represent on the business and marriages links between the two families.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/allNet.html">allNet</a></span><span class="op">(</span>incidence <span class="op">=</span> <span class="va">links</span><span class="op">[</span><span class="va">links</span><span class="op">$</span><span class="va">link</span> <span class="op">==</span> <span class="st">"Marriage"</span>, <span class="op">-</span><span class="fl">17</span><span class="op">]</span>,
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/allNet.html">allNet</a></span><span class="op">(</span>incidence <span class="op">=</span> <span class="va">links</span><span class="op">[</span><span class="va">links</span><span class="op">$</span><span class="va">link</span> <span class="op">==</span> <span class="st">"Marriage"</span>, <span class="op">-</span><span class="fl">17</span><span class="op">]</span>,
      nodes <span class="op">=</span> <span class="va">families</span>, 
      layout <span class="op">=</span> <span class="st">"md"</span>, 
      percentages <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -293,10 +293,10 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
      size <span class="op">=</span> <span class="st">"f.Business"</span>,
      shape <span class="op">=</span> <span class="st">"seat"</span>,
      main <span class="op">=</span> <span class="st">"Marriage links beetween Italian families"</span>,
-     note <span class="op">=</span> <span class="st">"Data source: Padgett &amp; Ansell (1983)"</span><span class="op">)</span></pre></div>
+     note <span class="op">=</span> <span class="st">"Data source: Padgett &amp; Ansell (1983)"</span><span class="op">)</span></code></pre></div>
 <p>Once the two networks are ready, the function <code>multigraphCreate</code> generates both graphs in the specified file.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu"><a href="../../../reference/multigraphCreate.html">multigraphCreate</a></span><span class="op">(</span>Marriage <span class="op">=</span> <span class="va">G</span>, Business <span class="op">=</span> <span class="va">H</span>, dir <span class="op">=</span> <span class="st">"italian"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../../reference/multigraphCreate.html">multigraphCreate</a></span><span class="op">(</span>Marriage <span class="op">=</span> <span class="va">G</span>, Business <span class="op">=</span> <span class="va">H</span>, dir <span class="op">=</span> <span class="st">"italian"</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/netCoin2/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -313,8 +313,8 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 <li>image=“file” - name of the vector with image files in the nodes data frame.</li>
 <li>layout=“mds” - the algorithm selected for the network topology.</li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"Galapagos"</span><span class="op">)</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"Galapagos"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"finches"</span><span class="op">)</span>
 
 <span class="va">finches</span><span class="op">$</span><span class="va">species</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">finches</span><span class="op">$</span><span class="va">species</span>,
@@ -331,7 +331,7 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
             layout <span class="op">=</span> <span class="st">"mds"</span>,
             main <span class="op">=</span> <span class="st">"Species coincidences in Galapagos Islands"</span>,
             note <span class="op">=</span> <span class="st">"Data source: Sanderson (2000)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/netCoin3/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -349,7 +349,7 @@ To obtain similarity and other measurement matrices, the function <code>sim</cod
 
 
       <footer><div class="copyright">
-  <p>Developed by Modesto Escobar.</p>
+  <p>Developed by Modesto Escobar, David Barrios, Carlos Prieto, Luis Martinez-Uribe, Pablo Cabrera-Álvarez.</p>
 </div>
 
 <div class="pkgdown">

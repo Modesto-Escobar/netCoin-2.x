@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Data: Sociologists born in the 19th century. — sociologists • netCoin</title>
+<title>Data: Classical sociologists. — sociologists • netCoin</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Data: Sociologists born in the 19th century. — sociologists" />
+<meta property="og:title" content="Data: Classical sociologists. — sociologists" />
 <meta property="og:description" content="Data frame with names, birth and death year data, birth country and movement." />
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/Modesto-Escobar/netCoin-1.0">
+  <a href="https://github.com/Modesto-Escobar/netCoin-2.x">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -126,7 +126,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Data: Sociologists born in the 19th century.</h1>
+    <h1>Data: Classical sociologists.</h1>
     
     <div class="hidden name"><code>sociologists.Rd</code></div>
     </div>
@@ -140,12 +140,18 @@
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with 33 observations and the following 4 variables (events) to study coincidences in time:</p><dl>
-    <dt><code>name</code></dt><dd><p>: name and last name of the sociologist</p></dd>
-    <dt><code>birth</code></dt><dd><p>: birth year</p></dd>
-    <dt><code>death</code></dt><dd><p>: death year</p></dd>
-    <dt><code>birthcountry</code></dt><dd><p>: birth country</p></dd>
-    <dt><code>movements</code></dt><dd><p>: movement or school of thought</p></dd>
+    <p>A data frame with life's period of 16 sociologists and the following 11 variables to study time coincidences:</p><dl>
+    <dt><code>name</code></dt><dd><p>: name and last name of the sociologist.</p></dd>
+    <dt><code>birth</code></dt><dd><p>: birth year.</p></dd>
+    <dt><code>death</code></dt><dd><p>: death year.</p></dd>
+    <dt><code>birth_place</code></dt><dd><p>: birth place.</p></dd>
+    <dt><code>birth_country</code></dt><dd><p>: birth country.</p></dd>
+    <dt><code>death_place</code></dt><dd><p>: death place.</p></dd>
+    <dt><code>death_country</code></dt><dd><p>: death country.</p></dd>
+    <dt><code>label</code></dt><dd><p>: combination of name, birth and death dates.</p></dd>
+    <dt><code>generation</code></dt><dd><p>: generation (every 25 years) of the sociologists.</p></dd>
+    <dt><code>school</code></dt><dd><p>: school of thought.</p></dd>
+    <dt><code>picture</code></dt><dd><p>: name of the file where their picture is.</p></dd>
     
 </dl>
 
@@ -159,28 +165,72 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sociologists</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>sociologists</span>, <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                     name birth death birthcountry               movements
-#&gt; 1              Karl Marx  1818  1883      Germany                 Marxism
-#&gt; 2       Friedrich Engels  1820  1895      Germany                 Marxism
-#&gt; 3         Hebert Spencer  1820  1903           UK            Evolutionism
-#&gt; 4        Wilhelm Dilthey  1833  1911      Germany  Interpretive sociology
-#&gt; 5  William Graham Sumner  1840  1910          USA            Evolutionism
-#&gt; 6        Vilfredo Pareto  1848  1923       France               Formalism
-#&gt; 7  Albion Woodbury Small  1854  1926          USA Symbolic interactionism
-#&gt; 8      Ferdinand Tonnies  1855  1909      Germany               Formalism
-#&gt; 9          Sigmund Freud  1856  1939      Austria              Positivism
-#&gt; 10    Ferdinand Saussure  1857  1913  Switzerland           Structuralism</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>sociologists</span>, <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                     name birth death birthcountry            movements
-#&gt; 24          Karl Polanyi  1886  1964      Austria              Marxism
-#&gt; 25         Ruth Benedict  1887  1948          USA        Functionalism
-#&gt; 26 Arnold Joseph Toynbee  1889  1975           UK Historical sociology
-#&gt; 27      Pitirim  Sorokin  1889  1968       Russia Historical sociology
-#&gt; 28         Karl Mannheim  1893  1947      Hungary              Marxism
-#&gt; 29      Georges Gurvitch  1894  1965       Russia      Critical theory
-#&gt; 30        Max Horkheimer  1895  1973      Germany      Critical theory
-#&gt; 31         Norbert Elias  1897  1990      Germany Historical sociology
-#&gt; 32        Hebert Marcuse  1898  1979      Germany      Critical theory
-#&gt; 33         Alfred Schutz  1899  1959      Austria        Phenomenology</div></pre>
+</div><div class='output co'>#&gt;                     name birth death birth_place birth_country death_place
+#&gt; 1          Auguste Comte  1798  1857 Montpellier       Francia       Paris
+#&gt; 2              Karl Marx  1818  1883       Trier      Alemania      London
+#&gt; 3        Herbert Spencer  1820  1903       Derby   Reino Unido    Brighton
+#&gt; 4       Friedrich Engels  1820  1895      Barmen      Alemania      London
+#&gt; 5  William Graham Sumner  1840  1910  New Jersey          EEUU Connecticut
+#&gt; 6        Vilfredo Pareto  1848  1923       Paris       Francia     Céligny
+#&gt; 7      Ferdinand Tönnies  1855  1909  Oldenswort      Alemania        Kiel
+#&gt; 8       Thorstein Veblen  1857  1929   Wisconsin          EEUU   Palo Alto
+#&gt; 9         Émile Durkheim  1858  1917      Épinal       Francia       Paris
+#&gt; 10          Georg Simmel  1858  1918      Berlin      Alemania  Strasbourg
+#&gt;    death_country                             label generation            school
+#&gt; 1        Francia         Auguste Comte (1798-1857)  1775-1799     a) Positivism
+#&gt; 2    Reino Unido             Karl Marx (1818-1883)  1800-1824  b) Social action
+#&gt; 3    Reino Unido       Herbert Spencer (1820-1903)  1800-1824   c) Evolutionism
+#&gt; 4    Reino Unido      Friedrich Engels (1820-1895)  1800-1824  b) Social action
+#&gt; 5           EEUU William Graham Sumner (1840-1910)  1825-1850   c) Evolutionism
+#&gt; 6          Suiza       Vilfredo Pareto (1848-1923)  1825-1850 d) Socioeconomics
+#&gt; 7       Alemania     Ferdinand Tönnies (1855-1909)  1851-1874  b) Social action
+#&gt; 8           EEUU      Thorstein Veblen (1857-1929)  1851-1874 d) Socioeconomics
+#&gt; 9        Francia        Émile Durkheim (1858-1917)  1851-1874     a) Positivism
+#&gt; 10       Francia          Georg Simmel (1858-1918)  1851-1874  b) Social action
+#&gt;         picture
+#&gt; 1    Q12718.png
+#&gt; 2     Q9061.png
+#&gt; 3   Q144535.png
+#&gt; 4    Q34787.png
+#&gt; 5  Q1356390.png
+#&gt; 6    Q11031.png
+#&gt; 7    Q21163.png
+#&gt; 8    Q73646.png
+#&gt; 9    Q15948.png
+#&gt; 10   Q76849.png</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>sociologists</span>, <span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                 name birth death               birth_place birth_country
+#&gt; 7  Ferdinand Tönnies  1855  1909                Oldenswort      Alemania
+#&gt; 8   Thorstein Veblen  1857  1929                 Wisconsin          EEUU
+#&gt; 9     Émile Durkheim  1858  1917                    Épinal       Francia
+#&gt; 10      Georg Simmel  1858  1918                    Berlin      Alemania
+#&gt; 11    George H. Mead  1863  1931             Massachusetts          EEUU
+#&gt; 12    Werner Sombart  1863  1941                 Ermsleben      Alemania
+#&gt; 13         Max Weber  1864  1920                    Erfurt      Alemania
+#&gt; 14    Charles Cooley  1864  1929       Ann Arbor, Michigan           USA
+#&gt; 15  Robert Ezra Park  1864  1944 Harveyville, Pennsylvania           USA
+#&gt; 16      Marcel Mauss  1872  1950                    Épinal        France
+#&gt;             death_place death_country                         label generation
+#&gt; 7                  Kiel      Alemania Ferdinand Tönnies (1855-1909)  1851-1874
+#&gt; 8             Palo Alto          EEUU  Thorstein Veblen (1857-1929)  1851-1874
+#&gt; 9                 Paris       Francia    Émile Durkheim (1858-1917)  1851-1874
+#&gt; 10           Strasbourg       Francia      Georg Simmel (1858-1918)  1851-1874
+#&gt; 11              Chicago          EEUU    George H. Mead (1863-1931)  1851-1874
+#&gt; 12               Berlin      Alemania    Werner Sombart (1863-1941)  1851-1874
+#&gt; 13               Munich      Alemania         Max Weber (1864-1920)  1851-1874
+#&gt; 14  Ann Arbor, Michigan           USA    Charles Cooley (1864-1929)  1851-1874
+#&gt; 15 Nashville, Tennessee           USA  Robert Ezra Park (1864-1944)  1851-1874
+#&gt; 16                Paris        France      Marcel Mauss (1872-1950)  1851-1874
+#&gt;                   school     picture
+#&gt; 7       b) Social action  Q21163.png
+#&gt; 8      d) Socioeconomics  Q73646.png
+#&gt; 9          a) Positivism  Q15948.png
+#&gt; 10      b) Social action  Q76849.png
+#&gt; 11  e) Social psychology Q295978.png
+#&gt; 12     d) Socioeconomics  Q58031.png
+#&gt; 13      b) Social action   Q9387.png
+#&gt; 14  e) Social psychology Q468172.png
+#&gt; 15    f) Urban sociology Q919081.png
+#&gt; 16 g) Social antropology Q295393.png</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -192,7 +242,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Modesto Escobar.</p>
+  <p>Developed by Modesto Escobar, David Barrios, Carlos Prieto, Luis Martinez-Uribe, Pablo Cabrera-Álvarez.</p>
 </div>
 
 <div class="pkgdown">

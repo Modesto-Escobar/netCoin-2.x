@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/Modesto-Escobar/netCoin-1.0">
+  <a href="https://github.com/Modesto-Escobar/netCoin-2.x">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -139,11 +139,11 @@
         community <span class='op'>=</span> <span class='cn'>NULL</span>, layout <span class='op'>=</span> <span class='cn'>NULL</span>,
         name <span class='op'>=</span> <span class='cn'>NULL</span>, label <span class='op'>=</span> <span class='cn'>NULL</span>, group <span class='op'>=</span> <span class='cn'>NULL</span>, labelSize <span class='op'>=</span> <span class='cn'>NULL</span>,
         size <span class='op'>=</span> <span class='cn'>NULL</span>, color <span class='op'>=</span> <span class='cn'>NULL</span>, shape <span class='op'>=</span> <span class='cn'>NULL</span>, legend <span class='op'>=</span> <span class='cn'>NULL</span>,
-        orderA <span class='op'>=</span> <span class='cn'>NULL</span>, orderD <span class='op'>=</span> <span class='cn'>NULL</span>, ntext <span class='op'>=</span> <span class='cn'>NULL</span>, info <span class='op'>=</span> <span class='cn'>NULL</span>,
+        sort <span class='op'>=</span> <span class='cn'>NULL</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span>, ntext <span class='op'>=</span> <span class='cn'>NULL</span>, info <span class='op'>=</span> <span class='cn'>NULL</span>,
         image <span class='op'>=</span> <span class='cn'>NULL</span>, imageNames <span class='op'>=</span> <span class='cn'>NULL</span>,
         nodeBipolar <span class='op'>=</span> <span class='cn'>FALSE</span>, nodeFilter <span class='op'>=</span> <span class='cn'>NULL</span>, degreeFilter <span class='op'>=</span> <span class='cn'>NULL</span>,
         lwidth <span class='op'>=</span> <span class='cn'>NULL</span>, lweight <span class='op'>=</span> <span class='cn'>NULL</span>, lcolor <span class='op'>=</span> <span class='cn'>NULL</span>, ltext <span class='op'>=</span> <span class='cn'>NULL</span>,
-        linkBipolar <span class='op'>=</span> <span class='cn'>FALSE</span>, linkFilter <span class='op'>=</span> <span class='cn'>NULL</span>,
+        intensity <span class='op'>=</span> <span class='cn'>NULL</span>, linkBipolar <span class='op'>=</span> <span class='cn'>FALSE</span>, linkFilter <span class='op'>=</span> <span class='cn'>NULL</span>,
         repulsion <span class='op'>=</span> <span class='fl'>25</span>, distance <span class='op'>=</span> <span class='fl'>10</span>, zoom <span class='op'>=</span> <span class='fl'>1</span>,
         fixed <span class='op'>=</span> <span class='va'>showCoordinates</span>, limits <span class='op'>=</span> <span class='cn'>NULL</span>,
         main <span class='op'>=</span> <span class='cn'>NULL</span>, note <span class='op'>=</span> <span class='cn'>NULL</span>, showCoordinates <span class='op'>=</span> <span class='cn'>FALSE</span>, showArrows <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -213,12 +213,16 @@
       <td><p>name of the vector with information to display in a panel in the nodes data frame.</p></td>
     </tr>
     <tr>
-      <th>orderA</th>
-      <td><p>name of the vector with node ascending order in the nodes data frame.</p></td>
+      <th>sort</th>
+      <td><p>name of the vector with node order in the nodes data frame (only for heatmap).</p></td>
     </tr>
     <tr>
-      <th>orderD</th>
-      <td><p>name of the vector with node descending order in the nodes data frame.</p></td>
+      <th>decreasing</th>
+      <td><p>decreasing or increasing sort of the nodes (only for heatmap).</p></td>
+    </tr>
+    <tr>
+      <th>intensity</th>
+      <td><p>name of the vector with intensity variable in the links data frame (only for heatmap).</p></td>
     </tr>
     <tr>
       <th>lwidth</th>
@@ -319,7 +323,7 @@ drl("da"), circle("ci"), Force-Atlas-2("fo"), fruchterman.reingold("fr"), gem("g
     </tr>
     <tr>
       <th>controls</th>
-      <td><p>a numeric vector indicating which controls will be shown. 1 = sidebar, 2 = selection buttons, 3 = tables, 4 = export buttons. NULL hide all controls, negative values deny each control and 0 deny all.</p></td>
+      <td><p>a numeric vector indicating which controls will be shown. 1 = sidebar, 2 = selection buttons, 3 = export buttons, 4 = nodes table, 5 = links table. NULL hide all controls, negative values deny each control and 0 deny all.</p></td>
     </tr>
     <tr>
       <th>mode</th>
@@ -413,7 +417,7 @@ If the 'dir' attribute is specified, the function creates a folder in the comput
 
       <footer>
       <div class="copyright">
-  <p>Developed by Modesto Escobar.</p>
+  <p>Developed by Modesto Escobar, David Barrios, Carlos Prieto, Luis Martinez-Uribe, Pablo Cabrera-Álvarez.</p>
 </div>
 
 <div class="pkgdown">

@@ -38,6 +38,7 @@ var texts = {
     directional: "Arrows",
     degree: "degree",
     none: "none",
+    default: "default",
     downloadtable: "Download table",
     total: "Total",
     concoincidences: "Conditional coincidences",
@@ -53,8 +54,6 @@ var texts = {
     LabelSize: "Lab.Size",
     Group: "Group",
     Order: "Order",
-    OrderA: "A Order",
-    OrderD: "D Order",
     Size: "Size",
     Color: "Color",
     Shape: "Shape",
@@ -68,8 +67,6 @@ var texts = {
     LabelSizeInfo: "Label Size",
     GroupInfo: "Group",
     OrderInfo: "Order",
-    OrderAInfo: "Ascending Order",
-    OrderDInfo: "Descending Order",
     SizeInfo: "Size",
     ColorInfo: "Color",
     ShapeInfo: "Shape",
@@ -109,5 +106,10 @@ var texts = {
     isolateInfo: "Allows you to see only the selected node (or nodes)",
     filterInfo: "Allows you to see the selected node (or nodes) and its network (nodes with which it is related)",
     selectcustomcolor: "Select a custom color",
-    filterselection: "Filter selection"
+    filterselection: "Filter selection",
+    Elements: "Elements",
+    Deselect: "Deselect",
+    more: "more",
+    less: "less",
+    Scale: "Scale"
   };

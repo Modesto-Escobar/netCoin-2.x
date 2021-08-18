@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="igraph object. — toIgraph" />
-<meta property="og:description" content="igraph object from a netCoin object." />
+<meta property="og:description" content="igraph object from a network_rd3 object." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/Modesto-Escobar/netCoin-1.0">
+  <a href="https://github.com/Modesto-Escobar/netCoin-2.x">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -132,7 +132,7 @@
     </div>
 
     <div class="ref-description">
-    <p><code>igraph</code> object from a <code>netCoin</code> object.</p>
+    <p><code>igraph</code> object from a <code>network_rd3</code> object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>toIgraph</span><span class='op'>(</span><span class='va'>net</span><span class='op'>)</span></pre>
@@ -142,7 +142,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>net</th>
-      <td><p>is a <code>netCoin</code> object. See <code><a href='netCoin.html'>netCoin</a></code></p></td>
+      <td><p>is a <code>network_rd3</code> object. See <code>network_rd3</code></p></td>
     </tr>
     </table>
 
@@ -157,16 +157,16 @@
     <pre class="examples"><div class='input'><span class='co'># A character column (with separator)</span>
 <span class='va'>frame</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>A <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Man; Women"</span>, <span class='st'>"Women; Women"</span>,
                         <span class='st'>"Man; Man"</span>, <span class='st'>"Undet.; Women; Man"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dichotomize.html'>dichotomize</a></span><span class='op'>(</span><span class='va'>frame</span>, <span class='st'>"A"</span>, sep<span class='op'>=</span><span class='st'>"; "</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dichotomize.html'>dichotomize</a></span><span class='op'>(</span><span class='va'>frame</span>, <span class='st'>"A"</span>, sep <span class='op'>=</span> <span class='st'>"; "</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
 <span class='va'>C</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coin.html'>coin</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span> <span class='co'># coincidence matrix</span>
 <span class='va'>N</span> <span class='op'>&lt;-</span> <span class='fu'><a href='asNodes.html'>asNodes</a></span><span class='op'>(</span><span class='va'>C</span><span class='op'>)</span> <span class='co'># node data frame</span>
-<span class='va'>E</span> <span class='op'>&lt;-</span> <span class='fu'><a href='edgeList.html'>edgeList</a></span><span class='op'>(</span><span class='va'>C</span><span class='op'>)</span> <span class='co'># edge data frame</span>
-<span class='va'>net</span> <span class='op'>&lt;-</span> <span class='fu'><a href='netCoin.html'>netCoin</a></span><span class='op'>(</span><span class='va'>N</span>, <span class='va'>E</span><span class='op'>)</span> <span class='co'># netCoin object</span>
+<span class='va'>E</span> <span class='op'>&lt;-</span> <span class='fu'><a href='edgeList.html'>edgeList</a></span><span class='op'>(</span><span class='va'>C</span><span class='op'>)</span>
+<span class='va'>net</span> <span class='op'>&lt;-</span> <span class='fu'><a href='netCoin.html'>netCoin</a></span><span class='op'>(</span><span class='va'>N</span>, <span class='va'>E</span><span class='op'>)</span>
 <span class='fu'>toIgraph</span><span class='op'>(</span><span class='va'>net</span><span class='op'>)</span> <span class='co'># conversion into a igraph object</span>
-</div><div class='output co'>#&gt; IGRAPH 7c306bc UN-- 3 2 -- 
+</div><div class='output co'>#&gt; IGRAPH 348c131 UN-- 3 2 -- 
 #&gt; + attr: name (v/c), frequency (v/n), label (v/c), Haberman (e/n), p(Z)
 #&gt; | (e/n)
-#&gt; + edges from 7c306bc (vertex names):
+#&gt; + edges from 348c131 (vertex names):
 #&gt; [1] Man  --Undet. Women--Undet.</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -179,7 +179,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Modesto Escobar.</p>
+  <p>Developed by Modesto Escobar, David Barrios, Carlos Prieto, Luis Martinez-Uribe, Pablo Cabrera-Álvarez.</p>
 </div>
 
 <div class="pkgdown">

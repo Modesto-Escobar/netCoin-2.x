@@ -18,6 +18,6 @@ Authors@R: c(
     person("Pablo", "Cabrera-Álvarez", email = "pablocal@usal.es", role = "aut")     
     )
 Maintainer: Modesto Escobar <modesto@usal.es> 
-URL: https://modesto-escobar.github.io/netCoin-1.0/
+URL: https://modesto-escobar.github.io/netCoin-2.X/
 Encoding: UTF-8
-BugReports: https://github.com/Modesto-Escobar/netCoin-1.0/issues
+BugReports: https://github.com/Modesto-Escobar/netCoin-2.X/issues

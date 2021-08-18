@@ -19,7 +19,7 @@ To install the last version of the package:
 
 ``` r
 # Install development version
-devtools::install_github("Modesto-Escobar/netCoin-1.0")
+devtools::install_github("Modesto-Escobar/netCoin-2.x")
 ```
 
 The stable version is available in CRAN:
@@ -37,7 +37,6 @@ network:
 
 ``` r
 data(ess)
-
 plot(surCoin(data = ess, variables = c("Gender", "Social participation"))) # plot network object
 ```
 

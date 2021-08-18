@@ -88,10 +88,10 @@ function barplot(json){
   //subject = subject[0][options.name];
 
   // top bar
-  var topBar = body.append("div")
-    .attr("class","topbar")
+  var topBar = displayTopBar();
+  body.call(topBar);
 
-  topBar.call(iconButton()
+  topBar.addIcon(iconButton()
         .alt("pdf")
         .width(24)
         .height(24)
@@ -99,7 +99,7 @@ function barplot(json){
         .title(texts.pdfexport)
         .job(svg2pdf));
 
-  topBar.call(iconButton()
+  topBar.addIcon(iconButton()
         .alt("svg")
         .width(24)
         .height(24)
@@ -107,49 +107,45 @@ function barplot(json){
         .title(texts.svgexport)
         .job(svgDownload));
 
-  // multigraph
-  if(typeof multiGraph != 'undefined'){
-    topBar.append("h3").text(texts.graph + ":")
-    multiGraph.graphSelect(topBar);
-  }
-
   // events
-  topBar.append("h3").text(texts.subjectselect + ":")
-
-  var eventSelect = topBar.append("div")
+  var eventSelect,
+      nodeslist;
+  topBar.addBox(function(box){
+    box.append("h3").text(texts.subjectselect + ":")
+    eventSelect = box.append("div")
       .attr("class","select-wrapper")
     .append("select")
     .on("change",function(){
       subject = this.value;
       if(subject=="-default-"){
-        topBar.selectAll(".topbar>.slider, .topbar>button.sig").remove();
         subject = null;
-      }else{
-        sigButton();
-        sigSlider();
       }
+      sigButtonAndSlider();
       displayGraph();
     })
-  var nodeslist = nodes.map(function(d){
+    nodeslist = nodes.map(function(d){
           return [d[options.name],d[options.label]];
         }).sort(function(a,b){
-          return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : a[1] >= b[1] ? 0 : NaN;
+          return sortAsc(a[1],b[1]);
         });
-  nodeslist.unshift(["-default-","-"+texts.total+"-"]);
-  eventSelect.selectAll("option")
+    nodeslist.unshift(["-default-","-"+texts.total+"-"]);
+    eventSelect.selectAll("option")
         .data(nodeslist)
       .enter().append("option")
         .property("value",function(d){ return d[0]; })
         .text(function(d){ return d[1]; })
         .property("selected",function(d){ return d[0]==subject?true:null; })
+  });
 
   // node order
-  topOrder(topBar,nodes,displayGraph);
+  topBar.addBox(function(box){
+    topOrder(box,nodes,displayGraph);
+  });
 
   // colors
-  topBar.append("h3").text(texts.Color + ":")
-
-  var colorSelect = topBar.append("div")
+  topBar.addBox(function(box){
+    box.append("h3").text(texts.Color + ":")
+    var colorSelect = box.append("div")
       .attr("class","select-wrapper")
     .append("select")
     .on("change",function(){
@@ -158,16 +154,16 @@ function barplot(json){
         options.color = false;
       displayGraph();
     })
-  var opt = getOptions(nodes);
-  opt.unshift("-"+texts.none+"-");
-  colorSelect.selectAll("option")
+    var opt = getOptions(nodes);
+    opt.unshift("-"+texts.none+"-");
+    colorSelect.selectAll("option")
         .data(opt)
       .enter().append("option")
         .property("value",String)
         .text(String)
         .property("selected",function(d){ return d==options.color?true:null; })
 
-  topBar.append("button")
+    box.append("button")
       .text(texts.Color)
       .on("click",function(){
         var panel = displayWindow();
@@ -186,31 +182,23 @@ function barplot(json){
               d3.select("div.window-background").remove();
             })
       })
-  topBar.append("span").style("padding","0 10px");
+  });
 
   // node filter
   var topFilterInst = topFilter()
     .data(nodes)
+    .datanames(getOptions(nodes))
     .attr(options.name)
     .displayGraph(displayGraph);
 
-  topBar.call(topFilterInst);
-  topBar.append("span").style("padding","0 10px");
+  topBar.addBox(topFilterInst);
 
-  if(subject != null)
-    sigButton();
+  sigButtonAndSlider();
 
-  // significance filter
-  if(subject != null)
-    sigSlider();
-
-  var topBarHeight = topBar.node().offsetHeight;
-
-  height = height - topBarHeight;
+  height = height - topBar.height();
 
   body.append("svg")
     .attr("class","plot")
-    .style("margin-top","5em")
 
   if(options.note){
     var pnote = body.append("p")
@@ -221,56 +209,51 @@ function barplot(json){
   // graph
   displayGraph();
 
-  function sigButton(){
+  function sigButtonAndSlider(){
+    if(subject===null){
+      topBar.removeBox("significance");
+      topBar.removeBox("slider");
+      return;
+    }
+
+    // button
     if(options.expected && !options.significance){
-      var button = topBar.select(".topbar>button.sig")
-      if(button.empty()){
-        button = topBar.append("button")
-         .attr("class","sig")
+      topBar.addBox(function(box){
+        box.append("button")
          .text(options.confidence ? "Sig." : ">Exp.")
          .on("click",function(){
             if(subject){
               sigFilter = !sigFilter;
-              d3.select(this).style("background-color",sigFilter?"#ccc":null)
+              d3.select(this).style("background-color",sigFilter?basicColors.mediumGrey:null)
               displayGraph();
             }
          })
-      }
-      button.style("background-color",sigFilter?"#ccc":null);
+        .style("background-color",sigFilter?basicColors.mediumGrey:null);
+      },"significance");
     }
-  }
 
-  function sigSlider(){
+    //slider
     if(options.significance){
-      sigFilter = 1;
-      var slider = topBar.select(".topbar>.slider");
-      if(!slider.empty()){
-        slider.remove();
-      }
-      var sliderWidth = 200;
-      var values = [0,0.0001,0.001,0.01,0.05,0.10,0.20,0.50,1];
+      topBar.addBox(function(box){
+        sigFilter = 1;
+        var sliderWidth = 200;
+        var values = [0,0.0001,0.001,0.01,0.05,0.10,0.20,0.50,1];
 
-      var slider = topBar.append("div")
-        .attr("class","slider")
-        .style("float","right")
-        .style("margin-top","5px")
-        .style("margin-right","10px");
-
-      slider.append("span")
+        box.append("span")
         .style("margin-right","5px")
         .text("p<");
 
-      slider = slider.append("span")
+        var slider = box.append("span")
         .style("position","relative");
 
-      var bubble = slider.append("span")
+        var bubble = slider.append("span")
         .attr("class","slider-text")
         .style("position","absolute")
-        .style("top",(14*options.cex)+"px")
+        .style("top","8px")
         .style("left",bubblePos(8))
         .text("1")
 
-      slider.append("input")
+        slider.append("input")
         .attr("type","range")
         .attr("min","0")
         .attr("max","8")
@@ -282,9 +265,10 @@ function barplot(json){
           displayGraph();
         })
 
-      function bubblePos(value){
-        return (2+((value)*((sliderWidth-12)/8)))+"px";
-      }
+        function bubblePos(value){
+          return (10+((value)*((sliderWidth-12)/8)))+"px";
+        }
+      },"slider")
     }
   }
 
@@ -352,26 +336,25 @@ function barplot(json){
             aa = a.a,
             ab = a.b?a.b:a.c?a.c:a.a,
             bb = b.b?b.b:b.c?b.c:b.a;
-        if(options.rev){
-          var aux = aa;
-          aa = ba;
-          ba = aux;
-          aux = ab;
-          ab = bb;
-          bb = aux;
+
+        var s1 = compareFunction(ba,aa,options.rev);
+        if(s1){
+          return s1;
+        }else{
+          return compareFunction(bb,ab,options.rev);
         }
-        return ba < aa ? -1 : ba > aa ? 1 : bb < ab ? -1 : bb > ab ? 1 : 0;
       });
     }else{
       data.sort(function(a,b){
         var aa = nodes.filter(function(node){ return a.object==node[options.name]; })[0][options.order],
             bb = nodes.filter(function(node){ return b.object==node[options.name]; })[0][options.order];
+
+        var rev = false;
         if((typeof aa == "number" && typeof bb == "number") ^ options.rev){
-          var aux = bb;
-          bb = aa;
-          aa = aux;
+          rev = true;
         }
-        return aa < bb ? -1 : aa > bb ? 1 : aa >= bb ? 0 : NaN;
+
+        return compareFunction(aa,bb,rev);
       });
     }
 
@@ -434,21 +417,20 @@ function barplot(json){
       .attr("height", height + margin.top + margin.bottom)
       .on("dblclick",function(){
         sigFilter = 0;
-        sigButton();
-        sigSlider();
+        sigButtonAndSlider();
         topFilterInst.removeFilter();
       })
 
     svg.append("style").text("svg { font-family: sans-serif; font-size: "+body.style("font-size")+"; } "+
-      ".main { font-size: 200%; }"+
-      (whiskers ? "" : ".bar, .legend path { stroke: #000; stroke-width: .4px; }") +
-      ".a { fill: "+colors[0]+"; }"+
-      ".b { fill: "+colors[1]+"; }"+
-      ".c { fill: "+colors[2]+"; }" +
-      (whiskers ? ".c, " : "") + ".axis path, .axis line { fill: none; stroke: #000; shape-rendering: crispEdges; }"+
-      ".dotted { stroke: #ddd; stroke-width: 2; stroke-dasharray: 1, 10; stroke-linecap: round; }" +
-      ".y.axis path, .y.axis line { display: none; }"+
-      ".line { stroke-dasharray: 2, 2; stroke: #333; }");
+      ".main { font-size: 200%; } "+
+      (whiskers ? "" : ".bar, .legend path { stroke: "+basicColors.black+"; stroke-width: .4px; } ") +
+      ".a { fill: "+colors[0]+"; } "+
+      ".b { fill: "+colors[1]+"; } "+
+      ".c { fill: "+colors[2]+"; } " +
+      (whiskers ? ".c, " : "") + ".axis path, .axis line { fill: none; stroke: "+basicColors.black+"; shape-rendering: crispEdges; } "+
+      ".dotted { stroke: "+basicColors.mediumGrey+"; stroke-width: 2; stroke-dasharray: 1, 10; stroke-linecap: round; } " +
+      ".y.axis path, .y.axis line { display: none; } "+
+      ".line { stroke-dasharray: 2, 2; stroke: "+basicColors.black+"; }");
 
     svg.append("text")
         .attr("class","main")
@@ -553,8 +535,7 @@ function barplot(json){
         .call(yAxis)
       .selectAll(".tick > text").on("dblclick",function(d){
         subject = d;
-        sigButton();
-        sigSlider();
+        sigButtonAndSlider();
         displayGraph();
         eventSelect.node().selectedIndex = nodeslist.map(function(d){ return d[0]; }).indexOf(subject);
       })
@@ -579,7 +560,7 @@ function barplot(json){
         g.append("text")
           .attr("class","significance")
           .style("text-anchor","end")
-          .style("fill","#fff")
+          .style("fill",basicColors.white)
           .style("font-size",(bandwidth)+"px")
           .attr("x",x(value)-4)
           .attr("y",bandwidth*1.08)
@@ -664,11 +645,11 @@ function barplot(json){
     fileDownload(blob, d3.select("head>title").text()+'.svg');
   }
 
-function topOrder(topBar,data,displayGraph){
+function topOrder(div,data,displayGraph){
 
-  topBar.append("h3").text(texts.Order + ":")
+  div.append("h3").text(texts.Order + ":")
 
-  var selOrder = topBar.append("div")
+  var selOrder = div.append("div")
       .attr("class","select-wrapper")
     .append("select")
     .on("change",function(){
@@ -678,12 +659,12 @@ function topOrder(topBar,data,displayGraph){
       displayGraph();
     })
 
-  var opt = getOptions(data,function(a,b){
+  var opt = getOptions(data).sort(function(a,b){
     if(a=="incidences")
       return -1;
     if(b=="incidences")
       return 1;
-    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+    return sortAsc(a,b);
   }).map(function(d){ return [d,d]; });
   if(opt[0][0]=="incidences")
     opt[0][1] = texts.incidences;
@@ -697,9 +678,9 @@ function topOrder(topBar,data,displayGraph){
         .property("value",function(d){ return d[0]; })
         .text(function(d){ return d[1]; })
 
-  topBar.append("h3")
+  div.append("h3")
     .text(texts.Reverse)
-  topBar.append("button")
+  div.append("button")
     .attr("class","switch-button")
     .classed("active",options.rev)
     .on("click",function(){
@@ -707,8 +688,6 @@ function topOrder(topBar,data,displayGraph){
       d3.select(this).classed("active",options.rev);
       displayGraph();
     })
-
-  topBar.append("span").style("padding","0 10px")
 }
 
 function tooltip(sel,text){

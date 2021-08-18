@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
       </span>
     </div>
 
@@ -67,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/Modesto-Escobar/netCoin-1.0">
+  <a href="https://github.com/Modesto-Escobar/netCoin-2.x">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -97,22 +97,21 @@
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>To install the last version of the package:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># Install development version</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"Modesto-Escobar/netCoin-1.0"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Install development version</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Modesto-Escobar/netCoin-2.x"</span><span class="op">)</span></code></pre></div>
 <p>The stable version is available in CRAN:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># Install CRAN version</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"netCoin"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Install CRAN version</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"netCoin"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="usage" class="section level1">
 <h1 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h1>
 <p>The most simple way to run the coincidence analysis from survey data is to use the <code><a href="reference/surCoin.html">surCoin()</a></code> function which produces a HTML with a dynamic network:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ess</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Gender"</span>, <span class="st">"Social participation"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># plot network object</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ess</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Gender"</span>, <span class="st">"Social participation"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># plot network object</span></code></pre></div>
 <iframe width="850" height="850" src="articles/pkgdown/index/html/index1/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -131,9 +130,9 @@
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=netCoin">https://​cloud.r-project.org/​package=netCoin</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/Modesto-Escobar/netCoin-1.0/">https://​github.com/​Modesto-Escobar/​netCoin-1.0/​</a>
+<li>Browse source code at <br><a href="https://github.com/Modesto-Escobar/netCoin-2.X/">https://​github.com/​Modesto-Escobar/​netCoin-2.X/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/Modesto-Escobar/netCoin-1.0/issues">https://​github.com/​Modesto-Escobar/​netCoin-1.0/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/Modesto-Escobar/netCoin-2.X/issues">https://​github.com/​Modesto-Escobar/​netCoin-2.X/​issues</a>
 </li>
 </ul>
 </div>
@@ -154,7 +153,11 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Modesto Escobar <br><small class="roles"> Maintainer </small>  </li>
+<li>Modesto Escobar <br><small class="roles"> Maintainer, author, copyright holder </small> <a href="https://orcid.org/0000-0003-2072-6071" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>David Barrios <br><small class="roles"> Author </small>  </li>
+<li>Carlos Prieto <br><small class="roles"> Author </small>  </li>
+<li>Luis Martinez-Uribe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7795-3972" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Pablo Cabrera-Álvarez <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -172,7 +175,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Modesto Escobar.</p>
+  <p>Developed by Modesto Escobar, David Barrios, Carlos Prieto, Luis Martinez-Uribe, Pablo Cabrera-Álvarez.</p>
 </div>
 
 <div class="pkgdown">

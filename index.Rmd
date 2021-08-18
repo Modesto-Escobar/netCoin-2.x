@@ -59,5 +59,3 @@ dir = "docs/articles/pkgdown/index/html/index1/") # plot network object
 To cite this package `citation("netCoin")`:
 
 Escobar M, Martinez-Uribe L (2020). “Network Coincidence Analysis: The netCoin R Package.” Journal of Statistical Software, *93*(11), 1-32. doi: 10.18637/jss.v093.i11 (URL: https://doi.org/10.18637/jss.v093.i11)
-
-

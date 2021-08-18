@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
       </span>
     </div>
 
@@ -67,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/Modesto-Escobar/netCoin-1.0">
+  <a href="https://github.com/Modesto-Escobar/netCoin-2.x">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -82,7 +82,7 @@
 
       
 
-      </header><script src="surCoin_files/header-attrs-2.3/header-attrs.js"></script><script src="surCoin_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="surCoin_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>surCoin</h1>
@@ -108,22 +108,22 @@
 <li>Political participation in the last 12 months (yes, no).</li>
 <li>Country and probability weight.</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ess</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ess</span><span class="op">)</span>
 <span class="co">#&gt;   Gender      Age Social participation Political participation   cweight</span>
 <span class="co">#&gt; 1   Male 70 and +                   No                      No 2.0248654</span>
 <span class="co">#&gt; 2   Male    60-69                   No                      No 0.3356693</span>
 <span class="co">#&gt; 3 Female 70 and +                   No                      No 1.7896714</span>
 <span class="co">#&gt; 4 Female    60-69                  Yes                     Yes 0.3704806</span>
 <span class="co">#&gt; 5   Male    15-29                  Yes                      No 0.2881183</span>
-<span class="co">#&gt; 6 Female    40-49                   No                      No 0.7965410</span></pre></div>
+<span class="co">#&gt; 6 Female    40-49                   No                      No 0.7965410</span></code></pre></div>
 </div>
 <div id="simple-surcoin" class="section level1">
 <h1 class="hasAnchor">
 <a href="#simple-surcoin" class="anchor"></a>Simple surCoin</h1>
 <p>The most simple way to run a <strong>coincidence analysis</strong> is to use <code><a href="../../../reference/surCoin.html">surCoin()</a></code> including the data and a vector (<code>set</code>) with the names of the variables to be used in the analysis. In this case we add <code>Gender</code>, <code>Age</code>, <code>Social participation</code> and <code>Political participation</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Social participation"</span>, <span class="st">"Political participation"</span>, <span class="st">"Gender"</span>, <span class="st">"Age"</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Social participation"</span>, <span class="st">"Political participation"</span>, <span class="st">"Gender"</span>, <span class="st">"Age"</span><span class="op">)</span>
 <span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, variables <span class="op">=</span> <span class="va">set</span><span class="op">)</span>
 <span class="va">essCoin</span>
 <span class="co">#&gt; </span>
@@ -145,10 +145,10 @@
 <span class="co">#&gt;   Social participation:No                Age:70 and +  1.673124 0.04730833</span>
 <span class="co">#&gt;  Social participation:Yes Political participation:Yes 11.755060 0.00000000</span>
 <span class="co">#&gt;  Social participation:Yes                 Gender:Male  1.837566 0.03321192</span>
-<span class="co">#&gt; ...</span></pre></div>
+<span class="co">#&gt; ...</span></code></pre></div>
 <p>An <strong>interactive plot</strong> of the coincidence analysis can be produced using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. Note that the output is an html page that will open in the default browser.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/surCoin1/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -159,13 +159,13 @@
 <h2 class="hasAnchor">
 <a href="#dealing-with-dichotomous-variables" class="anchor"></a>Dealing with dichotomous variables</h2>
 <p>For binary variables we may want to <strong>represent only one category</strong> and hide the counterpart. For instance, the variable about social participation (<code>Social participation</code>) has two categories and we want just to represent the cases who have participated socially:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, 
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, 
                     variables <span class="op">=</span> <span class="va">set</span>,
                     dichotomies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Social participation"</span>, <span class="st">"Political participation"</span><span class="op">)</span>,
                     valueDicho <span class="op">=</span> <span class="st">"Yes"</span>
                     <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/surCoin2/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -173,15 +173,15 @@
 <h2 class="hasAnchor">
 <a href="#analysis-and-stats" class="anchor"></a>Analysis and stats</h2>
 <p><code><a href="../../../reference/surCoin.html">surCoin()</a></code> allows for the use of <strong>weights</strong>. Also different <strong>procedures</strong> can be used to assess the strength of the coincidences, the default is <code>haberman</code> or adjusted residuals. A full list of the measures available can be found in the function specification. In this case we will set the weight to <code>cweight</code> and ask for three different measures: frequencies (<code>f</code>), Conditional relative frequencies (<code>i</code>) and adjusted residuals (<code>h</code>).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, 
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, 
                     variables <span class="op">=</span> <span class="va">set</span>,
                     dichotomies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Social participation"</span>, <span class="st">"Political participation"</span><span class="op">)</span>,
                     valueDicho <span class="op">=</span> <span class="st">"Yes"</span>,
                     weight <span class="op">=</span> <span class="st">"cweight"</span>,
                     procedures <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"f"</span>, <span class="st">"i"</span>, <span class="st">"h"</span><span class="op">)</span>
                     <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/surCoin3/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -189,8 +189,8 @@
 <h2 class="hasAnchor">
 <a href="#output" class="anchor"></a>Output</h2>
 <p>Some aspects of the <strong>output can be customised</strong>, for example, we may want to use the argument <code>exogenous</code> to exclude the relationships amongst the categories of a variable or supress those categories without any relation with others with the argument <code>degreeFilter</code>. In this case we will set gender (<code>Gender</code>) and age (<code>Age</code>) as exogenous.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, 
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/surCoin.html">surCoin</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ess</span>, 
                     variables <span class="op">=</span> <span class="va">set</span>,
                     dichotomies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Social participation"</span>, <span class="st">"Political participation"</span><span class="op">)</span>,
                     valueDicho <span class="op">=</span> <span class="st">"Yes"</span>,
@@ -199,7 +199,7 @@
                     exogenous <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Gender"</span>, <span class="st">"Age"</span><span class="op">)</span>,
                     degreeFilter <span class="op">=</span> <span class="fl">1</span>,
                     <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/surCoin4/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 </div>
@@ -208,24 +208,24 @@
 <h1 class="hasAnchor">
 <a href="#using-netcoin-to-enhance-output" class="anchor"></a>Using netCoin to enhance output</h1>
 <p>To customise the coincidence analysis you can use any of the <code><a href="../../../reference/netCoin.html">netCoin()</a></code> arguments. Even more you can use the netCoin function with the previous <code>essCoin</code> object as input, instead of <code>data</code> and <code>variables</code>. For instance, we may want to use the aesthetics color to differentiate the nodes. Each node will take a different fill color if we set the argument <code>color</code> to the variable <code>"name"</code>. In addition, we can also establish the size of the nodes based on the relative freqencies, to do this the argument size must equal <code>"%"</code> The variable <code>name</code> in the nodes dataset refers to the name of each node, a combination of the variable name and the category. You can access the nodes data frame from the surCoin object:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">essCoin</span>, 
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">essCoin</span>, 
                     color <span class="op">=</span> <span class="st">"variable"</span>,
                     size <span class="op">=</span> <span class="st">"%"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">$</span><span class="va">nodes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></code></pre></div>
 <iframe width="850" height="850" src="html/surCoin5/index.html" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 </iframe>
 <div id="differentiate-variables-using-netcoin-aesthetics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#differentiate-variables-using-netcoin-aesthetics" class="anchor"></a>Differentiate variables using netCoin aesthetics</h2>
 <p>You may want to differentiate the nodes from their degree using an aesthetics like color or shape. To do this we need to write “degree” in the aesthetics, as the column <code>degree</code> is present automatically in the nodes dataset.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">essCoin</span>, 
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">essCoin</span>, 
                     shape <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="save-and-transform-surcoin" class="section level1">
@@ -236,17 +236,17 @@
 <h2 class="hasAnchor">
 <a href="#save-output" class="anchor"></a>Save output</h2>
 <p>To <strong>save the output</strong> we use the argument <code>dir</code> to set the directory where we want the html page to be stored.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">essCoin</span>, 
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">essCoin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/netCoin.html">netCoin</a></span><span class="op">(</span><span class="va">essCoin</span>, 
                     dir <span class="op">=</span> <span class="st">"./temp/ess/"</span>
-                    <span class="op">)</span></pre></div>
+                    <span class="op">)</span></code></pre></div>
 </div>
 <div id="export-as-an-igraph-object" class="section level2">
 <h2 class="hasAnchor">
 <a href="#export-as-an-igraph-object" class="anchor"></a>Export as an igraph object</h2>
 <p>Finally, if you wanted to generate an <strong>igraph object</strong>, you could use the function <code>toIgraph</code> applied to the <code>netCoin</code> object, named <code>essCoin</code> in this example.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">essCoin.igraph</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/toIgraph.html">toIgraph</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">essCoin.igraph</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/toIgraph.html">toIgraph</a></span><span class="op">(</span><span class="va">essCoin</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -262,7 +262,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Modesto Escobar.</p>
+  <p>Developed by Modesto Escobar, David Barrios, Carlos Prieto, Luis Martinez-Uribe, Pablo Cabrera-Álvarez.</p>
 </div>
 
 <div class="pkgdown">

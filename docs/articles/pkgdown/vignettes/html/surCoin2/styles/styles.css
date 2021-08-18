@@ -37,6 +37,11 @@ h2 {
 ul {
   list-style-type: none;
 }
+iframe{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 button, input, select {
   -webkit-appearance: none;
   -ms-appearance: none;
@@ -256,7 +261,6 @@ th.sorting_desc:after {
 }
 img.icon {
   cursor: pointer;
-  float: right;
   margin: 0 5px;
 }
 div.switchNodeLink{
@@ -291,14 +295,19 @@ div.main {
   padding: 6px 12px;
   border-bottom: solid 1px #c6c6c6;
   background-color: #ffffff;
-  font-size: 1.6em;
   min-height: 24px;
 }
-div.main span.title {
-  font-weight: bold;
+div.main > span {
+  display: inline-block;
+  padding: 0 3px;
 }
-div.main span.separator {
-  padding: 0 6px;
+div.main > span.title {
+  font-weight: bold;
+  font-size: 1.6em;
+}
+div.main > span.separator {
+  color: #777777;
+  font-size: 1.6em;
 }
 div.main-title {
   font-size: 1.8em;
@@ -360,28 +369,22 @@ div.poweredby img {
   right: 0;
 }
 .legend-panel > .scale > img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 2.5em 6px;
+  float: right;
+  padding: 2em 6px;
   cursor: pointer;
 }
-.legend-panel > .scale > div {
-  padding-right: 30px;
-}
-.legend-panel > .scale > div > .title {
+.legend-panel > .scale > .scale-content > .title {
   text-align: center;
   font-size: 1.4em;
   margin-bottom: 6px;
-  cursor: pointer;
 }
-.legend-panel > .scale > div > .domain1,
-.legend-panel > .scale > div > .domain2 {
+.legend-panel > .scale > .scale-content > .domain1,
+.legend-panel > .scale > .scale-content > .domain2 {
   display: inline-block;
   width: 50%;
   font-size: 1.2em;
 }
-.legend-panel > .scale > div > .domain2 {
+.legend-panel > .scale > .scale-content > .domain2 {
   text-align: right;
 }
 .legend-panel > .legends > div.legends-content {
@@ -406,8 +409,7 @@ div.poweredby img {
 .sidebar > .subSidebar,
 .legend-panel > .scale,
 .legend-panel > .legends,
-div.infopanel,
-div.gallery-panel {
+div.infopanel {
   margin: 10px;
   background-color: #ffffff;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.07);
@@ -435,7 +437,7 @@ div.goback:after {
   height: 16px;
 }
 .sidebar > .subSearch,
-.legend-panel > .scale {
+.legend-panel > .scale > .scale-content {
   padding: 12px;
 }
 .legend-panel > .show-panel-button {
@@ -547,32 +549,6 @@ div.goback:after {
 }
 .subSidebar .filter-controls button {
   margin: 0 4px 2px 0;
-}
-.multi-select {
-  position: relative;
-  display: inline-block;
-  margin-right: 20px;
-}
-.multi-select > select {
-  cursor: pointer;
-  opacity: 0;
-  position: absolute;
-}
-.multi-select > span {
-  padding: 6px 12px 6px 3px;
-  pointer-events: none;
-  font-weight: bold;
-  color: #777777;
-}
-.multi-select > span:after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  width: 20px;
-  height: 100%;
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE4IDlMMTIgMTVMNiA5IiBzdHJva2U9IiM4ODg4ODgiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=);
-  background-position: center;
-  
 }
 .multi-search {
   background-color: #ffffff;
@@ -706,17 +682,19 @@ ul.visual-selector > li.active {
   font-weight: bold;
 }
 
-.filter-tags > div {
+.filter-tags > .tag {
   display: inline-block;
   background-color: #777777;
   color: #ffffff;
   padding: 4px 8px 4px 8px;
   margin: 2px;
   border-radius: 9999px;
-}
-.filter-tags > div > span {
-  margin-left: 5px;
   cursor: pointer;
+}
+.filter-tags > .tag:after {
+  content: "\D7";
+  margin-left: 5px;
+  font-weight: bold;
 }
 textarea[name=query] {
   font-family: monospace;
@@ -778,15 +756,31 @@ p.window-message {
   font-size: 1.6em;
   text-align: center;
 }
+.filter-options {
+  margin: 20px 0;
+  overflow-y: auto;
+}
+.filter-options > div > div:first-child {
+  margin-right: 10px;
+}
 div.topbar {
+  background-color: #ffffff;
+  padding: 6px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+}
+div.topbar.fixed-topbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1;
-  background-color: #ffffff;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+}
+.topbar h2 {
+  display: inline-block;
+  padding-right: 4px;
+  color: #000000;
+  font-size: 1.6em;
+  font-weight: bold;
 }
 .topbar h3 {
   display: inline-block;
@@ -794,6 +788,25 @@ div.topbar {
   color: #000000;
   font-size: 1.2em;
   font-weight: bold;
+}
+.multi-select {
+  display: inline-block;
+  position: relative;
+}
+.multi-select > img {
+  vertical-align: text-bottom;
+  margin-bottom: -2px;
+}
+.multi-select > span {
+  font-weight: bold;
+  font-size: 1.6em;
+  margin-left: 10px;
+}
+.multi-select > select {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 .topbar .select-wrapper {
   margin-right: 10px;
@@ -807,14 +820,29 @@ div.topbar {
 .topbar button {
   margin: 0 2px;
 }
-.topbar > .multi-search {
-  display: inline-block;
+.topbar > .topbar-boxes {
+  white-space: nowrap;
+}
+.topbar > .topbar-boxes  > .topbar-box > .multi-search {
   width: 180px;
-  vertical-align: middle;
+  height: unset;
+  margin-top: -1em;
+}
+.topbar > .topbar-boxes  > .topbar-box > .multi-search > .search-box > div.text-wrapper {
+  padding: 4px 30px 4px 20px;
+}
+.topbar > .topbar-boxes  > .topbar-box > .multi-search > button {
+  padding: 4px 0.8em;
+}
+.topbar > .topbar-boxes > .topbar-box {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0 10px;
+  margin-bottom: 5px;
 }
 .header {
   position: relative;
-  margin-top: 5em;
+  margin-top: 7em;
 }
 .header > .header-buttons {
   position: absolute;
@@ -891,11 +919,11 @@ div.loading > p {
 
 div.infopanel {
   margin: 0;
-  padding: 20px 0;
-  position: absolute;
+  padding: 0;
+  position: fixed;
   top: 10px;
   right: 10px;
-  z-index: 1;
+  z-index: 9;
 }
 div.infopanel .drag {
     position: absolute;
@@ -905,19 +933,18 @@ div.infopanel .drag {
     width: 10px;
     cursor: w-resize;
 }
-div.infopanel > .close-button,
-div.gallery-panel > .close-button {
+div.infopanel > .close-button {
   top: 10px;
   right: 14px;
 }
-div.infopanel > div:last-child {
-  width: 100%;
-  height: 100%;
+div.infopanel > .panel-content {
+  padding: 30px 0;
+  height: calc(100% - 60px);
+}
+div.infopanel > .panel-content > div {
+  padding: 0 20px;
   overflow-y: auto;
   overflow-x: hidden;
-}
-div.infopanel > div:last-child > div {
-  padding: 0 20px;
   height: 100%;
 }
 
@@ -1161,6 +1188,7 @@ svg .zoombutton.zoomreset rect {
   border: solid 1px #c6c6c6;
   background-color: #ffffff;
   cursor: pointer;
+  font-size: 8px;
 }
 
 .slider-text input {
@@ -1176,7 +1204,6 @@ svg .zoombutton.zoomreset rect {
 /* legend */
 .legend .title {
   font-size: 1.2em;
-  cursor: pointer;
 }
 .legend-check-box {
   background-color: #ffffff;
@@ -1283,6 +1310,9 @@ svg .legend-bottom-button > text{
 }
 
 /* frequency plots */
+.frequency-barplots {
+  padding: 0 20px;
+}
 .frequency-barplots > .bar-plot > h2 {
   margin: 12px 0 6px 0;
 }
@@ -1318,6 +1348,33 @@ svg .legend-bottom-button > text{
   top: 0;
   left: 0;
 }
+.frequency-barplots > .bar-plot > .show-more-less-bars {
+  color: #2f7bee;
+  padding: 4px;
+  margin-bottom: 4px;
+  display: inline-block;
+  width: 100%;
+}
+.frequency-barplots > .bar-plot > .show-more-less-bars > span {
+  display: inline-block;
+  width: 50%;
+}
+.frequency-barplots > .bar-plot > .show-more-less-bars > .show-less-bars {
+  text-align: right;
+}
+.frequency-barplots > .bar-plot > .show-more-less-bars > span:after {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 10px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE4IDlMMTIgMTVMNiA5IiBzdHJva2U9IiMyRjdCRUUiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=);
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+.frequency-barplots > .bar-plot > .show-more-less-bars > .show-less-bars:after {
+    transform: rotate(180deg);
+}
 .frequency-barplots > .bar-plot > .freq-axis {
   position: relative;
   border-top: solid 1px #777777;
@@ -1341,84 +1398,140 @@ svg .legend-bottom-button > text{
   left: 15px;
 }
 
+.frequency-barplots > .freq-header > div {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+}
+.frequency-barplots > .freq-header > div:nth-child(2) {
+  text-align: right;
+}
+.frequency-barplots > .freq-header > div:nth-child(2) > img {
+  cursor: pointer;
+}
+
 /* grid gallery */
-div.topbar.gallery-topbar{
-  position: relative;
+div.gallery-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+div.gallery-box.hide-topbar > .topbar {
+  display: none;
 }
 div.gallery-content {
-  margin: 1em;
+  margin: 10px;
+  margin-right: 0;
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+}
+div.gallery-note {
+  background-color: #ffffff;
+  padding: 1em;
+}
+div.footer {
+  background-color: #777777;
+  color: #c6c6c6;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.4em;
+  padding: 1em;
+}
+div.description-panel {
+  display: inline-block;
+  width: 25%;
+  height: calc(100% - 20px);
+  padding-top: 20px;
+  overflow: auto;
+  position: relative;
+}
+div.gallery-content.hide-description > .description-panel {
+  display: none;
+}
+div.description-panel > div.close-button {
+  right: 14px;
+}
+div.description-content{
+  height: 100%;
 }
 div.grid-gallery {
-  position: relative;
-  display: inline-block;
-  width: 66%;
+  width: 100%;
   height: 100%;
   overflow: auto;
 }
-div.grid-gallery > .gallery-items > div {
+div.gallery-content:not(.hide-description) > div.description-panel + div.grid-gallery {
   display: inline-block;
-  margin: 0.5em;
+  width: 75%;
+}
+div.grid-gallery > .gallery-items > .item {
+  display: inline-block;
+  position: relative;
+  margin: 6px;
+}
+div.grid-gallery > .gallery-items > .item > .img-wrapper {
+  border: solid 3px;
+  border-color: #ffffff;
+}
+div.grid-gallery > .gallery-items.rounded-items > .item > .img-wrapper {
+  border-radius: 50%;
   overflow: hidden;
-  border: solid #ffffff 3px;
 }
-div.grid-gallery > .gallery-items > div.selected {
-  border-color: yellow;
+div.grid-gallery > .gallery-items > .item.selected > .img-wrapper {
+  border-color: #ffff00;
 }
-div.grid-gallery > .gallery-items > div > img {
+div.grid-gallery > .gallery-items > .item > .img-wrapper > img {
   display: block;
+  height: 100%;
 }
-div.grid-gallery > .gallery-items > div > span {
+div.grid-gallery > .gallery-items > .item > span {
   display: block;
+  overflow: hidden;
   white-space: nowrap;
   position: relative;
+  padding: 3px;
+  text-align: center;
 }
-div.grid-gallery > .gallery-items > div > span:after {
+div.grid-gallery > .gallery-items.fade-labels > .item > span:after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width:100%;
-  height:100%; 
-  background:linear-gradient(to right, transparent 75%, white);
+  width: 100%;
+  height: 100%; 
+  background: linear-gradient(to right, rgba(255,255,255,0) 75%, rgba(255,255,255,1));
   pointer-events: none;
 }
-div.gallery-panel {
-  position: relative;
-  vertical-align: top;
-  display: inline-block;
-  width: 33%;
-  height: 100%;
-  margin: 0;
-}
-div.panel-content {
-  padding: 5% 0;
-  height: 90%;
-}
-div.panel-content > div {
-  padding: 0 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 100%;
-}
-div.gallery-note {
-  background-color: #ffffff;
-  position: fixed;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  padding: 1em;
-}
-div.grid-gallery > .show-panel-button {
-  position: absolute;
+div.grid-gallery > .gallery-items > .item > .tooltip {
   top: 0;
-  right: 0;
+  left: 0;  
+  z-index: 1;
 }
-div.gallery-content.hide-panel > .gallery-panel {
+div.gallery-content > .legend-panel {
+  left: unset;
+  right: 10px;
+  width: 240px;
+}
+div.gallery-content > .legend-panel > .show-panel-button {
   display: none;
 }
-div.gallery-content.hide-panel > .grid-gallery {
-  width: 100%;
+div.gallery-content > .legend-panel.hide-legend > .show-panel-button  {
+  display: inline-block;
 }
-div.gallery-content:not(.hide-panel) > .grid-gallery > .show-panel-button {
+div.gallery-content > .legend-panel.hide-legend > .legends,
+div.gallery-content > .legend-panel.hide-legend > .scale {
   display: none;
+}
+.legend-bullet {
+  margin: 0 7px;
+  padding: 5px;
+  background-color: #777777;
+  display: inline-block;
+  border-radius: 50%;
+}
+div.gallery-content > div.zoom-svg {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
 }

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/Modesto-Escobar/netCoin-1.0">
+  <a href="https://github.com/Modesto-Escobar/netCoin-2.x">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -135,38 +135,38 @@
     <p><code>timeCoin</code> produces a timeCoin object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>timeCoin</span><span class='op'>(</span><span class='va'>nodes</span>, name <span class='op'>=</span> <span class='st'>"name"</span>, start <span class='op'>=</span> <span class='st'>"start"</span>, end <span class='op'>=</span> <span class='st'>"end"</span>, group <span class='op'>=</span> <span class='cn'>NULL</span>,
-         text <span class='op'>=</span> <span class='cn'>NULL</span>, main <span class='op'>=</span> <span class='cn'>NULL</span>, note <span class='op'>=</span> <span class='cn'>NULL</span>, info <span class='op'>=</span> <span class='cn'>NULL</span>, events <span class='op'>=</span> <span class='cn'>NULL</span>,
-         eventChild <span class='op'>=</span> <span class='st'>"eventChild"</span>, eventParent <span class='op'>=</span> <span class='st'>"eventParent"</span>, eventTime <span class='op'>=</span> <span class='st'>"Time"</span>,
-         eventColor <span class='op'>=</span> <span class='cn'>NULL</span>, eventShape <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>timeCoin</span><span class='op'>(</span><span class='va'>periods</span>, name <span class='op'>=</span> <span class='st'>"name"</span>, start <span class='op'>=</span> <span class='st'>"start"</span>, end <span class='op'>=</span> <span class='st'>"end"</span>, group <span class='op'>=</span> <span class='cn'>NULL</span>,
+         text <span class='op'>=</span> <span class='cn'>NULL</span>, main <span class='op'>=</span> <span class='cn'>NULL</span>, note <span class='op'>=</span> <span class='cn'>NULL</span>, info <span class='op'>=</span> <span class='cn'>NULL</span>, 
+         events <span class='op'>=</span> <span class='cn'>NULL</span>, eventNames <span class='op'>=</span> <span class='st'>"name"</span>, eventPeriod <span class='op'>=</span> <span class='st'>"period"</span>,
+         eventTime <span class='op'>=</span> <span class='st'>"date"</span>, eventColor <span class='op'>=</span> <span class='cn'>NULL</span>, eventShape <span class='op'>=</span> <span class='cn'>NULL</span>,
          cex <span class='op'>=</span> <span class='fl'>1</span>, language <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"en"</span>,<span class='st'>"es"</span>,<span class='st'>"ca"</span><span class='op'>)</span>, dir <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>nodes</th>
-      <td><p>a data frame with at least three vectors of names, start and end.</p></td>
+      <th>periods</th>
+      <td><p>a data frame with at least three vectors of name, start and end of the periods.</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>name of the vector with names in the nodes data frame.</p></td>
+      <td><p>name of the vector with names in the periods data frame.</p></td>
     </tr>
     <tr>
       <th>start</th>
-      <td><p>name of the vector with starts in the nodes data frame.</p></td>
+      <td><p>name of the vector with starts in the periods data frame.</p></td>
     </tr>
     <tr>
       <th>end</th>
-      <td><p>name of the vector with ends in the nodes data frame.</p></td>
+      <td><p>name of the vector with ends in the periods data frame.</p></td>
     </tr>
     <tr>
       <th>group</th>
-      <td><p>name of the vector with groups in the nodes data frame.</p></td>
+      <td><p>name of the vector with groups in the periods data frame.</p></td>
     </tr>
     <tr>
       <th>text</th>
-      <td><p>name of the vector with html text in the nodes data frame.</p></td>
+      <td><p>name of the vector with html text in the periods data frame.</p></td>
     </tr>
     <tr>
       <th>main</th>
@@ -178,19 +178,19 @@
     </tr>
     <tr>
       <th>info</th>
-      <td><p>name of the vector with information to display in a panel in the nodes data frame.</p></td>
+      <td><p>name of the vector with information to display in a panel in the periods data frame.</p></td>
     </tr>
     <tr>
       <th>events</th>
-      <td><p>a data frame of events realted to nodes with three columns: node name, event name and event date</p></td>
+      <td><p>a data frame of events included into the periods with three columns: event name, periodParent and eventTime</p></td>
     </tr>
     <tr>
-      <th>eventChild</th>
-      <td><p>name of the vector with sources in the events data frame.</p></td>
+      <th>eventNames</th>
+      <td><p>name of the vector with names in the events data frame.</p></td>
     </tr>
     <tr>
-      <th>eventParent</th>
-      <td><p>name of the vector with targets in the events data frame.</p></td>
+      <th>eventPeriod</th>
+      <td><p>name of the vector with period names in the events data frame.</p></td>
     </tr>
     <tr>
       <th>eventTime</th>
@@ -226,18 +226,72 @@
     <p>Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See <a href='https://sociocav.usal.es/blog/modesto-escobar/'>https://sociocav.usal.es/blog/modesto-escobar/</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Database of 19th century sociologists</span>
+    <pre class="examples"><div class='input'><span class='co'># Database of the classical sociologists.</span>
+<span class='co'># Only periods</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sociologists</span><span class='op'>)</span>
-<span class='fu'>timeCoin</span><span class='op'>(</span><span class='va'>sociologists</span>,<span class='st'>"name"</span>,<span class='st'>"birth"</span>,<span class='st'>"death"</span>,<span class='st'>"birthcountry"</span><span class='op'>)</span>
+<span class='fu'>timeCoin</span><span class='op'>(</span><span class='va'>sociologists</span>, <span class='st'>"name"</span>, <span class='st'>"birth"</span>, <span class='st'>"death"</span>, <span class='st'>"school"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
-#&gt; Nodes(33):
-#&gt;                   name birth death birthcountry              movements
-#&gt;              Karl Marx  1818  1883      Germany                Marxism
-#&gt;       Friedrich Engels  1820  1895      Germany                Marxism
-#&gt;         Hebert Spencer  1820  1903           UK           Evolutionism
-#&gt;        Wilhelm Dilthey  1833  1911      Germany Interpretive sociology
-#&gt;  William Graham Sumner  1840  1910          USA           Evolutionism
-#&gt;        Vilfredo Pareto  1848  1923       France              Formalism
+#&gt; Periods(16):
+#&gt;                   name birth death birth_place birth_country death_place
+#&gt;          Auguste Comte  1798  1857 Montpellier       Francia       Paris
+#&gt;              Karl Marx  1818  1883       Trier      Alemania      London
+#&gt;        Herbert Spencer  1820  1903       Derby   Reino Unido    Brighton
+#&gt;       Friedrich Engels  1820  1895      Barmen      Alemania      London
+#&gt;  William Graham Sumner  1840  1910  New Jersey          EEUU Connecticut
+#&gt;        Vilfredo Pareto  1848  1923       Paris       Francia     Céligny
+#&gt;  death_country                             label generation            school
+#&gt;        Francia         Auguste Comte (1798-1857)  1775-1799     a) Positivism
+#&gt;    Reino Unido             Karl Marx (1818-1883)  1800-1824  b) Social action
+#&gt;    Reino Unido       Herbert Spencer (1820-1903)  1800-1824   c) Evolutionism
+#&gt;    Reino Unido      Friedrich Engels (1820-1895)  1800-1824  b) Social action
+#&gt;           EEUU William Graham Sumner (1840-1910)  1825-1850   c) Evolutionism
+#&gt;          Suiza       Vilfredo Pareto (1848-1923)  1825-1850 d) Socioeconomics
+#&gt;       picture
+#&gt;    Q12718.png
+#&gt;     Q9061.png
+#&gt;   Q144535.png
+#&gt;    Q34787.png
+#&gt;  Q1356390.png
+#&gt;    Q11031.png
+#&gt; ...
+#&gt; </div><div class='input'>
+<span class='co'># Periods and events</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>works</span><span class='op'>)</span>
+<span class='fu'>timeCoin</span><span class='op'>(</span><span class='va'>sociologists</span>, <span class='st'>"name"</span>, <span class='st'>"birth"</span>, <span class='st'>"death"</span>, <span class='st'>"school"</span>,
+         events<span class='op'>=</span><span class='va'>works</span>, eventNames<span class='op'>=</span><span class='st'>"label"</span>, eventPeriod<span class='op'>=</span><span class='st'>"author"</span>, eventTime<span class='op'>=</span><span class='st'>"date"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; Periods(16):
+#&gt;                   name birth death birth_place birth_country death_place
+#&gt;          Auguste Comte  1798  1857 Montpellier       Francia       Paris
+#&gt;              Karl Marx  1818  1883       Trier      Alemania      London
+#&gt;        Herbert Spencer  1820  1903       Derby   Reino Unido    Brighton
+#&gt;       Friedrich Engels  1820  1895      Barmen      Alemania      London
+#&gt;  William Graham Sumner  1840  1910  New Jersey          EEUU Connecticut
+#&gt;        Vilfredo Pareto  1848  1923       Paris       Francia     Céligny
+#&gt;  death_country                             label generation            school
+#&gt;        Francia         Auguste Comte (1798-1857)  1775-1799     a) Positivism
+#&gt;    Reino Unido             Karl Marx (1818-1883)  1800-1824  b) Social action
+#&gt;    Reino Unido       Herbert Spencer (1820-1903)  1800-1824   c) Evolutionism
+#&gt;    Reino Unido      Friedrich Engels (1820-1895)  1800-1824  b) Social action
+#&gt;           EEUU William Graham Sumner (1840-1910)  1825-1850   c) Evolutionism
+#&gt;          Suiza       Vilfredo Pareto (1848-1923)  1825-1850 d) Socioeconomics
+#&gt;       picture
+#&gt;    Q12718.png
+#&gt;     Q9061.png
+#&gt;   Q144535.png
+#&gt;    Q34787.png
+#&gt;  Q1356390.png
+#&gt;    Q11031.png
+#&gt; ...
+#&gt; 
+#&gt; Events(54):
+#&gt;              name  label                                      works date
+#&gt;     Auguste Comte  Comte              Cours de philosophie positive 1842
+#&gt;         Karl Marx   Marx                        Die heilige Familie 1845
+#&gt;  Friedrich Engels Engels Die Lage der arbeitenden Klasse in England 1845
+#&gt;  Friedrich Engels Engels                        Die heilige Familie 1845
+#&gt;         Karl Marx   Marx                     Die deutsche ideologie 1846
+#&gt;  Friedrich Engels Engels                     Die deutsche Ideologie 1846
 #&gt; ...
 #&gt; </div></pre>
   </div>
@@ -251,7 +305,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Modesto Escobar.</p>
+  <p>Developed by Modesto Escobar, David Barrios, Carlos Prieto, Luis Martinez-Uribe, Pablo Cabrera-Álvarez.</p>
 </div>
 
 <div class="pkgdown">

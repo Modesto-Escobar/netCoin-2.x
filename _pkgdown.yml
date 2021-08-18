@@ -20,7 +20,7 @@ navbar:
       
   right:
     - icon: fa-github fa-lg
-      href: https://github.com/Modesto-Escobar/netCoin-1.0
+      href: https://github.com/Modesto-Escobar/netCoin-2.x
 
 reference:
 - title: Package
@@ -31,9 +31,11 @@ reference:
   contents:
   - allNet
   - barCoin
+  - coexist
   - coin
+  - dyncohort
+  - gallery
   - glmCoin
-  - gridGallery
   - netCoin
   - netCorr
   - pathCoin
@@ -43,6 +45,7 @@ reference:
 - title: Utilities
   desc: Auxiliary functions
   contents:
+  - '`asGallery`'
   - '`asNodes`'
   - '`coocur`'
   - '`dichotomize`'
@@ -73,5 +76,4 @@ reference:
   - finches
   - links
   - sociologists
-
-
+  - works

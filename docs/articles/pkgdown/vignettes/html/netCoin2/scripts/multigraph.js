@@ -27,12 +27,13 @@ MultiGraph.prototype = {
             this.selected = true; 
         })
     select.on("change",function(){ window.location.href = "?"+this.value; })
+    sel.append("img")
+        .attr("src",b64Icons.menu)
     sel.append("span")
       .html(items[current])
 
     d3.select("body").on("keydown.multishortcut",function(){
       if(d3.event.ctrlKey){ 
-        d3.event.preventDefault();
         var key = getKey(d3.event);
         switch(key){
           case "ArrowUp":
@@ -71,14 +72,17 @@ window.onload = function(){
   multiGraph = new MultiGraph(window.location.search);
   var json = multiGraph.getJSON();
   switch(multiGraph.getType()){
-    case 'netCoin':
+    case 'network':
       network(json);
       break;
-    case 'barCoin':
+    case 'barplot':
       barplot(json);
       break;
-    case 'timeCoin':
+    case 'timeline':
       timeline(json);
+      break;
+    case 'gallery':
+      gallery(json);
       break;
     case 'iFrame':
       displayIframe(json);
@@ -88,21 +92,21 @@ window.onload = function(){
 
 function displayIframe(url){
 
-  var vp = viewport(),
-      height = vp.height - 60;
+  d3.select("html").style("height","100%")
+  var body = d3.select('body')
+    .style("display","flex")
+    .style("flex-direction","column")
+    .style("width","100%")
+    .style("height","100%")
 
-  var body = d3.select('body');
-
-  var topBar = body.append("div")
-    .attr("class","topbar")
-
-  topBar.append("h3").text(texts.graph + ":")
-  multiGraph.graphSelect(topBar);
+  var topBar = displayTopBar();
+  body.call(topBar);
 
   body.append("iframe")
+    .style("flex-grow",1)
+    .style("width","100%")
+    .style("height","100%")
     .attr("src",url+"/index.html")
-    .attr("width","100%")
-    .attr("height",height)
     .attr("frameborder",0)
     .attr("marginwidth",0)
     .attr("marginheight",0)
