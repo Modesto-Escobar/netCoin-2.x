@@ -102,6 +102,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
 
   color <- setAttrByValueKey("color",color,nodes)
   shape <- setAttrByValueKey("shape",shape,nodes)
+  lcolor <- setAttrByValueKey("lcolor",lcolor,links)
 
   net <- network_rd3(nodes = nodes, links = links, tree = tree,
         community = community, layout = layout,
@@ -125,17 +126,17 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
   return(net)
 }
 
-setAttrByValueKey <- function(name,item,nodes){
+setAttrByValueKey <- function(name,item,items){
     if(is.list(item) && !is.data.frame(item)){
       checkedlist <- list()
       for(k in names(item)){
-        if(!k %in% colnames(nodes) || !(is.character(nodes[[k]]) || is.factor(nodes[[k]]))){
-          warning(paste0(name,": the names in the list must match character columns of the nodes, but '",k,"' doesn't"))
+        if(!k %in% colnames(items) || !(is.character(items[[k]]) || is.factor(items[[k]]))){
+          warning(paste0(name,": the names in the list must match character columns of the items, but '",k,"' doesn't"))
         }else{
           if(!is.character(item[[k]]) || is.null(names(item[[k]]))){
             warning(paste0(name,": each item in the list must be a named character vector describing value-",name,", but '",k,"' doesn't"))
           }else{
-            checkedlist[[k]] <- unname(item[[k]][nodes[[k]]])
+            checkedlist[[k]] <- unname(item[[k]][items[[k]]])
           }
         }
       }
