@@ -7,7 +7,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         name = NULL, label = NULL, group = NULL, labelSize = NULL,
         size = NULL, color = NULL, shape = NULL, legend = NULL,
         sort = NULL, decreasing = FALSE, ntext = NULL, info = NULL,
-        image = NULL, imageNames = NULL,
+        image = NULL, imageNames = NULL, centrality = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
         intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
@@ -123,6 +123,14 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         background = background, defaultColor = defaultColor,
         language = language, dir = dir)
   class(net) <- c("netCoin",class(net))
+
+  if(!is.null(centrality)){
+    columns <- calCentr(net, centrality)$nodes
+    for(col in setdiff(colnames(columns),c("nodes","degree"))){
+      net$nodes[[col]] <- columns[[col]]
+    }
+  }
+
   return(net)
 }
 

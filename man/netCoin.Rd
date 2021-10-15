@@ -15,7 +15,7 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
         name = NULL, label = NULL, group = NULL, labelSize = NULL,
         size = NULL, color = NULL, shape = NULL, legend = NULL,
         sort = NULL, decreasing = FALSE, ntext = NULL, info = NULL,
-        image = NULL, imageNames = NULL,
+        image = NULL, imageNames = NULL, centrality = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
         intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
@@ -36,6 +36,7 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
 \item{label}{name of the vector with labels in the nodes data frame.}
 \item{group}{name of the vector with groups in the nodes data frame.}
 \item{community}{algorithm to make communities: edge_betweenness("ed"), fast_greedy("fa"), label_prop("la"), leiden_eigen("le"), louvain("lo"), optimal("op"), spinglass("sp"), walktrap("wa")}
+\item{centrality}{calculates the centrality measures of a network. See \link{calCentr}.}
 \item{labelSize}{name of the vector with label size in the nodes data frame.}
 \item{size}{name of the vector with size in the nodes data frame.}
 \item{color}{name of the vector with color variable in the nodes data frame.}
