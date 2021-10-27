@@ -1502,8 +1502,9 @@ function addFilterController(){
       item,
       itemFilter,
       attrSelect,
-      valSelector,
-      slider;
+      valueSelector,
+      slider,
+      selectMultiple;
 
   function exports(sel){
 
@@ -1532,8 +1533,8 @@ function addFilterController(){
       changeAttrSel(this.value);
     })
 
-    valSelector = itemFilter.append("div")
-      .attr("class","valSel")
+    valueSelector = itemFilter.append("div")
+      .attr("class","value-selector")
       .style("margin-bottom",0);
 
     if(items=="nodes"){
@@ -1580,22 +1581,23 @@ function addFilterController(){
   }
 
   function applyValueSelection(){
-    if(!slider){
-      valSelector.select("select").dispatch("change");
-    }else{
+    if(selectMultiple){
+      selectMultiple.dispatch("change");
+    }
+    if(slider){
       slider.dispatch();
     }
   }
 
   function changeAttrSel(val){
-      valSelector.selectAll("*").remove();
+      valueSelector.selectAll("*").remove();
       slider = false;
+      selectMultiple = false;
       var tmpData = items=="nodes" ? Graph.nodes.filter(checkSelectable) : Graph.links.filter(checkSelectableLink);
       var type = dataType(tmpData,val);
       if(type == 'number'){
         var extent = d3.extent(tmpData, function(d){ return d[val]; }),
             mid = (extent[0]+extent[1])/2;
-            baseWidth = parseInt(valSelector.style("width"));
         slider = brushSlider()
           .domain(extent)
           .current([mid,mid])
@@ -1618,14 +1620,13 @@ function addFilterController(){
             }
             showTables();
           })
-          .baseWidth(baseWidth);
-        valSelector.call(slider);
+        valueSelector.call(slider);
       }else{
         var dat = tmpData.map(function(d){ return d[val]; });
         if(type != 'string')
           dat = dat.reduce(function(a,b) { return b ? a.concat(b) : a; }, []);
-        valSelector.style("height",null);
-        valSelector.append("select")
+        valueSelector.style("height",null);
+        selectMultiple = valueSelector.append("select")
           .attr("multiple","multiple")
           .attr("size",8)
           .on("change",function(){
@@ -1661,7 +1662,7 @@ function addFilterController(){
             }
             showTables();
           })
-          .selectAll("option")
+        selectMultiple.selectAll("option")
         .data(d3.set(dat).values().sort(sortAsc))
           .enter().append("option")
           .property("value",function(d){ return d.replace(/\'/g, "\\'"); })
@@ -1695,6 +1696,16 @@ function addFilterController(){
   }
 
   exports.update = function(onlyslider){
+    // cancel if event came fom this select multiple
+    if(d3.event && d3.event.target && d3.event.target.parentNode && d3.select(d3.event.target.parentNode).classed("value-selector")){
+      return;
+    }
+
+    // cancel if event came fom this brush slider
+    if(d3.event && d3.event.sourceEvent && d3.event.sourceEvent.target && d3.event.sourceEvent.target.parentNode && d3.select(d3.event.sourceEvent.target.parentNode.parentNode.parentNode).classed("value-selector")){
+      return;
+    }
+
     if(onlyslider ^ !slider){
       attrSelect.dispatch("change");
     }
@@ -2413,7 +2424,8 @@ function drawNet(){
         getLinkWidth = getNumAttr(links,'linkWidth',linkWidthRange,1);
 
     // compute node size
-    var getNodeSize = getNumAttr(nodes,'nodeSize',nodeSizeRange,options.imageItem?3:1),
+    var defaultNodeSize = options.defaultNodeSize ? options.defaultNodeSize : (options.imageItem?3:1);
+    var getNodeSize = getNumAttr(nodes,'nodeSize',nodeSizeRange,defaultNodeSize),
         getNodeLabelSize = getNumAttr(nodes,'nodeLabelSize',nodeLabelSizeRange,10*options.cex);
     nodes.forEach(function(node){
       node.nodeSize = getNodeSize(node) * nodeRadius;
@@ -3733,8 +3745,8 @@ function setShapeScale(){
   config.exports.computeScale = function(){
     if(options[config.itemAttr]){
       var domain, range;
-      if(Graph.nodenames.indexOf("_shape_"+options[config.itemAttr])!=-1){
-        var aux = uniqueRangeDomain(config.data, options[config.itemAttr], "_shape_"+options[config.itemAttr]);
+      if(Graph[config.item+"names"].indexOf("_"+config.itemAttr+"_"+options[config.itemAttr])!=-1){
+        var aux = uniqueRangeDomain(config.data, options[config.itemAttr], "_"+config.itemAttr+"_"+options[config.itemAttr]);
         domain = aux.domain;
         range = aux.range;
       }else{
@@ -3767,8 +3779,8 @@ function setColorScale(){
 
   config.exports.computeScale = function(){
     if(options[config.itemAttr]){
-      if(Graph.nodenames.indexOf("_color_"+options[config.itemAttr])!=-1){
-        var aux = uniqueRangeDomain(config.data, options[config.itemAttr], "_color_"+options[config.itemAttr]);
+      if(Graph[config.item+"names"].indexOf("_"+config.itemAttr+"_"+options[config.itemAttr])!=-1){
+        var aux = uniqueRangeDomain(config.data, options[config.itemAttr], "_"+config.itemAttr+"_"+options[config.itemAttr]);
         config.scale = d3.scaleOrdinal()
           .range(aux.range)
           .domain(aux.domain);
@@ -3808,7 +3820,7 @@ function setColorScale(){
       var selectionWindow = attrSelectionWindow()
             .visual("Color")
             .active(options.nodeColor)
-            .list(Graph.nodenames.filter(function(d){ return hiddenFields.indexOf(d)==-1; }))
+            .list(Graph[config.item+"names"].filter(function(d){ return hiddenFields.indexOf(d)==-1; }))
             .clickAction(function(val){
               applyAuto("nodeColor",val);
             });
@@ -4336,16 +4348,19 @@ function showTables() {
               .style("text-align",columnAlign[i])
               .on("mousedown",function(){ d3.event.preventDefault(); });
       });
-      tr.on("click",function(origin,j){
-          if(d3.event.shiftKey && last!=-1)
-            var selecteds = d3.range(Math.min(last,this.rowIndex),Math.max(last,this.rowIndex)+1);
+      tr.on("click",function(origin){
+          var selections = false;
+          if(d3.event.shiftKey && last!=-1){
+            selections = d3.range(Math.min(last,this.rowIndex),Math.max(last,this.rowIndex)+1);
+          }
           table.selectAll("tr").classed("selected", function(d,i){
             var selected = d3.select(this).classed("selected");
-            if(selecteds){
-              if(d3.event.ctrlKey || d3.event.metaKey)
-                selected = selected || selecteds.indexOf(i)!=-1;
-              else
-                selected = selecteds.indexOf(i)!=-1;
+            if(selections){
+              if(d3.event.ctrlKey || d3.event.metaKey){
+                selected = selected || selections.indexOf(i)!=-1;
+              }else{
+                selected = selections.indexOf(i)!=-1;
+              }
             }else{
               if(d3.event.ctrlKey || d3.event.metaKey){
                 selected = selected ^ d == origin;

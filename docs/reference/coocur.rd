@@ -73,7 +73,7 @@ Besides, this object has two attributes: 1) n is the total of the sum of the ocu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.20</span>
       </span>
     </div>
 

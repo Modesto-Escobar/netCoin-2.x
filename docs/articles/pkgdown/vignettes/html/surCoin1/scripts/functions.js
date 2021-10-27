@@ -291,13 +291,12 @@ function displayWindow(w,h){
 function brushSlider(){
   var domain,
       current,
-      callback,
-      baseWidth;
+      callback;
 
   function exports(sel){
     var cex = parseInt(sel.style("font-size"))/10,
         margin = {top: 21 + 15*cex, right: 40, bottom: 0, left: 10},
-        width = baseWidth - margin.left - margin.right,
+        width = sel.node().clientWidth - margin.left - margin.right,
         height = 21;
 
     if(!current)
@@ -420,12 +419,6 @@ function brushSlider(){
   exports.callback = function(x) {
     if (!arguments.length) return callback;
     callback = x;
-    return exports;
-  };
-
-  exports.baseWidth = function(x) {
-    if (!arguments.length) return baseWidth;
-    baseWidth = x;
     return exports;
   };
 
@@ -672,8 +665,7 @@ function topFilter(){
           content.call(brushSlider()
             .domain(extent)
             .current(selectedValues[val])
-            .callback(function(s){ tempValues = s; })
-            .baseWidth(w));
+            .callback(function(s){ tempValues = s; }));
         }else{
           var dat = data.map(function(d){ return d[val]; });
           if(type != 'string')
@@ -1373,8 +1365,6 @@ function displayLinearScale(sel,value,range,domain,selectScale,selectAttribute,c
           .text(texts["Color"] + " / "+value)
           .style("cursor", selectAttribute ? "pointer" : null)
           .on("click", selectAttribute ? selectAttribute : null);
-
-      var scaleWidth = div.node().offsetWidth - paddingRight;
 
       div.append("div")
         .attr("class","legend-scale-gradient")

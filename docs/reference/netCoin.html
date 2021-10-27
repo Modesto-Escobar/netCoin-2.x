@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">netCoin</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.20</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@
         name <span class='op'>=</span> <span class='cn'>NULL</span>, label <span class='op'>=</span> <span class='cn'>NULL</span>, group <span class='op'>=</span> <span class='cn'>NULL</span>, labelSize <span class='op'>=</span> <span class='cn'>NULL</span>,
         size <span class='op'>=</span> <span class='cn'>NULL</span>, color <span class='op'>=</span> <span class='cn'>NULL</span>, shape <span class='op'>=</span> <span class='cn'>NULL</span>, legend <span class='op'>=</span> <span class='cn'>NULL</span>,
         sort <span class='op'>=</span> <span class='cn'>NULL</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span>, ntext <span class='op'>=</span> <span class='cn'>NULL</span>, info <span class='op'>=</span> <span class='cn'>NULL</span>,
-        image <span class='op'>=</span> <span class='cn'>NULL</span>, imageNames <span class='op'>=</span> <span class='cn'>NULL</span>,
+        image <span class='op'>=</span> <span class='cn'>NULL</span>, imageNames <span class='op'>=</span> <span class='cn'>NULL</span>, centrality <span class='op'>=</span> <span class='cn'>NULL</span>,
         nodeBipolar <span class='op'>=</span> <span class='cn'>FALSE</span>, nodeFilter <span class='op'>=</span> <span class='cn'>NULL</span>, degreeFilter <span class='op'>=</span> <span class='cn'>NULL</span>,
         lwidth <span class='op'>=</span> <span class='cn'>NULL</span>, lweight <span class='op'>=</span> <span class='cn'>NULL</span>, lcolor <span class='op'>=</span> <span class='cn'>NULL</span>, ltext <span class='op'>=</span> <span class='cn'>NULL</span>,
         intensity <span class='op'>=</span> <span class='cn'>NULL</span>, linkBipolar <span class='op'>=</span> <span class='cn'>FALSE</span>, linkFilter <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -183,6 +183,10 @@
     <tr>
       <th>community</th>
       <td><p>algorithm to make communities: edge_betweenness("ed"), fast_greedy("fa"), label_prop("la"), leiden_eigen("le"), louvain("lo"), optimal("op"), spinglass("sp"), walktrap("wa")</p></td>
+    </tr>
+    <tr>
+      <th>centrality</th>
+      <td><p>calculates the centrality measures of a network. See <a href='calCentr.html'>calCentr</a>.</p></td>
     </tr>
     <tr>
       <th>labelSize</th>
