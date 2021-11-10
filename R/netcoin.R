@@ -177,14 +177,14 @@ netCorr<-function(variables, weight=NULL, pairwise=FALSE,
   cases<-nrow(variables)
   if (criteria=="p" & maxL==Inf)  maxL<-.5
   if (criteria=="p" & Bonferroni) maxL<-maxL/choose(cases,2)
-  if (is.null(arguments$nodes)) {
-    arguments$nodes<-data.frame(name=colnames(variables),
-                                mean=round(apply(variables,2,mean, na.rm=TRUE),2),
-                                std=round(sqrt(apply(variables,2,var, na.rm=TRUE)),2),
-                                min=apply(variables,2,min, na.rm=TRUE),
-                                max=apply(variables,2,max, na.rm=TRUE))
-    colnames(arguments$nodes)[1] <- arguments$name
-  }
+  statistics <-data.frame(name=colnames(variables),
+                          mean=round(apply(variables,2,mean, na.rm=TRUE),2),
+                          std=round(sqrt(apply(variables,2,var, na.rm=TRUE)),2),
+                          min=apply(variables,2,min, na.rm=TRUE),
+                          max=apply(variables,2,max, na.rm=TRUE))
+  colnames(statistics)[1] <- arguments$name
+  if(!is.null(arguments$nodes)) arguments$nodes <- merge(statistics, arguments$nodes, by=arguments$name, all.x=TRUE)
+  else arguments$nodes <- statistics
   if (pairwise) use <- "pairwise.complete.obs"
   else use <- "complete.obs"
   R<-cor(variables[,arguments$nodes[,2]>=minimum & arguments$nodes[,2]<=maximum],method=method, use=use)
