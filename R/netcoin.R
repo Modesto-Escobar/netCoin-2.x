@@ -4,10 +4,10 @@
 
 netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         community = NULL, layout = NULL,
-        name = NULL, label = NULL, group = NULL, labelSize = NULL,
-        size = NULL, color = NULL, shape = NULL, legend = NULL,
-        sort = NULL, decreasing = FALSE, ntext = NULL, info = NULL,
-        image = NULL, imageNames = NULL, centrality = NULL,
+        name = NULL, label = NULL, group = NULL, groupText = FALSE,
+        labelSize = NULL, size = NULL, color = NULL, shape = NULL,
+        legend = NULL, sort = NULL, decreasing = FALSE, ntext = NULL,
+        info = NULL, image = NULL, imageNames = NULL, centrality = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
         intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
@@ -74,6 +74,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     label <- getOpt("nodeLabel","label")
     labelSize <- getOpt("nodeLabelSize","labelSize")
     group <- getOpt("nodeGroup","group")
+    groupText <- getOpt("groupText")
     size <- getOpt("nodeSize","size")
     color <- getOpt("nodeColor","color")
     shape <- getOpt("nodeShape","shape")

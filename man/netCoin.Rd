@@ -12,10 +12,10 @@ If the 'dir' attribute is specified, the function creates a folder in the comput
 \usage{
 netCoin(nodes = NULL, links = NULL, tree = NULL,
         community = NULL, layout = NULL,
-        name = NULL, label = NULL, group = NULL, labelSize = NULL,
-        size = NULL, color = NULL, shape = NULL, legend = NULL,
-        sort = NULL, decreasing = FALSE, ntext = NULL, info = NULL,
-        image = NULL, imageNames = NULL, centrality = NULL,
+        name = NULL, label = NULL, group = NULL, groupText = FALSE,
+        labelSize = NULL, size = NULL, color = NULL, shape = NULL,
+        legend = NULL, sort = NULL, decreasing = FALSE, ntext = NULL,
+        info = NULL, image = NULL, imageNames = NULL, centrality = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
         intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
@@ -35,6 +35,7 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
 \item{name}{name of the vector with names in the nodes data frame. By default, if language="en", name is "name".}
 \item{label}{name of the vector with labels in the nodes data frame.}
 \item{group}{name of the vector with groups in the nodes data frame.}
+\item{groupText}{show names of the groups.}
 \item{community}{algorithm to make communities: edge_betweenness("ed"), fast_greedy("fa"), label_prop("la"), leiden_eigen("le"), louvain("lo"), optimal("op"), spinglass("sp"), walktrap("wa")}
 \item{centrality}{calculates the centrality measures of a network. See \link{calCentr}.}
 \item{labelSize}{name of the vector with label size in the nodes data frame.}
