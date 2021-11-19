@@ -9,7 +9,7 @@ Object of class \code{gallery_rd3}.
 }
 
 \usage{
-gallery(nodes, name = NULL, label = NULL, color = NULL,
+gallery(nodes, name = NULL, label = NULL, color = NULL, border = NULL,
     ntext = NULL, info = NULL, image = NULL, zoom = 1,
     itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE,
@@ -22,6 +22,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{name}{column name with image names in the nodes data frame.}
 \item{label}{column name with image labels in the nodes data frame.}
 \item{color}{column name with image background color variable in the nodes data frame.}
+\item{border}{column name with image border width variable in the nodes data frame or a numeric vector.}
 \item{ntext}{column name with html text in the nodes data frame.}
 \item{info}{column name with information to display in a panel in the nodes data frame.}
 \item{image}{column name which indicates the image paths in the nodes data frame.}

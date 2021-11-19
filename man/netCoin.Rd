@@ -14,8 +14,9 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
         community = NULL, layout = NULL,
         name = NULL, label = NULL, group = NULL, groupText = FALSE,
         labelSize = NULL, size = NULL, color = NULL, shape = NULL,
-        legend = NULL, sort = NULL, decreasing = FALSE, ntext = NULL,
-        info = NULL, image = NULL, imageNames = NULL, centrality = NULL,
+        border = NULL, legend = NULL, sort = NULL, decreasing = FALSE,
+        ntext = NULL, info = NULL, image = NULL, imageNames = NULL,
+        centrality = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
         intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
@@ -42,6 +43,7 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
 \item{size}{name of the vector with size in the nodes data frame.}
 \item{color}{name of the vector with color variable in the nodes data frame.}
 \item{shape}{name of the vector with shape variable in the nodes data frame.}
+\item{border}{name of the column with border width in the nodes data frame.}
 \item{legend}{name of the vector with the variable to represent as a legend in the nodes data frame.}
 \item{ntext}{name of the vector with html text in the nodes data frame.}
 \item{info}{name of the vector with information to display in a panel in the nodes data frame.}

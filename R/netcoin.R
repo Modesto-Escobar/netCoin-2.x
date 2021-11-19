@@ -6,8 +6,9 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         community = NULL, layout = NULL,
         name = NULL, label = NULL, group = NULL, groupText = FALSE,
         labelSize = NULL, size = NULL, color = NULL, shape = NULL,
-        legend = NULL, sort = NULL, decreasing = FALSE, ntext = NULL,
-        info = NULL, image = NULL, imageNames = NULL, centrality = NULL,
+        border = NULL, legend = NULL, sort = NULL, decreasing = FALSE,
+        ntext = NULL, info = NULL, image = NULL, imageNames = NULL,
+        centrality = NULL,
         nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
         intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
@@ -78,6 +79,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     size <- getOpt("nodeSize","size")
     color <- getOpt("nodeColor","color")
     shape <- getOpt("nodeShape","shape")
+    border <- getOpt("nodeBorder","border")
     legend <- getOpt("nodeLegend","legend")
     ntext <- getOpt("nodeText","ntext")
     info <- getOpt("nodeInfo","info")
@@ -108,7 +110,8 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
   net <- network_rd3(nodes = nodes, links = links, tree = tree,
         community = community, layout = layout,
         name = name, label = label, group = group, groupText = groupText,
-        labelSize = labelSize, size = size, color = color, shape = shape, legend = legend,
+        labelSize = labelSize, size = size, color = color, shape = shape,
+        border = border, legend = legend,
         sort = sort, decreasing = decreasing, ntext = ntext, info = info,
         image = image, imageNames = imageNames,
         nodeBipolar = nodeBipolar, nodeFilter = nodeFilter, degreeFilter = degreeFilter,
