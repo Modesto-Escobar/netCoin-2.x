@@ -1693,3 +1693,274 @@ meanPer<-function(data, variables, frame, name=names(frame[1]), frequency= FALSE
   return(frame[frame.order,c(name,adds,columns)])
 }
 
+logCoin<-function(data, variables=names(data), exogenous=NULL, noFirstCat=NULL, weight=NULL, 
+                  order=2, pairwise=FALSE, twotails=FALSE, pmax=.05,
+                  frequency=FALSE, percentage=FALSE, 
+                  directed=FALSE, igraph=FALSE, ...) {
+  arguments <- list(...)
+  names(data) <- gsub(" ","_", names(data))
+  variables   <- gsub(" ","_", variables)
+  if(!is.null(exogenous))   exogenous  <- gsub(" ","_", exogenous)
+  if (!is.null(noFirstCat)) noFirstCat <- gsub(" ","_", noFirstCat)
+  if(!is.null(weight))      weight     <- gsub(" ","_", weight)
+  variables <- union(union(variables, noFirstCat), exogenous)
+  
+  if(!is.null(weight)) {
+    if(inherits(weight,"character")){
+      variables <- setdiff(variables, weight)
+      weight<-data.frame(weight=data[[weight]])
+      data<-cbind(weight,data[,variables])
+    }
+    else{
+      if(length(weight)!=dim(data)[1]) stop("Weights have not the correct dimensions")
+      if (pairwise) data <- cbind(data[,variables],weight)[,1:length(data[,variables])]
+      else data <- na.omit(cbind(data[,variables],weight))[,1:length(data[,variables])]
+    }
+  }
+  else data<-cbind(data[,variables], data.frame(weight=rep(1, nrow(data))))
+  
+  
+  formula   <- comb(setdiff(variables,exogenous), exogenous, "weight", order)
+  varOrder  <- variables # To order variables later before coin
+  #Check methods. No necessary because edgeList call these routines.
+  #procedures<-i.method(c.method(procedures))
+  #criteria<-i.method(c.method(criteria))
+  #procedures<-union(procedures,unlist(arguments[c("lwidth","lweight","lcolor","ltext")]))
+  
+  #Names  
+  if(!("language" %in% names(arguments))) arguments$language <- "en"
+  nodes <- arguments$nodes
+  if (inherits(nodes,"tbl_df")) nodes<-as.data.frame(nodes)
+  name <- arguments$name <- nameByLanguage(arguments$name,arguments$language,arguments$nodes)
+  if (!("level" %in% names(arguments))) level<-.95 else level <-arguments$level
+  
+  #Data.frame  
+  if (all(inherits(data,c("tbl_df","tbl","data.frame"),TRUE))) data<-as.data.frame(data) # convert haven objects
+  if (inherits(weight,"character")) variables <- setdiff(variables,weight)
+  pivots <- setdiff(variables, noFirstCat)
+  if (length(pivots)>5) stop("This function doesn't support more than 5 variables with first categories included")
+  
+  if (!pairwise & inherits(weight,"character")) {
+    if (!is.null(weight)) weight <- data[rowSums(is.na(data[,variables]))<1,weight]
+    data <- data[complete.cases(data[,variables]),]
+  }
+  
+  arguments$scenarios <- sum(rowSums(!is.na(data))>0)
+  
+  data <- as_factor(data)
+  dt <- aggregate(formula, data=data, FUN="sum")
+  dt$weight <- round(dt$weight) # To estimate Poisson (without decimals)
+  
+  sc <- sum(rowSums(!is.na(dt))>0)
+  
+  dtab <- xtabs(weight ~ ., dt)
+  fm <- loglm(comb(setdiff(variables,exogenous), exogenous, "", order), dtab)  # numerals as names.
+  
+  
+  nam <- eti <- var <- cat <- varn <- labn <- NULL
+  nvar <-1
+  ncell <- 1
+  for (x in variables) {
+    dt[[x]] <- as_factor(dt[[x]])
+    nval <- length(levels(dt[[x]]))
+    nam <- c(nam, paste0(x, levels(dt[[x]])))
+    eti <- c(eti, paste0(x, ":", levels(dt[[x]])))
+    var <- c(var, rep(x, nval))
+    cat <- c(cat, levels(dt[[x]]))
+    varn <- c(varn, rep(nvar, nval))
+    labn <- c(labn, 1:nval)
+    contrasts(dt[[x]]) <- contr.first(dt[[x]])
+    nvar <- nvar+1
+    ncell <- ncell*nval
+  }
+  informa <- data.frame(eti, var, cat, varn, labn, row.names = nam)
+  
+  arguments$note <- paste0("<p>L2= ", sprintf("%3.2f",fm$lrt), "; d.f.= ", fm$df, "; p(>X^2)= ", 
+                           sprintf("%3.3g",1-pchisq(fm$lrt, fm$df)), ".</p><p>Covariance structures: ", 
+                           sprintf("%1.0f", sc)," (",sprintf("%1.0f", ncell),").</p><p>",
+                           Reduce(paste, deparse(formula)),"</p>")
+  
+  coefs <- summary(glm(formula, family=poisson, data=dt))$coefficients
+  
+  if (length(pivots)==0) coefs <- list(data=dt, coefs=coefs)
+  
+  if (length(pivots) >0) {
+    coefs <- addCoefs(c(1,1), coefs, formula, dt, pivots)
+  }
+  
+  if (length(pivots) >1) {
+    coefs <- addCoefs(c(1,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+  }
+  
+  if (length(pivots) >2) {
+    coefs <- addCoefs(c(1,3), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+  }
+  
+  if (length(pivots) >3) {
+    coefs <- addCoefs(c(1,4), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,3), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+  }
+  
+  if (length(pivots) >4) {
+    coefs <- addCoefs(c(1,5), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,3), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+    
+    coefs <- addCoefs(c(0,4), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,3), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(1,1), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,2), coefs$coef, formula, coefs$data, pivots)
+    coefs <- addCoefs(c(0,1), coefs$coef, formula, coefs$data, pivots)
+  }
+  
+  coefs <- as.data.frame(coefs$coef[sort(row.names(coefs$coef)),])
+  nodes <- coefs[!grepl(":",rownames(coefs)), ][-1,1, drop=F]
+  
+  # nodes
+  nodes$name <- row.names(nodes)
+  nodes$Estimate <- round(nodes$Estimate, 3)
+  nodes <- merge(nodes, informa [1:3], by="row.names")[,-1]
+  if(frequency | percentage) nodes <- merge(nodes, margins(dtab, frequency, percentage), by="name", all.x=T)
+  ordervars  <- factor(nodes$var, levels=varOrder)
+  ordernodes <- nodes[order(ordervars), "name"]
+  # coefs
+  pmax<-abs(ifelse(twotails,qnorm(pmax/2,FALSE),qnorm(pmax,FALSE)))
+  if(!twotails) {
+    coefs <- coefs[coefs$`z value`>pmax & grepl(":",rownames(coefs)), ]
+    coefs$`Pr(>|z|)` <- coefs$`Pr(>|z|)` /2
+    names(coefs)[names(coefs)=="Pr(>|z|)"] <- "Pr(>z)"
+  }
+  else {
+    coefs <- coefs[abs(coefs$`z value`)>pmax & grepl(":",rownames(coefs)), ]
+    arguments$linkBipolar <- TRUE
+    arguments$lcolor <- "Estimate"
+  }
+  coefs$order <- nchar(gsub("[^:]","",row.names(coefs)))+1
+  links <- coefs[coefs$order==2,]
+  links$Source <- sub(":.*","", row.names(links))
+  links$Target <- sub(".*:","", row.names(links))
+  links[,c("Source", "Target")] <- olinks(links$Source, links$Target, ordernodes)
+  
+  ulinks <- coefs[coefs$order>2,]
+  if (nrow(ulinks)>0) {
+    L <- unlist(strsplit(row.names(ulinks),":"))
+    CC <- paste0("u", sprintf(paste0("%0",ceiling((nrow(ulinks)+1)/10),"d"),1:nrow(ulinks)))
+    ulinks$Source <- CC
+    M <- data.frame(Source=rep(CC, times=ulinks$order), Target=L)
+    unodes <- data.frame(name=CC, Estimate=floor(min(nodes$Estimate)), eti="", var=paste0(".I", ulinks$order), cat="")
+    if(frequency)  unodes$freq <- sapply(unodes$name, FUN=ofreq, x=M, table=dtab, index=informa)
+    if(percentage) unodes$prop <- sapply(unodes$name, FUN=ofreq, x=M, table=dtab, index=informa)/marginSums(dtab)
+    nodes  <- rbind(nodes, unodes)
+    ulinks <- merge(M, ulinks)
+    links  <- rbind(links, ulinks)
+  }
+  if(exists("language", arguments)) {
+    names(nodes)[names(nodes)=="name"] <- getByLanguage(nameList,  arguments$language)
+    names(nodes)[names(nodes)=="eti"]   <- getByLanguage(labelList, arguments$language)
+  }
+  arguments$nodes <- nodes
+  arguments$links <- links
+  if (!"size"  %in% arguments) {
+    arguments$size= "Estimate"
+    if(frequency)  arguments$size <- "freq"
+    if(percentage) arguments$size <- "prop"
+  }
+  if (!"degreeFilter" %in% names(arguments)) arguments$degreeFilter <- 1
+  if (!"color" %in% names(arguments)) arguments$color <- "var"
+  if (!"lwidth" %in% names(arguments)) arguments$lwidth <- "Estimate"
+  if (!"label" %in% names(arguments)) arguments$label <- getByLanguage(labelList, arguments$language)
+  G <- do.call(netCoin, arguments)
+  return(G)
+}
+
+# Funciones previas
+
+contr.first <- function(variable){
+  if(!inherits(variable, "factor")) stop
+  nlevels <- length(levels(variable))
+  f <- matrix(c(rep(-1, nlevels-1),diag(nlevels-1)), nrow=nlevels, byrow=TRUE, dimnames=list(levels(variable),levels(variable)[-1]))
+  return(f)
+}
+
+contr.last <- function(variable) {
+  if(!inherits(variable, "factor")) stop
+  nlevels <- length(levels(variable))
+  l <- matrix(c(diag(nlevels-1), rep(-1, nlevels-1)), nrow=nlevels, byrow=TRUE, dimnames=list(levels(variable),levels(variable)[-nlevels]))
+  return(l)
+}
+
+
+addCoefs <- function(vector=c(0,1), coefficients, formula, data, variables, family="poisson") {
+  if(vector[1]==1) contrasts(data[[variables[[vector[2]]]]]) <- contr.last(data[[variables[[vector[2]]]]])
+  else             contrasts(data[[variables[[vector[2]]]]]) <- contr.first(data[[variables[[vector[2]]]]])
+  coefs <- rbind(coefficients,
+                 summary(glm(formula, family=family, data=data))$coefficients)
+  return(list(data=data, coef=coefs[unique(rownames(coefs)),]))
+}
+
+
+comb <-function (endogenous, exogenous=NULL, frequency="x", order=2) {
+  endogenous <- setdiff(endogenous, exogenous)
+  combin <-  function(x, order) {apply(combn(x, order), 2, paste0, collapse="*")}
+  formula <- paste0(frequency,"~")
+  ordEndo <- min(order, length(endogenous))
+  l <- combin(endogenous, ordEndo)
+  if (is.null(exogenous) | length(endogenous)>=order ) for (nl in l) formula <- paste0(formula,nl,"+")
+  if (!is.null(exogenous)) {
+    for (exo in exogenous) {
+      if(order<length(endogenous)+length(exogenous)) l<- combin(endogenous, min(ordEndo,order-1))
+      nexo <- ifelse(l[1]=="","","*")
+      for (nl in l) formula <- paste0(formula,nl,nexo,exo, "+")
+    }
+  }
+  return(as.formula(sub("\\+$","",formula)))
+}
+
+margins <- function(table, freq=T, prop=F) {
+  names <- names(attr(table,"dimnames"))
+  vect  <- c()
+  n <- ifelse(prop, marginSums(table),1)
+  for (x in names) {
+    marg <- marginSums(table, x)
+    names(marg) <- paste0(x, names(marg))
+    vect <- c(vect, marg)
+  }
+  dtfrm <- data.frame(name=names(vect), freq=vect)
+  if (prop) dtfrm$prop <- dtfrm$freq/n
+  if (!freq) dtfrm$freq <- NULL
+  return(dtfrm)
+}
+
+olinks <- function(source, target, order) {
+  for (i in 1:length(source)) {
+    if (which(source[[i]]==order) < which(target[[i]]==order)) {
+      s <- target[[i]]
+      target[[i]] <- source[[i]]
+      source[[i]] <- s
+    }
+  }
+  return(cbind(source, target))
+}
+
+ofreq <- function (u, x, table, index) {
+  vector <- x[x$Source==u, "Target"]
+  return(marginSums(table, index[vector, 4])[t(index[vector,5])])
+}
