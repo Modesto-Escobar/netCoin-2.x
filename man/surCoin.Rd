@@ -24,7 +24,7 @@ surCoin(data,variables=names(data), commonlabel=NULL,
   \item{variables}{a vector of variables included in the previous data frame.}
   \item{commonlabel}{a vector of variables whose names are to be included in nodes labels.}
   \item{dichotomies}{a vector of dichotomous variables to appear as just one category.}
-  \item{valueDicho}{value or list of values (not vector) to be selected for dichotomous variables. Default is 1.}
+  \item{valueDicho}{value or values to be selected for dichotomous variables. Default is 1.}
   \item{metric}{a vector of metrics.}
   \item{exogenous}{a vector of variables whose relations amongst them are of no interest. None by default.}
   \item{weight}{a vector of weights. Optimal for data.framed tables.}

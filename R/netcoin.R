@@ -331,7 +331,6 @@ surCoin<-function(data,variables=names(data), commonlabel=NULL,
   
   #Dichotomies    
   if(!is.null(dichotomies)){
-    if(length(valueDicho)>1 & !is.list(valueDicho)) stop("valueDicho must be a value or a list")
     dichos<-dicho(data, dichotomies, valueDicho, newlabel = FALSE)
     variables<-setdiff(variables,dichotomies)
   }
@@ -1297,7 +1296,18 @@ orderEdges<-function(links,nodes){ #Used in surCoin to order arrows
 }
 
 dicho<-function(input,variables,value,newlabel=TRUE) {
-  datum<-as.data.frame(ifelse(input[,variables, drop=FALSE]==value,1,0))
+  if(length(value)!=length(variables)){
+    value <- rep(value[1],length(variables))
+  }
+
+  for(i in seq_along(variables)){
+    dicho <- variables[i]
+    vector0 <- rep(0,nrow(input))
+    vector0[as.character(input[,dicho])==value[i]] <- 1
+    input[,dicho] <- vector0
+  }
+
+  datum <- as.data.frame(input[, variables, drop=FALSE])
   j=0
   for (i in variables) {
     j=j+1
