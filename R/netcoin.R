@@ -1713,7 +1713,7 @@ logCoin<-function(data, variables=names(data), exogenous=NULL, noFirstCat=NULL, 
   if(!is.null(exogenous))   exogenous  <- gsub(" ","_", exogenous)
   if (!is.null(noFirstCat)) noFirstCat <- gsub(" ","_", noFirstCat)
   if(!is.null(weight))      weight     <- gsub(" ","_", weight)
-  variables <- union(union(variables, noFirstCat), exogenous)
+  variables <- union(setdiff(union(variables, noFirstCat), exogenous), exogenous)
   
   if(!is.null(weight)) {
     if(inherits(weight,"character")){
@@ -1867,7 +1867,9 @@ logCoin<-function(data, variables=names(data), exogenous=NULL, noFirstCat=NULL, 
   links <- coefs[coefs$order==2,]
   links$Source <- sub(":.*","", row.names(links))
   links$Target <- sub(".*:","", row.names(links))
-  links[,c("Source", "Target")] <- olinks(links$Source, links$Target, ordernodes)
+  if(nrow(links)){
+    links[,c("Source", "Target")] <- olinks(links$Source, links$Target, ordernodes)
+  }
   
   ulinks <- coefs[coefs$order>2,]
   if (nrow(ulinks)>0) {
@@ -1887,13 +1889,15 @@ logCoin<-function(data, variables=names(data), exogenous=NULL, noFirstCat=NULL, 
     names(nodes)[names(nodes)=="eti"]   <- getByLanguage(labelList, arguments$language)
   }
   arguments$nodes <- nodes
-  arguments$links <- links
-  if (!"size"  %in% arguments) {
+  if(nrow(links)){
+    arguments$links <- links
+    if (!"degreeFilter" %in% names(arguments)) arguments$degreeFilter <- 1
+  }
+  if (!"size" %in% arguments) {
     arguments$size= "Estimate"
     if(frequency)  arguments$size <- "freq"
     if(percentage) arguments$size <- "prop"
   }
-  if (!"degreeFilter" %in% names(arguments)) arguments$degreeFilter <- 1
   if (!"color" %in% names(arguments)) arguments$color <- "var"
   if (!"lwidth" %in% names(arguments)) arguments$lwidth <- "Estimate"
   if (!"label" %in% names(arguments)) arguments$label <- getByLanguage(labelList, arguments$language)
