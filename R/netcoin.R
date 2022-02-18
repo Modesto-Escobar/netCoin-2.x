@@ -1547,6 +1547,11 @@ glmCoin <- function(formulas, data, weights=NULL, pmax=.05, twotail=FALSE, showA
   }
   
   if (!is.na(circle)) arguments$layout <- layoutCircle(arguments$nodes, variables$D, circle)
+
+  if(twotail){
+    arguments$linkBipolar <- TRUE
+    arguments$lcolor <- "Estimate"
+  }
   
   if(nrow(arguments$nodes)+nrow(arguments$links)>0) {
     xNx <- do.call(netCoin,arguments)
