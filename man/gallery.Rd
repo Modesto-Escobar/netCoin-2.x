@@ -14,8 +14,8 @@ gallery(nodes, name = NULL, label = NULL, color = NULL, border = NULL,
     itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE,
     help = NULL, helpOn = FALSE, description = NULL,
-    descriptionWidth = NULL, roundedItems = FALSE, controls = 1:2,
-    cex = 1, language = c("en", "es", "ca"), dir = NULL)
+    descriptionWidth = NULL, roundedItems = FALSE, controls = 1:2, cex = 1,
+    defaultColor = "#1f77b4", language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least three columns of names, start and end.}
@@ -39,6 +39,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL, border = NULL,
 \item{roundedItems}{Display items with rounded borders.}
 \item{controls}{a numeric vector indicating which controls will be shown. 1 = topbar, 2 = export buttons. NULL hide all controls, negative values deny each control and 0 deny all.}
 \item{cex}{number indicating the amount by which plotting text should be scaled relative to the default.}
+\item{defaultColor}{a character vector giving a valid html color for node representation.}
 \item{language}{a character string indicating the language of the graph (en=english (default); es=spanish; ca=catalan).}
 \item{dir}{a character string representing the directory where the web files will be saved.}
 }
