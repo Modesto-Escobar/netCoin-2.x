@@ -13,7 +13,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL, border = NULL,
     ntext = NULL, info = NULL, image = NULL, zoom = 1,
     itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE,
-    help = NULL, helpOn = FALSE, description = NULL,
+    help = NULL, helpOn = FALSE, tutorial = FALSE, description = NULL,
     descriptionWidth = NULL, roundedItems = FALSE, controls = 1:2, cex = 1,
     defaultColor = "#1f77b4", language = c("en", "es", "ca"), dir = NULL)
 }
@@ -34,6 +34,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL, border = NULL,
 \item{showLegend}{a logical value true if the legend is to be shown.}
 \item{help}{a character string indicating a help text of the graph.}
 \item{helpOn}{Should the help be shown at the beginning?}
+\item{tutorial}{Should tutorial be displayed?}
 \item{description}{a character string indicating a desription text for the graph.}
 \item{descriptionWidth}{a percentage indicating a width for the description panel (25 by default).}
 \item{roundedItems}{Display items with rounded borders.}

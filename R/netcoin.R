@@ -301,6 +301,21 @@ surCoin<-function(data,variables=names(data), commonlabel=NULL,
   #Data.frame  
   if (all(inherits(data,c("tbl_df","tbl","data.frame"),TRUE))) data<-as.data.frame(data) # convert haven objects
   if (inherits(weight,"character")) variables <- setdiff(variables,weight)
+
+  #ignore constant dichotomies
+  if(!is.null(dichotomies)){
+    cons <- character()
+    for(i in dichotomies){
+      if(length(unique(data[,i]))==1){
+        cons <- c(cons,i)
+      }
+    }
+    dichotomies <- setdiff(dichotomies,cons)
+    if(!length(dichotomies)){
+      dichotomies <- NULL
+    }
+  }
+
   allvar<-union(union(metric,dichotomies),variables)
   
   if (!pairwise & inherits(weight,"character")) {
