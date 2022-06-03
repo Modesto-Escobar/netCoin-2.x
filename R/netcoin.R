@@ -1065,8 +1065,9 @@ plot.coin <- function(x, dir=tempDir(), language=c("en","es","ca"), ...){
     N <- asNodes(x, language = language)
     colnames(N)[2] <- "incidences"
     E <- edgeList(x,c("Frequencies","Expected"))
-    barplot_rd3(N, E, name = names(N)[1], coincidences = "coincidences", incidences = "incidences", expected = "expected", cex = 1, language = language, dir = dir)
-    browseURL(normalizePath(paste(dir, "index.html", sep = "/")))
+    bar <- barplot_rd3(N, E, name = names(N)[1], coincidences = "coincidences", incidences = "incidences", expected = "expected", cex = 1, language = language)
+    pie <- pieCoin(x, cex = 1, language = language)
+    rd3_multigraph(barplot=bar, piechart=pie, dir = dir)
 }
 
 summary.coin <- function(object, ...){
