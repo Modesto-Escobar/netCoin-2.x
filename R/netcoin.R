@@ -224,6 +224,7 @@ allNet<-function(incidences, weight = NULL, subsample = FALSE, pairwise = FALSE,
       arguments$size <- "%"
   if (!("level" %in% names(arguments))) level<-.95 else level <-arguments$level
   if (!pairwise) incidences<-na.omit(incidences)
+  incidences <- incidences[,colSums(incidences)>0]
   if (all(is.na(incidences) | incidences==0 | incidences==1)) {
     C<-coin(incidences, minimum, maximum, sort, decreasing, weight=weight, subsample=subsample, pairwise = pairwise)
     if(exists("size",arguments))if(arguments$size=="frequency")frequency=TRUE

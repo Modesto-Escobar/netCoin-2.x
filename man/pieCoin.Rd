@@ -7,16 +7,20 @@ pie charts.
 It generates pie charts from a coin object.
 }
 \usage{
-pieCoin(x, links = NULL, lcolor = NULL, expected = TRUE,
-  main = NULL, note = NULL, showLegend = TRUE,
-  help = NULL, helpOn = FALSE,
-  cex = 1, language = c("en", "es", "ca"), dir = NULL)
+pieCoin(x, colors = c("#000000","#8dc7e6", "#ffffff","#005587"),
+  nodes = NULL, links = NULL, name = NULL, lcolor = NULL, expected = TRUE,
+  abline = NULL, main = NULL, note = NULL, showLegend = TRUE, help = NULL,
+  helpOn = FALSE, cex = 1, language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
   \item{x}{a \code{coin} object.}
+  \item{nodes}{a data frame with information for each event.}
   \item{links}{a data frame with information for each pie.}
+  \item{name}{name of the column with names in the nodes data frame.}
+  \item{colors}{a vector of colors to be used when filling the slices.}
   \item{lcolor}{name of the column with color variable in the links data frame.}
   \item{expected}{Should expected coincidences be displayed?}
+  \item{abline}{adds one or more straight lines between pies.}
   \item{main}{upper title of the graph.}
   \item{note}{lower title of the graph.}
   \item{showLegend}{a logical value true if the legend is to be shown.}

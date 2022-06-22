@@ -1,6 +1,5 @@
-pieCoin <- function(x, links = NULL, lcolor = NULL, expected = TRUE, main = NULL, note = NULL, showLegend = TRUE, help = NULL, helpOn = FALSE, cex = 1, language = c("en", "es", "ca"), dir = NULL){
+pieCoin <- function(x, colors = c("#000000","#8dc7e6", "#ffffff","#005587"), nodes = NULL, links = NULL, name = NULL, lcolor = NULL, expected = TRUE, abline = NULL, main = NULL, note = NULL, showLegend = TRUE, help = NULL, helpOn = FALSE, cex = 1, language = c("en", "es", "ca"), dir = NULL){
   stopifnot(inherits(x, "coin"))
-  colors <- c("black","cadetblue2", "white","cadetblue3")
   labels <- c("XY","X","","Y")
   v <- piefromCoin(x)
   w <- v$W
@@ -13,7 +12,7 @@ pieCoin <- function(x, links = NULL, lcolor = NULL, expected = TRUE, main = NULL
   }else{
     w <- NULL
   }
-  pie <- pie_rd3(v,w,links,labels,colors,lcolor,main,note,showLegend,help,helpOn,cex,language,dir)
+  pie <- pie_rd3(v,w,labels,colors,nodes,links,name,"Source","Target",lcolor,abline,abline,TRUE,main,note,showLegend,help,helpOn,cex,language,dir)
   class(pie) <- c("pieCoin",class(pie))
   return(pie)
 }
