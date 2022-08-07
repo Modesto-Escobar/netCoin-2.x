@@ -187,7 +187,7 @@ netCorr<-function(variables, weight=NULL, pairwise=FALSE,
                           min=apply(variables,2,min, na.rm=TRUE),
                           max=apply(variables,2,max, na.rm=TRUE))
   colnames(statistics)[1] <- arguments$name
-  if(!is.null(arguments$nodes)) arguments$nodes <- merge(statistics, arguments$nodes, by=arguments$name, all.x=TRUE)
+  if(!is.null(arguments$nodes)) arguments$nodes <- merge(statistics, arguments$nodes, by=arguments$name, all.x=TRUE, sort=FALSE)
   else arguments$nodes <- statistics
   if (pairwise) use <- "pairwise.complete.obs"
   else use <- "complete.obs"
@@ -552,6 +552,29 @@ surScat <- function(data, variables=names(data), active=variables, type= c("mca"
   if(is.null(arguments$label)) arguments$label <- ""
   if(is.null(arguments$controls)) arguments$controls <- c(1,4)  
   return(do.call(netCoin, arguments))
+}
+
+# produces a netCoin object to graph a CoWeb graphic (Upton 2000).
+
+cobCoin<- function(data, variables=names(data), degree=0, significance=.05, ...) {
+  arguments <- list(...)
+  if(!exists("color", arguments)) arguments$color<-"variable"
+  if(!exists("group", arguments)) arguments$group<-"variable"
+  if(!exists("lwidth", arguments)) arguments$lwidth<-"Haberman"
+  if(!exists("lcolor", arguments)) arguments$lcolor<-"Haberman"
+  if(!exists("linkBipolar", arguments)) arguments$linkBipolar <- TRUE
+  arguments$groupText<-TRUE
+  arguments$data <- data
+  arguments$maxL <- 1
+  arguments$commonlabel <- ""
+  N <- do.call(surCoin, arguments)
+  control <- N$links[,1:2]
+  control[[1]] <- gsub(":.*","",control[[1]])
+  control[[2]] <- gsub(":.*","",control[[2]])
+  N$links <- N$links[control[[1]]!=control[[2]],]
+  N$links <- N$links[N$links$`p(Z)` < significance/2 | N$links$`p(Z)` > (1-significance/2),]
+  N <- netCoin(N, layout=layoutCircle(N$nodes, deg=degree, name=N$options$nodeName))
+  return(N)
 }
 
 # Elaborate a netCoin object from a lavaan object.
