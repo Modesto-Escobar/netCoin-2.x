@@ -198,6 +198,7 @@ netCorr<-function(variables, weight=NULL, pairwise=FALSE,
   E<-E[E[[criteria]]>=minL & E[[criteria]]<=maxL,]
   if (!is.null(sortL)) E<-E[order((-1*decreasingL+!decreasingL)*E[[sortL]]),]
   arguments$links <- E
+  if(exists("layout", arguments) && tolower(substr(arguments$layout,1,2))=="pc") arguments$layout <- layoutPCA(R)
   
   xNx <- do.call(netCoin,arguments)
   if (igraph) return(toIgraph(xNx))
@@ -1508,7 +1509,8 @@ layoutMca<-function(matrix, nfactors=2, rows=FALSE){ # Correspondencias simples 
 }
 
 layoutPCA<-function(coin) { # Coordenadas a partir de Pearson: Haberman/raiz(n)
-  A<-eigen(sim(coin,"P"))
+  if(inherits(coin, "coin")) A<-eigen(sim(coin,"P"))
+  else A <- eigen(coin)
   C<-sweep(A$vectors[,1:2],2,sqrt(A$values[1:2]),"*")
   rownames(C)<-rownames(coin)
   colnames(C)<-c("F1","F2")
