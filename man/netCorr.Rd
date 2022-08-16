@@ -11,8 +11,8 @@ The function creates a netCoin object and eventually a folder in the computer wi
 netCorr(variables, weight=NULL, pairwise=FALSE,
         minimum=-Inf, maximum=Inf, sort=FALSE, decreasing=TRUE,
         frequency=FALSE, means=TRUE, 
-        method="pearson", criteria="p", Bonferroni=FALSE,
-        minL=0, maxL=Inf,
+        method=c("pearson", "kendall", "spearman"), 
+        criteria="p", Bonferroni=FALSE, minL=0, maxL=Inf,
         sortL=NULL, decreasingL=TRUE,
         igraph=FALSE, ...)
 }

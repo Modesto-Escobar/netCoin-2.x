@@ -167,20 +167,22 @@ setAttrByValueKey <- function(name,item,items){
 netCorr<-function(variables, weight=NULL, pairwise=FALSE,
                   minimum=-Inf, maximum=Inf, sort=FALSE, decreasing=TRUE,
                   frequency=FALSE, means=TRUE, 
-                  method="pearson", criteria="p", Bonferroni=FALSE,
+                  method=c("pearson", "kendall", "spearman"), criteria="p", Bonferroni=FALSE,
                   minL=0, maxL=Inf,
                   sortL=NULL, decreasingL=TRUE,
                   igraph=FALSE, ...)
 {
   arguments <- list(...)
   arguments$name <- nameByLanguage(arguments$name,arguments$language,arguments$nodes)
+  method <- r.method(method[1])
   if(!("size" %in% names(arguments))) arguments$size <- "mean"
   if(!("lwidth" %in% names(arguments))) arguments$lwidth <- "value"
   if(!("lweight" %in% names(arguments))) arguments$lweight <- "value"
-  if (!pairwise) variables<-na.omit(variables)
+  if(!pairwise) variables<-na.omit(variables)
   cases<-nrow(variables)
   if (criteria=="p" & maxL==Inf)  maxL<-.5
   if (criteria=="p" & Bonferroni) maxL<-maxL/choose(cases,2)
+  if (criteria %in% c("pearson", "kendall", "spearman")) criteria <- "value"
   statistics <-data.frame(name=colnames(variables),
                           mean=round(apply(variables,2,mean, na.rm=TRUE),2),
                           std=round(sqrt(apply(variables,2,var, na.rm=TRUE)),2),
@@ -191,18 +193,70 @@ netCorr<-function(variables, weight=NULL, pairwise=FALSE,
   else arguments$nodes <- statistics
   if (pairwise) use <- "pairwise.complete.obs"
   else use <- "complete.obs"
-  R<-cor(variables[,arguments$nodes[,2]>=minimum & arguments$nodes[,2]<=maximum],method=method, use=use)
+  R<-cor(variables[,arguments$nodes[,2]>=minimum & arguments$nodes[,2]<=maximum],method=method[1], use=use)
   E<-edgeList(R, "shape", min=-1, max=1, directed=FALSE, diagonal=FALSE)
   E$z<-E$value*sqrt(cases)
   E$p<-1-pt(E$z,cases-1)
   E<-E[E[[criteria]]>=minL & E[[criteria]]<=maxL,]
   if (!is.null(sortL)) E<-E[order((-1*decreasingL+!decreasingL)*E[[sortL]]),]
   arguments$links <- E
-  if(exists("layout", arguments) && tolower(substr(arguments$layout,1,2))=="pc") arguments$layout <- layoutPCA(R)
-  
+  if(exists("layout", arguments) && is.character(arguments$layout) && tolower(substr(arguments$layout,1,2))=="pc") arguments$layout <- layoutPCA(R)
   xNx <- do.call(netCoin,arguments)
   if (igraph) return(toIgraph(xNx))
   else return(xNx)
+}
+
+# Program to apply evolving nets to correlations.
+
+d_netCorr <- function(variables, nodes= NULL, weight=NULL, 
+                      pairwise=FALSE, minimum=-Inf, maximum=Inf, 
+                      frequency=FALSE, means=TRUE, 
+                      method=c("pearson", "kendall", "spearman"), criteria="value", Bonferroni=FALSE,
+                      minL=0, maxL=Inf,
+                      sortL=NULL, decreasingL=TRUE, 
+                      factorial=c("null", "pc", "nf", "vf", "of"), 
+                      components=TRUE, backcomponents=FALSE, sequence=seq(.20, 1, .01), 
+                      textFilter=c(1, .99), speed=50, dir=NULL, ...)
+{
+  arguments <- list(variables= variables, nodes=nodes, weight=weight,
+                    pairwise=pairwise, minimum=minimum, maximum=maximum, 
+                    frequency=frequency, means=means,
+                    method=method, criteria=criteria, Bonferroni=Bonferroni,
+                    minL=minL, maxL=maxL, sortL=sortL, decreasingL=decreasingL, ...)
+  if(exists("layout", arguments) & !identical(factorial, c("null", "pc","nf","rf","of"))) warning("Argument factorial is incompatible with layout")
+  if(exists("layout", arguments)) C <- arguments$layout else C <- layoutFact(variables, factorial)
+  G <- do.call (netCorr, arguments)
+  g <- list()
+  g$lineplots <- c("component", "Degree", "closeness", "betweenness", "eigen", "ratio" )
+  g$mode <- "frame"
+  g$speed <- speed
+  g$dir  <-ifelse(is.null(dir), "./temp", dir)
+  ch=0
+  if(length(textFilter)<2) textFilter[2]<- .99
+  for(I in  sequence) {
+    G$links$text <- ifelse(abs(G$links$value)>=min(textFilter[1], I+textFilter[2]), sprintf("%.2f", G$links$value), "")
+    H <- netCoin(G, linkFilter = paste0("value>",I), lwidth="value",
+                 ltext="text", size="mean", layout=C,
+                 main=paste0("Correlation: ", I))
+    if(exists("hidden", H$links)) H$links <- H$links[!H$links$hidden, ]
+    else H$links$hidden <- FALSE
+    enodes <- unique(c(H$links$Source,H$links$Target))
+    H$nodes <- H$nodes[H$nodes[[H$options$nodeName]] %in% enodes,]
+    comps <- igraph::components(toIgraph(H))
+    cc <- sum(comps$csize>1)
+    if(((cc > ch | !components) | (cc < ch &  components & backcomponents)) & nrow(H$links)>0) {
+      central <- calCentr(H)
+      H$nodes <- cbind(H$nodes, central$nodes)
+      H$nodes <- cbind(H$nodes, compon(comps$membership))
+      names(H$nodes)[ncol(H$nodes)] <- "component"
+      names(H$nodes)[names(H$nodes)=="degree"] <- "Degree"
+      H$links$ratio <- H$links$value/I
+      g[[paste0("C",I)]]  <- H
+    }
+    ch <- cc
+  }
+  if(!is.null(dir)) do.call(multigraphCreate, g)
+  else return(g)
 }
 
 # Complete netCoin from an incidences matrix
@@ -808,6 +862,13 @@ i.method<-function(method) {
                            similarities[(match("confidence",similarities)+1):length(similarities)]) 
   }
   return(similarities)
+}
+
+r.method <- function(method) {
+  if(!toupper(substr(method,1,1)) %in% c("P", "K", "S")) method <- "pearson"
+  rs <- matrix(c("pearson","kendall", "spearman"), nrow=1, dimnames=list("method", c("P", "K", "S")))
+  method <- rs[,toupper(substr(method, 1, 1))]
+  return(method)
 }
 
 checkLevel <- function(level){
@@ -1515,6 +1576,33 @@ layoutPCA<-function(coin) { # Coordenadas a partir de Pearson: Haberman/raiz(n)
   rownames(C)<-rownames(coin)
   colnames(C)<-c("F1","F2")
   return(C)
+}
+
+# For d_netCorr Factorial coordinates.
+layoutFact <- function(data, method=c("pc","nf","vf", "of")) {
+  difference <- setdiff(method, c("null", "pc","nf","vf","of"))
+  if(length(difference)>0) warning(paste0(difference, " method is not implemented. "))
+  R <- list()
+  if(method[1]=="null") return(NULL)
+  if("pc" %in% method) R$`Principal Components`  <- princomp(na.omit(data), cor=T)$loadings[,1:2]
+  if("nf" %in% method) R$`Non-rotated Factorial` <- factanal(na.omit(data), factors=2, rotation="none")$loadings[,1:2]
+  if("vf" %in% method) R$`Varimax factorial`     <- factanal(na.omit(data), factors=2, rotation="varimax")$loadings[,1:2]
+  if("of" %in% method) R$`Oblimin factorial`     <- factanal(na.omit(data), factors=2, rotation="oblimin")$loadings[,1:2]
+  if(length(R)>1) return(R) else return(R[[1]])
+}
+
+# For d_netCorr: Labelling the graph components 
+compon  <- function(comps) {
+  s <- table(comps)
+  o <- sort(table(comps), decreasing=T)
+  xdig <- paste0("%",max(c(nchar(trunc(abs(as.numeric(names(s))))))),"d")
+  j <- 1
+  for(n in as.numeric(names(o))) {
+    d <- as.numeric(names(s[j]))
+    comps <- ifelse(comps==n, paste0("C-",sprintf(xdig, d)), comps)
+    j <- j+1
+  }
+  return(comps)
 }
 
 mobileEdges<-function(data, name=1, number=2, difference=0) {
