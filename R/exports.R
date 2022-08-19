@@ -9,5 +9,4 @@ fromIgraph <- function(G, ...){
 
 layoutCircle <- rd3_layoutCircle
 layoutGrid <- rd3_layoutGrid
-
-multigraphCreate <- rd3_multigraph
+addTutorial <- add_tutorial_rd3
