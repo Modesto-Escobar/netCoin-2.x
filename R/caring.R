@@ -9,7 +9,7 @@ caring_read_file <- function(filepath){
     data <- as.data.frame(data)
     colnames(data) <- make.unique(sapply(colnames(data),function(col){
       label <- attr(data[[col]],"label")
-      if(!is.null(label)){
+      if(!is.null(label) && length(label)==1){
         return(label)
       }
       return(col)
@@ -52,27 +52,27 @@ caring_read_file <- function(filepath){
 }
 
 caring_create_graphs <- function(data, arguments){
-  if(!is.null(arguments$weight)){
-    arguments$weight <- arguments$weight[1]
-    if((!arguments$weight %in% colnames(data)) || !is.numeric(data[,arguments$weight])){
-      arguments$weight <- NULL
+  if(!is.null(arguments[['weight']])){
+    arguments[['weight']] <- arguments[['weight']][1]
+    if((!arguments[['weight']] %in% colnames(data)) || !is.numeric(data[,arguments[['weight']]])){
+      arguments[['weight']] <- NULL
     }else{
-      arguments$variables <- setdiff(arguments$variables,arguments$weight)
+      arguments[['variables']] <- setdiff(arguments[['variables']],arguments[['weight']])
     }
   }
 
   pmax <- NULL
-  if(is.null(arguments$maxL) || !is.finite(arguments$maxL)){
-    if(is.null(arguments$criteria) || (arguments$criteria=="Z" || arguments$criteria=="hyp")){
-      arguments$maxL <- 0.5
+  if(is.null(arguments[['maxL']]) || !is.finite(arguments[['maxL']])){
+    if(is.null(arguments[['criteria']]) || (arguments[['criteria']]=="Z" || arguments[['criteria']]=="hyp")){
+      arguments[['maxL']] <- 0.5
     }
   }else{
-    pmax <- arguments$maxL
+    pmax <- arguments[['maxL']]
   }
 
-  if(is.null(arguments$dichotomies)){
+  if(is.null(arguments[['dichotomies']])){
     dichotomies <- character(0)
-    for(col in arguments$variables){
+    for(col in arguments[['variables']]){
       if(is.numeric(data[,col])){
         val <- unique(data[,col])
         if(!length(setdiff(val,c(0,1,NA))))
@@ -80,36 +80,36 @@ caring_create_graphs <- function(data, arguments){
       }
     }
     if(length(dichotomies)){
-      arguments$dichotomies <- dichotomies
-      arguments$valueDicho <- 1
+      arguments[['dichotomies']] <- dichotomies
+      arguments[['valueDicho']] <- 1
     }
   }
 
-  variables <- arguments$variables
-  if(!is.null(arguments$dichotomies)){
-    variables <- setdiff(variables,arguments$dichotomies)
-    if(!is.null(arguments$metric)){
-      arguments$metric <- setdiff(arguments$metric,arguments$dichotomies)
+  variables <- arguments[['variables']]
+  if(!is.null(arguments[['dichotomies']])){
+    variables <- setdiff(variables,arguments[['dichotomies']])
+    if(!is.null(arguments[['metric']])){
+      arguments[['metric']] <- setdiff(arguments[['metric']],arguments[['dichotomies']])
     }
   }
-  if(!is.null(arguments$metric)){
-    arguments$variables <- setdiff(arguments$variables,arguments$metric)
+  if(!is.null(arguments[['metric']])){
+    arguments[['variables']] <- setdiff(arguments[['variables']],arguments[['metric']])
   }
 
-  arguments$frequency <- TRUE
-  arguments$percentage <- TRUE
-  arguments$color <- "variable"
-  arguments$data <- data
+  arguments[['frequency']] <- TRUE
+  arguments[['percentage']] <- TRUE
+  arguments[['color']] <- "variable"
+  arguments[['data']] <- data
 
-  plots <- arguments$plot
-  arguments$plot <- NULL
+  plots <- arguments[['plot']]
+  arguments[['plot']] <- NULL
 
-  multiArgs <- list(dir = arguments$dir)
-  arguments$dir <- NULL
+  multiArgs <- list(dir = arguments[['dir']])
+  arguments[['dir']] <- NULL
 
   if("network" %in% plots){
-    if(!is.null(arguments$metric) && length(setdiff(arguments$variables,arguments$metric))==0){
-      arguments$variables <- arguments$data[,arguments$metric]
+    if(!is.null(arguments[['metric']]) && length(setdiff(arguments[['variables']],arguments[['metric']]))==0){
+      arguments[['variables']] <- arguments[['data']][,arguments[['metric']]]
       keys <- union(names(formals(netCorr)),names(formals(netCoin)))
       arguments <- arguments[intersect(names(arguments),keys)]
       net1 <- do.call(netCorr,arguments)
@@ -118,54 +118,54 @@ caring_create_graphs <- function(data, arguments){
       arguments <- arguments[intersect(names(arguments),keys)]
       net1 <- do.call(surCoin,arguments)
     }
-    multiArgs$network = net1
+    multiArgs[['network']] = net1
   }
   if("scatter" %in% plots){
     scatArgs <- arguments[intersect(names(arguments),union(formalArgs("surScat"),formalArgs("netCoin")))]
-    if(!length(scatArgs$nclusters)){
-      scatArgs$nclusters <- min(nrow(data)-1,6):2
+    if(!length(scatArgs[['nclusters']])){
+      scatArgs[['nclusters']] <- min(nrow(data)-1,6):2
     }
-    scatArgs$degreeFilter <- NULL
+    scatArgs[['degreeFilter']] <- NULL
     net2 <- do.call(surScat,scatArgs)
-    multiArgs$scatter = net2
+    multiArgs[['scatter']] = net2
   }
   logs <- intersect(c("log-i.2","log-i.3","log-i.4","log-i.5"),plots)
   if(length(logs)){
     for(log in logs){
       logArgs <- arguments[intersect(names(arguments),union(formalArgs("logCoin"),formalArgs("netCoin")))]
-      if(!is.null(arguments$dichotomies)){
+      if(!is.null(arguments[['dichotomies']])){
         noFirstCat <- character(0)
-        for(i in seq_along(arguments$dichotomies)){
-          col <- arguments$dichotomies[i]
-          valueDicho <- arguments$valueDicho[i]
-          datacol <- as.character(logArgs$data[,col])
-          logArgs$data[,col] <- factor(datacol,levels=union(valueDicho,setdiff(unique(datacol),valueDicho)))
+        for(i in seq_along(arguments[['dichotomies']])){
+          col <- arguments[['dichotomies']][i]
+          valueDicho <- arguments[['valueDicho']][i]
+          datacol <- as.character(logArgs[['data']][,col])
+          logArgs[['data']][,col] <- factor(datacol,levels=union(valueDicho,setdiff(unique(datacol),valueDicho)))
           noFirstCat <- c(noFirstCat,col)
         }
         if(length(noFirstCat)){
-          logArgs$noFirstCat <- noFirstCat
+          logArgs[['noFirstCat']] <- noFirstCat
         }
       }
       if(!is.null(pmax)){
-        logArgs$pmax <- pmax
+        logArgs[['pmax']] <- pmax
       }
-      logArgs$color <- "var"
-      logArgs$order <- as.numeric(sub("log-i.","",log,fixed=TRUE))
+      logArgs[['color']] <- "var"
+      logArgs[['order']] <- as.numeric(sub("log-i.","",log,fixed=TRUE))
       net3 <- do.call(logCoin,logArgs)
       multiArgs[[log]] = net3
     }
   }
   if("incidences" %in% plots){
     inciArgs <- arguments[intersect(names(arguments),union(formalArgs("allNet"),formalArgs("netCoin")))]
-    inciArgs$incidences <- arguments$data
-    if(!inciArgs$color %in% colnames(inciArgs$incidences)){
-      inciArgs$color <- NULL
+    inciArgs[['incidences']] <- arguments[['data']]
+    if(!inciArgs[['color']] %in% colnames(inciArgs[['incidences']])){
+      inciArgs[['color']] <- NULL
     }
-    for(n in colnames(inciArgs$incidences)){
-      inciArgs$incidences[,n] <- as.numeric(as.logical(inciArgs$incidences[,n]))
+    for(n in colnames(inciArgs[['incidences']])){
+      inciArgs[['incidences']][,n] <- as.numeric(as.logical(inciArgs[['incidences']][,n]))
     }
     net4 <- do.call(allNet,inciArgs)
-    multiArgs$incidences = net4
+    multiArgs[['incidences']] = net4
   }
 
   return(do.call(multigraphCreate,multiArgs))

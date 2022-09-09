@@ -17,8 +17,8 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         main = NULL, note = NULL, showCoordinates = FALSE, showArrows = FALSE,
         showLegend = TRUE, frequencies = FALSE, showAxes = FALSE,
         axesLabels = NULL, scenarios = NULL, help = NULL, helpOn = FALSE,
-        mode = c("network","heatmap"), controls = 1:4, cex = 1,
-        background = NULL, defaultColor = "#1f77b4",
+        mode = c("network","heatmap"), roundedItems = FALSE, controls = 1:4,
+        cex = 1, background = NULL, defaultColor = "#1f77b4",
         language = c("en","es","ca"), dir = NULL)
 {
   if(is.null(links) &&  is.null(nodes)){
@@ -71,6 +71,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
     showArrows <- getOpt("showArrows")
     showLegend <- getOpt("showLegend")
     showAxes <- getOpt("showAxes")
+    roundedItems <- getOpt("roundedItems")
 
     label <- getOpt("nodeLabel","label")
     labelSize <- getOpt("nodeLabelSize","labelSize")
@@ -123,7 +124,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         main = main, note = note, showCoordinates = showCoordinates, showArrows = showArrows,
         showLegend = showLegend, frequencies = frequencies, showAxes = showAxes,
         axesLabels = axesLabels, scenarios = scenarios, help = help, helpOn = helpOn,
-        mode = mode, controls = controls, cex = cex,
+        mode = mode, roundedItems = roundedItems, controls = controls, cex = cex,
         background = background, defaultColor = defaultColor,
         language = language, dir = dir)
   class(net) <- c("netCoin",class(net))

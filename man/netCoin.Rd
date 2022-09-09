@@ -25,8 +25,8 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
         main = NULL, note = NULL, showCoordinates = FALSE, showArrows = FALSE,
         showLegend = TRUE, frequencies = FALSE, showAxes = FALSE,
         axesLabels = NULL, scenarios = NULL, help = NULL, helpOn = FALSE,
-        mode = c("network","heatmap"), controls = 1:4, cex = 1,
-        background = NULL, defaultColor = "#1f77b4",
+        mode = c("network","heatmap"), roundedItems = FALSE, controls = 1:4,
+        cex = 1, background = NULL, defaultColor = "#1f77b4",
         language = c("en","es","ca"), dir = NULL)
 }
 \arguments{
@@ -75,6 +75,7 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
 drl("da"), circle("ci"), Force-Atlas-2("fo"), fruchterman.reingold("fr"), gem("ge"), grid("gr"), kamada.kawai("ka"), lgl("lg"), mds("md"), random("ra"), reingold.tilford("re"), star("sta"), sugiyama("sug")}
 \item{limits}{vector indicating size references to display layout, must be a numeric vector of length 4: x1, y1, x2, y2.}
 \item{cex}{number indicating the amount by which plotting text should be scaled relative to the default. Default = 1.}
+\item{roundedItems}{Display items with rounded borders.}
 \item{controls}{a numeric vector indicating which controls will be shown. 1 = sidebar, 2 = selection buttons, 3 = export buttons, 4 = nodes table, 5 = links table. NULL hide all controls, negative values deny each control and 0 deny all.}
 \item{mode}{a character vector indicating the graph mode allowed: network, heatmap or both (both by default).}
 \item{showCoordinates}{a logical value true if the coordinates are to be shown in tables and axes. Default = FALSE.}
