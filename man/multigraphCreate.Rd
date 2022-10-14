@@ -11,12 +11,14 @@ The function creates a folder in your computer with an HTML document named index
 
 \usage{
 multigraphCreate(..., mode = c("default","parallel","frame"),
+  mfrow = c(1,2),
   frame = 0, speed = 50, loop = FALSE, lineplots = NULL,
   dir = NULL, show = FALSE)
 }
 \arguments{
 \item{...}{rD3plot graphs (network_rd3, barplot_rd3, timeplot_rd3) objects or html "directories".}
 \item{mode}{a string specifying the displaying mode. The "default" displays graphs one by one, "parallel" splits screen and "frame" allows dinamic graphs in time.}
+\item{mfrow}{a vector of the form 'c(nr, nc)'. Subsequent graphs will be drawn in an 'nr'-by-'nc' array on the device by rows. (Only applied in 'parallel' mode)}
 \item{frame}{number of frame to start a dynamic network.}
 \item{speed}{a percentage for frame speed in dynamic networks.}
 \item{loop}{allowing continuous repetition.}
