@@ -2,7 +2,8 @@
 \alias{get_panel_template}
 \title{Create an html panel for nodes from different items (for galleries).}
 \usage{
-get_panel_template(data, title=NULL, description=NULL, img=NULL,  text=NULL, cex=1)
+get_panel_template(data, title=NULL, description=NULL, img=NULL,
+                   text=NULL, color="auto", cex=1, mode = 1)
 }
 \arguments{
 \item{data}{data frame which contains the data.}
@@ -10,7 +11,9 @@ get_panel_template(data, title=NULL, description=NULL, img=NULL,  text=NULL, cex
 \item{description}{column name which contains the main text of the vignette.}
 \item{img}{column name which contains the names of the image files.}
 \item{text}{column name which contains the main text of the vignette.}
+\item{color}{color of the panel (It also could be a column name which contains colors).}
 \item{cex}{number indicating the amount by which plotting text should be scaled relative to the default.}
+\item{mode}{There are two display modes.}
 }
 \value{
 a character vector of html formatted panel.

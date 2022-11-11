@@ -77,18 +77,40 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
   return(paste0('<div class="info-template" style="font-size:',as.numeric(cex),'em;',margin,widthstyle,'">',templateContent,'</div>'))
 }
 
-get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  text=NULL, cex=1){
+get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  text=NULL, color="auto", cex=1, mode=1){
+  autocolor <- ''
+  colorstyle <- ''
+  if(length(color)){
+    color <- color[1]
+    if(color=="auto"){
+      autocolor <- ' auto-color'
+    }else{
+      if(length(data[[color]])){
+        color <- data[[color]]
+      }
+      colorstyle <- paste0('background-color:',color,';')
+    }
+  }
+
   images <- ""
   if(is.character(img) && length(data[[img]])){
     images <- data[[img]]
     for(i in seq_along(images)){
-      if(file.exists(images[i])){
-        images[i] <- paste0("data:",mime(images[i]),";base64,",base64encode(images[i]))
+      if(is.na(images[i])){
+        images[i] <- ""
+      }else{
+        if(file.exists(images[i])){
+          images[i] <- paste0("data:",mime(images[i]),";base64,",base64encode(images[i]))
+        }
+        images[i] <- paste0('<center><img src="',images[i],'"/></center>')
       }
     }
-    images <- paste0('<center><img src="',images,'"/></center>')
   }
-  return(paste0('<div class="panel-template auto-color" style="padding:24px;font-size:',as.numeric(cex),'em;"><h2 style="padding-bottom:12px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:12px;"><p>',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+  if(mode==2){
+    return(paste0('<div class="panel-template',autocolor,'" style="min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding:24px 24px 12px 24px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:24px;flex-grow:1;overflow:auto;height:0"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+  }else{
+    return(paste0('<div class="panel-template',autocolor,'" style="padding:24px;min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding-bottom:12px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:12px;flex-grow:1;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+  }
 }
 
 base64encode <- function(filename) {
