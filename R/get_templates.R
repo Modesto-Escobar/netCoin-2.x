@@ -102,14 +102,14 @@ get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  te
         if(file.exists(images[i])){
           images[i] <- paste0("data:",mime(images[i]),";base64,",base64encode(images[i]))
         }
-        images[i] <- paste0('<center><img src="',images[i],'"/></center>')
+        images[i] <- paste0('<center><img style="max-width:100%;" src="',images[i],'"/></center>')
       }
     }
   }
   if(mode==2){
-    return(paste0('<div class="panel-template',autocolor,'" style="min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding:24px 24px 12px 24px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:24px;flex-grow:1;overflow:auto;height:0"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+    return(paste0('<div class="panel-template',autocolor,' mode-2" style="font-size:',as.numeric(cex),'em;"><h2 style="padding:24px 24px 12px 24px;color:#ffffff;font-weight:bold;',colorstyle,'">',data[[title]],'</h2><div style="padding:24px;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
   }else{
-    return(paste0('<div class="panel-template',autocolor,'" style="padding:24px;min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding-bottom:12px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:12px;flex-grow:1;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+    return(paste0('<div class="panel-template',autocolor,' mode-1" style="padding:24px;min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding-bottom:12px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:12px;flex-grow:1;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
   }
 }
 
