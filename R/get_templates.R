@@ -107,11 +107,39 @@ get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  te
     }
   }
   if(mode==2){
-    return(paste0('<div class="panel-template',autocolor,' mode-2" style="font-size:',as.numeric(cex),'em;"><h2 style="padding:24px 24px 12px 24px;color:#ffffff;font-weight:bold;',colorstyle,'">',data[[title]],'</h2><div style="padding:24px;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+    return(paste0('<div class="panel-template',autocolor,' mode-2" style="font-size:',as.numeric(cex),'em;height:100%;"><h2 style="padding:24px 24px 12px 24px;color:#ffffff;font-weight:bold;',colorstyle,'">',data[[title]],'</h2><div style="padding:24px;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
   }else{
     return(paste0('<div class="panel-template',autocolor,' mode-1" style="padding:24px;min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding-bottom:12px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:12px;flex-grow:1;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
   }
 }
+
+known_sites <- data.frame(
+  url=c("wikipedia.org","wikidata.org","wikimedia.org","museoreinasofia.es","twitter.com","facebook.com","viaf.org"),
+  name=c("Wikipedia","Wikidata","Wikimedia","MNCARS","Twitter","Facebook","VIAF"),
+  icon=c("https://www.wikipedia.org/static/favicon/wikipedia.ico","https://www.wikidata.org/static/favicon/wikidata.ico","https://foundation.wikimedia.org/favicon.ico","https://static5.museoreinasofia.es/sites/all/themes/mrs_twitter_bootstrap/images/misc/favicon-32x32.png","https://abs.twimg.com/favicons/twitter.2.ico","https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico","https://viaf.org/viaf/images/viaf.ico")
+)
+
+renderLinks <- function(data,columns){
+  html <- character(nrow(data))
+  for(i in seq_len(nrow(data))){
+    links <- data[i,intersect(columns,names(data))]
+    links <- links[!is.na(links)]
+    texts <- links
+    icons <- rep('https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg',length(links))
+    for(j in seq_along(links)){
+      for(k in seq_len(nrow(known_sites))){
+        if(grepl(known_sites[k,'url'],links[j])){
+          texts[j] <- known_sites[k,'name']
+          icons[j] <- known_sites[k,'icon']
+          break
+        }
+      }
+    }
+    html[i] <- paste0('<ul>',paste0('<li><a target="_blank" href="', links, '"><img style="width:30px;vertical-align:bottom;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
+  }
+  return(html)
+}
+
 
 base64encode <- function(filename) {
   to.read = file(filename, "rb")
