@@ -2,11 +2,13 @@
 \alias{renderLinks}
 \title{Create an html list of links.}
 \usage{
-renderLinks(data,columns)
+renderLinks(data, columns, target = "_blank", sites = NULL)
 }
 \arguments{
 \item{data}{data frame which contains the data.}
 \item{columns}{column name which contains the urls.}
+\item{target}{The target attribute specifies where to open the linked document: '_blank' opens the linked document in a new window or tab; '_self' opens the linked document in the same frame as it was clicked; \emph{framename} opens the linked document in the named iframe.}
+\item{sites}{A data frame of 3 columns (url, name, icon) with the sites that the function will recognize.}
 }
 \value{
 a character vector of html formatted links.

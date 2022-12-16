@@ -28,3 +28,6 @@ multigraphCreate <- function(..., mode = c("default","parallel","frame"),
   class(obj) <- c("mGraph",class(obj))
   return(obj)
 }
+
+multiPages <- rd3_multiPages
+addImage <- rd3_addImage

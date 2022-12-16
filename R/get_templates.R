@@ -114,12 +114,18 @@ get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  te
 }
 
 known_sites <- data.frame(
-  url=c("wikipedia.org","wikidata.org","wikimedia.org","museoreinasofia.es","twitter.com","facebook.com","viaf.org"),
-  name=c("Wikipedia","Wikidata","Wikimedia","MNCARS","Twitter","Facebook","VIAF"),
-  icon=c("https://www.wikipedia.org/static/favicon/wikipedia.ico","https://www.wikidata.org/static/favicon/wikidata.ico","https://foundation.wikimedia.org/favicon.ico","https://static5.museoreinasofia.es/sites/all/themes/mrs_twitter_bootstrap/images/misc/favicon-32x32.png","https://abs.twimg.com/favicons/twitter.2.ico","https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico","https://viaf.org/viaf/images/viaf.ico")
+  url=c("wikipedia.org","wikidata.org","wikimedia.org","twitter.com","facebook.com"),
+  name=c("Wikipedia","Wikidata","Wikimedia","Twitter","Facebook"),
+  icon=c("https://www.wikipedia.org/static/favicon/wikipedia.ico","https://www.wikidata.org/static/favicon/wikidata.ico","https://foundation.wikimedia.org/favicon.ico","https://abs.twimg.com/favicons/twitter.2.ico","https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico")
 )
 
-renderLinks <- function(data,columns){
+renderLinks <- function(data,columns,target="_blank",sites=NULL){
+  if(is.null(sites)){
+    sites <- known_sites
+  }
+  if(!is.character(target)){
+    target <- '_self'
+  }
   html <- character(nrow(data))
   for(i in seq_len(nrow(data))){
     links <- data[i,intersect(columns,names(data))]
@@ -127,15 +133,15 @@ renderLinks <- function(data,columns){
     texts <- links
     icons <- rep('https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg',length(links))
     for(j in seq_along(links)){
-      for(k in seq_len(nrow(known_sites))){
-        if(grepl(known_sites[k,'url'],links[j])){
-          texts[j] <- known_sites[k,'name']
-          icons[j] <- known_sites[k,'icon']
+      for(k in seq_len(nrow(sites))){
+        if(grepl(sites[k,'url'],links[j])){
+          texts[j] <- sites[k,'name']
+          icons[j] <- sites[k,'icon']
           break
         }
       }
     }
-    html[i] <- paste0('<ul>',paste0('<li><a target="_blank" href="', links, '"><img style="width:30px;vertical-align:bottom;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
+    html[i] <- paste0('<ul>',paste0('<li><a target="',target,'" href="', links, '"><img style="width:30px;vertical-align:bottom;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
   }
   return(html)
 }
