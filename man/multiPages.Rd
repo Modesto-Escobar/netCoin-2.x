@@ -9,11 +9,13 @@ The function creates a folder in your computer with an HTML document named index
 }
 
 \usage{
-multiPages(x, title = NULL, dir = tempDir(), show = FALSE)
+multiPages(x, title = NULL, columns = NULL, cex = 1, dir = tempDir(), show = FALSE)
 }
 \arguments{
 \item{x}{is a \code{mGraph} object. See \code{\link{multigraphCreate}}}
 \item{title}{the text for a main title.}
+\item{columns}{a numeric vector giving the number of columns to display items in gallery. Default = 3.}
+\item{cex}{number indicating the amount by which plotting text should be scaled relative to the default. Default = 1.}
 \item{dir}{a "character" string representing the directory where the graph will be saved.}
 \item{show}{a logical value true if the graph is to be shown. Default = FALSE.}
 }
