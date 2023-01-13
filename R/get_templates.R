@@ -68,7 +68,7 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
   if(is.character(wiki) && length(data[[wiki]])){
     templateWiki <- paste0('<h3><img style="width:20px;vertical-align:bottom;margin-right:10px;" src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png"/>Wikipedia: <a target="_blank" href="',data[[wiki]],'">',wiki,'</a></h3>')
   }
-  if(templateImg!='' && mode==2){
+  if(!identical(templateImg,'') && mode==2){
     celldiv <- '<div style="display: inline-block; width: 50%; vertical-align: top;">'
     templateContent <- paste0(templateTitle,celldiv,'<div style="',padding,'">',templateTitle2,templateText,templateWiki,'</div></div>',celldiv,templateImg,'</div>')
   }else{
