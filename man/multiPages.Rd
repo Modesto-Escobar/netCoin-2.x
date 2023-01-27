@@ -10,6 +10,7 @@ The function creates a folder in your computer with an HTML document named index
 
 \usage{
 multiPages(x, title = NULL, columns = NULL, imageSize = NULL,
+  description = NULL, note = NULL,
   cex = 1, dir = tempDir(), show = FALSE)
 }
 \arguments{
@@ -17,6 +18,8 @@ multiPages(x, title = NULL, columns = NULL, imageSize = NULL,
 \item{title}{the text for a main title.}
 \item{columns}{a numeric vector giving the number of columns to display items in gallery. Default = 3.}
 \item{imageSize}{a numeric vector giving the size of images in gallery. Default = 75.}
+\item{description}{a description text for the gallery.}
+\item{note}{a footer text for the gallery.}
 \item{cex}{number indicating the amount by which plotting text should be scaled relative to the default. Default = 1.}
 \item{dir}{a "character" string representing the directory where the graph will be saved.}
 \item{show}{a logical value true if the graph is to be shown. Default = FALSE.}

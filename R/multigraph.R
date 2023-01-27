@@ -31,3 +31,4 @@ multigraphCreate <- function(..., mode = c("default","parallel","frame"),
 
 multiPages <- rd3_multiPages
 addImage <- rd3_addImage
+addDescription <- rd3_addDescription
