@@ -10,8 +10,8 @@ Object of class \code{gallery_rd3}.
 
 \usage{
 gallery(nodes, tree = NULL, name = NULL, label = NULL, color = NULL,
-    border = NULL, ntext = NULL, info = NULL, image = NULL, zoom = 1,
-    itemsPerRow = NULL, main = NULL, note = NULL,
+    border = NULL, ntext = NULL, info = NULL, infoFrame = c("right","left"),
+    image = NULL, zoom = 1, itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE,
     help = NULL, helpOn = FALSE, tutorial = FALSE, description = NULL,
     descriptionWidth = NULL, roundedItems = FALSE, controls = 1:5, cex = 1,
@@ -26,6 +26,7 @@ gallery(nodes, tree = NULL, name = NULL, label = NULL, color = NULL,
 \item{border}{column name with image border width variable in the nodes data frame or a numeric vector.}
 \item{ntext}{column name with html text in the nodes data frame.}
 \item{info}{column name with information to display in a panel in the nodes data frame.}
+\item{infoFrame}{In which panel should the information be displayed? The left panel is only available if the description argument is provided and frequencies are not showing.}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{zoom}{a number between 0.1 and 10 as initial displaying zoom.}
 \item{itemsPerRow}{number of items in each row.}
