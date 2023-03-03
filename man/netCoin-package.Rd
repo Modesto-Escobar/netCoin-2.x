@@ -35,7 +35,7 @@ From this incidences matrix, a coincidence (\bold{C}) matrix can be obtained wit
 }
 Once there is a \code{coin} object, a similarity matrix can be obtained. Similarity matrices available in netCoin are:
 \itemize{
-\item Matching (m), Rogers \& Tanimoto (t) Gower (g) Sneath (s) and Anderberg (and).
+\item Matching (m), Rogers & Tanimoto (t) Gower (g) Sneath (s) and Anderberg (and).
 \item Jaccard (j), dice (d), antiDice (a), Ochiai (o) and Kulczynski (k).
 \item Hamann (ham), Yule (y), Pearson (p), odds ratio (od) and Rusell (r).
 }

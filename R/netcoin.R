@@ -589,7 +589,7 @@ surScat <- function(data, variables=names(data), active=variables, type= c("mca"
   }
   arguments <- list(...)
   arguments$name <- nameByLanguage(NULL,arguments$language,NULL)
-  if(class(rownames(B))=="character")  B[[arguments$name]] <- rownames(B)
+  if(is.character(rownames(B)))  B[[arguments$name]] <- rownames(B)
   else B[[arguments$name]] <- sprintf(paste0("%0",nchar(nrow(B)),"d"),as.numeric(rownames(B)))
   B <- B[, c(active, setdiff(names(B), active))]
   if(nrow(B)>maxN) {
