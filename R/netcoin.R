@@ -173,38 +173,42 @@ netCorr<-function(variables, weight=NULL, pairwise=FALSE,
                   sortL=NULL, decreasingL=TRUE,
                   igraph=FALSE, ...)
 {
-  arguments <- list(...)
-  arguments$name <- nameByLanguage(arguments$name,arguments$language,arguments$nodes)
-  method <- r.method(method[1])
-  if(!("size" %in% names(arguments))) arguments$size <- "mean"
-  if(!("lwidth" %in% names(arguments))) arguments$lwidth <- "value"
-  if(!("lweight" %in% names(arguments))) arguments$lweight <- "value"
-  if(!pairwise) variables<-na.omit(variables)
-  cases<-nrow(variables)
-  if (criteria=="p" & maxL==Inf)  maxL<-.5
-  if (criteria=="p" & Bonferroni) maxL<-maxL/choose(cases,2)
-  if (criteria %in% c("pearson", "kendall", "spearman")) criteria <- "value"
-  statistics <-data.frame(name=colnames(variables),
-                          mean=round(apply(variables,2,mean, na.rm=TRUE),2),
-                          std=round(sqrt(apply(variables,2,var, na.rm=TRUE)),2),
-                          min=apply(variables,2,min, na.rm=TRUE),
-                          max=apply(variables,2,max, na.rm=TRUE))
-  colnames(statistics)[1] <- arguments$name
-  if(!is.null(arguments$nodes)) arguments$nodes <- merge(statistics, arguments$nodes, by=arguments$name, all.x=TRUE, sort=FALSE)
-  else arguments$nodes <- statistics
-  if (pairwise) use <- "pairwise.complete.obs"
-  else use <- "complete.obs"
-  R<-cor(variables[,arguments$nodes[,2]>=minimum & arguments$nodes[,2]<=maximum],method=method[1], use=use)
-  E<-edgeList(R, "shape", min=-1, max=1, directed=FALSE, diagonal=FALSE)
-  E$z<-E$value*sqrt(cases)
-  E$p<-1-pt(E$z,cases-1)
-  E<-E[E[[criteria]]>=minL & E[[criteria]]<=maxL,]
-  if (!is.null(sortL)) E<-E[order((-1*decreasingL+!decreasingL)*E[[sortL]]),]
-  arguments$links <- E
-  if(exists("layout", arguments) && is.character(arguments$layout) && tolower(substr(arguments$layout,1,2))=="pc") arguments$layout <- layoutPCA(R)
-  xNx <- do.call(netCoin,arguments)
-  if (igraph) return(toIgraph(xNx))
-  else return(xNx)
+    arguments <- list(...)
+    arguments$name <- nameByLanguage(arguments$name,arguments$language,arguments$nodes)
+    method <- r.method(method[1])
+    if(!("size" %in% names(arguments))) arguments$size <- "mean"
+    if(!("lwidth" %in% names(arguments))) arguments$lwidth <- "value"
+    if(!("lweight" %in% names(arguments))) arguments$lweight <- "value"
+    if(!pairwise) variables<-na.omit(variables)
+    if (inherits(weight,"character")) variables <- variables[, setdiff(names(variables), weight)]
+    cases<-nrow(variables)
+    if(exists("linkBipolar", arguments) && arguments$linkBipolar) xl <- 2
+    else xl <-1
+    if (criteria=="p" & maxL==Inf)  maxL<-.5*xl
+    if (criteria=="p" & Bonferroni) maxL<-maxL/choose(cases,2)
+    if (criteria %in% c("pearson", "kendall", "spearman")) criteria <- "value"
+    statistics <-data.frame(name=colnames(variables),
+                            mean=round(apply(variables,2,mean, na.rm=TRUE),2),
+                            std=round(sqrt(apply(variables,2,var, na.rm=TRUE)),2),
+                            min=apply(variables,2,min, na.rm=TRUE),
+                            max=apply(variables,2,max, na.rm=TRUE))
+    colnames(statistics)[1] <- arguments$name
+    if(!is.null(arguments$nodes)) arguments$nodes <- merge(statistics, arguments$nodes, by=arguments$name, all.x=TRUE, sort=FALSE)
+    else arguments$nodes <- statistics
+    if (pairwise) use <- "pairwise.complete.obs"
+    else use <- "complete.obs"
+    R<-cor(variables[,arguments$nodes[,2]>=minimum & arguments$nodes[,2]<=maximum],method=method[1], use=use)
+    E<-edgeList(R, "shape", min=-1, max=1, directed=FALSE, diagonal=FALSE)
+    E$z<-E$value/sqrt(1-E$value^2)*sqrt(cases-2)
+    if(exists("linkBipolar", arguments) && arguments$linkBipolar) E$p <- (1-pt(abs(E$z),40000-2))*2
+    else xl <- E$p<-1-pt(E$z,cases-2)
+    E<-E[E[[criteria]]>=minL & E[[criteria]]<=maxL,]
+    if (!is.null(sortL)) E<-E[order((-1*decreasingL+!decreasingL)*E[[sortL]]),]
+    arguments$links <- E
+    if(exists("layout", arguments) && is.character(arguments$layout) && tolower(substr(arguments$layout,1,2))=="pc") arguments$layout <- layoutPCA(R)
+    xNx <- do.call(netCoin,arguments)
+    if (igraph) return(toIgraph(xNx))
+    else return(xNx)
 }
 
 # Program to apply evolving nets to correlations.
@@ -231,7 +235,9 @@ d_netCorr <- function(variables, nodes= NULL, weight=NULL,
   g$lineplots <- c("component", "Degree", "closeness", "betweenness", "eigen", "ratio" )
   g$mode <- "frame"
   g$speed <- speed
-  g$dir  <-ifelse(is.null(dir), "./temp", dir)
+  if(!is.null(dir)){
+    g$dir <- dir
+  }
   ch=0
   if(length(textFilter)<2) textFilter[2]<- .99
   for(I in  sequence) {
@@ -256,8 +262,8 @@ d_netCorr <- function(variables, nodes= NULL, weight=NULL,
     }
     ch <- cc
   }
-  if(!is.null(dir)) do.call(multigraphCreate, g)
-  else return(g)
+  multi <- do.call(multigraphCreate, g)
+  return(multi)
 }
 
 # Complete netCoin from an incidences matrix
@@ -280,6 +286,7 @@ allNet<-function(incidences, weight = NULL, subsample = FALSE, pairwise = FALSE,
       arguments$size <- "%"
   if (!("level" %in% names(arguments))) level<-.95 else level <-arguments$level
   if (!pairwise) incidences<-na.omit(incidences)
+  if (inherits(weight, "character")) incidences <- incidences[, setdiff(names(incidences), weight)]
   incidences <- incidences[,colSums(incidences)>0]
   if (all(is.na(incidences) | incidences==0 | incidences==1)) {
     C<-coin(incidences, minimum, maximum, sort, decreasing, weight=weight, subsample=subsample, pairwise = pairwise)

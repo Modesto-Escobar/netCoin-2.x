@@ -12,7 +12,7 @@ multigraphCreate <- function(..., mode = c("default","parallel","frame"),
   if(mode=="p"){
     obj <- rd3_multigraph(..., mfrow=mfrow, dir=diraux)
   }else if(mode=="f"){
-    obj <- evolNetwork_rd3(..., frame, speed, loop, lineplots, diraux)
+    obj <- evolNetwork_rd3(..., frame=frame, speed=speed, loop=loop, lineplots=lineplots, dir=diraux)
   }else{
     obj <- rd3_multigraph(..., dir=diraux)
   }
