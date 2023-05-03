@@ -1,6 +1,7 @@
 get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wiki=NULL, width=300, color="auto", cex=1, roundedImg=FALSE, mode=1) {
   autocolor <- ''
   colorstyle <- ''
+  fontcolor <- ''
   if(length(color)){
     color <- color[1]
     if(color=="auto"){
@@ -10,6 +11,8 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
         color <- data[[color]]
       }
       colorstyle <- paste0('background-color:',color,';')
+      fontcolor <- getFontColor(color)
+      fontcolor <- paste0('color:',fontcolor,';')
     }
   }
   if(length(width)){
@@ -54,7 +57,7 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
   }
   templateTitle <- ''
   if(is.character(title) && length(data[[title]])){
-    templateTitle <- paste0('<h2 ',autocolor,'style="font-size:2em;',colorstyle,padding,'margin:-3px 0 0 0;',borderRadius,'">',data[[title]],'</h2>')
+    templateTitle <- paste0('<h2 ',autocolor,'style="font-size:2em;',colorstyle,fontcolor,padding,'margin:-3px 0 0 0;',borderRadius,'">',data[[title]],'</h2>')
   }
   templateTitle2 <- ''
   if(is.character(title2) && length(data[[title2]])){
@@ -80,6 +83,7 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
 get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  text=NULL, color="auto", cex=1, mode=1){
   autocolor <- ''
   colorstyle <- ''
+  fontcolor <- ''
   if(length(color)){
     color <- color[1]
     if(color=="auto"){
@@ -89,6 +93,8 @@ get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  te
         color <- data[[color]]
       }
       colorstyle <- paste0('background-color:',color,';')
+      fontcolor <- getFontColor(color)
+      fontcolor <- paste0('color:',fontcolor,';')
     }
   }
 
@@ -107,9 +113,9 @@ get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  te
     }
   }
   if(mode==2){
-    return(paste0('<div class="panel-template',autocolor,' mode-2" style="font-size:',as.numeric(cex),'em;height:100%;"><h2 style="padding:24px 24px 12px 24px;color:#ffffff;font-weight:bold;',colorstyle,'">',data[[title]],'</h2><div style="padding:24px;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+    return(paste0('<div class="panel-template',autocolor,' mode-2" style="font-size:',as.numeric(cex),'em;height:100%;"><h2 style="padding:24px 24px 12px 24px;',fontcolor,'font-weight:bold;font-size:2em;',colorstyle,'">',data[[title]],'</h2><div style="padding:24px;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
   }else{
-    return(paste0('<div class="panel-template',autocolor,' mode-1" style="padding:24px;min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding-bottom:12px;color:#ffffff;font-weight:bold;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:12px;flex-grow:1;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
+    return(paste0('<div class="panel-template',autocolor,' mode-1" style="padding:24px;min-height:calc(100% - 48px);font-size:',as.numeric(cex),'em;display:flex;flex-direction:column;',colorstyle,'"><h2 style="padding-bottom:12px;',fontcolor,'font-weight:bold;font-size:2em;">',data[[title]],'</h2><div style="background-color:#ffffff;padding:12px;flex-grow:1;"><p style="text-align:justify">',gsub("\\|",", ",data[[description]]),'</p>',images,'<p></p>',gsub("\\|",", ",data[[text]]),'</div></div>'))
   }
 }
 
@@ -146,6 +152,16 @@ renderLinks <- function(data,columns,target="_blank",sites=NULL){
   return(html)
 }
 
+getFontColor <- function(color){
+  return(sapply(color,function(x){
+        rgb <- col2rgb(x)[,1]
+        if(((0.2126*rgb[1] + 0.7152*rgb[2] + 0.0722*rgb[3])/255)>0.75){
+          return("#000000")
+        }else{
+          return("#ffffff")
+        }
+  }))
+}
 
 base64encode <- function(filename) {
   to.read = file(filename, "rb")
