@@ -22,86 +22,19 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         language = c("en","es","ca"), dir = NULL)
 {
   if(is.null(links) &&  is.null(nodes)){
-    stop("You must explicit a nodes or links data frame, or a netCoin object.")
+    stop("You must explicit a nodes or links data frame.")
   }
 
-  if(inherits(nodes,"netCoin")){
-    links <- nodes$links
-    tree <- nodes$tree
-    options <- nodes$options
-    nodes <- nodes$nodes
+  if(inherits(nodes, 'netCoin')){
+    stop("Using netCoin function to change netCoin object attributes is deprecated. Use addNetCoin instead.")
+  }
 
-    arguments <- names(as.list(match.call()))
-
-    getOpt <- function(opt,item=opt){
-      if(item %in% arguments){
-        return(get0(item))
-      }else{
-        if(!is.null(options[[opt]])){
-          return(options[[opt]])
-        }else{
-          return(NULL)
-        }
-      }
-    }
-
-    name <- getOpt("nodeName","name")
-
-    cex <- getOpt("cex")
-    distance <- getOpt("distance")
-    repulsion <- getOpt("repulsion")
-    zoom <- getOpt("zoom")
-    scenarios <- getOpt("scenarios")
-    limits <- getOpt("limits")
-    main <- getOpt("main")
-    note <- getOpt("note")
-    help <- getOpt("help")
-    background <- getOpt("background")
-    language <- getOpt("language")
-    nodeBipolar <- getOpt("nodeBipolar")
-    linkBipolar <- getOpt("linkBipolar")
-    helpOn <- getOpt("helpOn")
-    frequencies <- getOpt("frequencies")
-    defaultColor <- getOpt("defaultColor")
-    controls <- getOpt("controls")
-    mode <- getOpt("mode")
-    axesLabels <- getOpt("axesLabels")
-    fixed <- getOpt("fixed")
-    showCoordinates <- getOpt("showCoordinates")
-    showArrows <- getOpt("showArrows")
-    showLegend <- getOpt("showLegend")
-    showAxes <- getOpt("showAxes")
-    roundedItems <- getOpt("roundedItems")
-
-    label <- getOpt("nodeLabel","label")
-    labelSize <- getOpt("nodeLabelSize","labelSize")
-    group <- getOpt("nodeGroup","group")
-    groupText <- getOpt("groupText")
-    size <- getOpt("nodeSize","size")
-    color <- getOpt("nodeColor","color")
-    shape <- getOpt("nodeShape","shape")
-    border <- getOpt("nodeBorder","border")
-    legend <- getOpt("nodeLegend","legend")
-    ntext <- getOpt("nodeText","ntext")
-    info <- getOpt("nodeInfo","info")
-    sort <- getOpt("nodeOrder","sort")
-    decreasing <- getOpt("decreasing")
-    image <- getOpt("imageItems","image")
-    imageNames <- getOpt("imageNames")
-
-    lwidth <- getOpt("linkWidth","lwidth")
-    lweight <- getOpt("linkWeight","lweight")
-    lcolor <- getOpt("linkColor","lcolor")
-    ltext <- getOpt("linkText","ltext")
-    intensity <- getOpt("linkIntensity","intensity")
-  }else{
-    name <- nameByLanguage(name,language,nodes)
-    if(!is.null(nodes)){
+  name <- nameByLanguage(name,language,nodes)
+  if(!is.null(nodes)){
       if (all(inherits(nodes,c("tbl_df","tbl","data.frame"),TRUE))) nodes<-as.data.frame(nodes) # convert haven objects
-    }
-    if(!is.null(links)){
+  }
+  if(!is.null(links)){
       if (all(inherits(links,c("tbl_df","tbl","data.frame"),TRUE))) links<-as.data.frame(links) # convert haven objects
-    }
   }
 
   color <- setAttrByValueKey("color",color,nodes)
@@ -160,6 +93,85 @@ setAttrByValueKey <- function(name,item,items){
       }
     }
     return(item)
+}
+
+addNetCoin <- function(x, ...){
+    arguments <- list(...)
+
+    for(n in c("nodes","links","tree")){
+      if(!(n %in% names(arguments))){
+        arguments[[n]] <- x[[n]]
+      }
+    }
+
+    options <- x$options
+
+    getOpt <- function(opt,item=opt){
+      if(item %in% names(arguments)){
+        return(arguments[[item]])
+      }else{
+        if(!is.null(options[[opt]])){
+          return(options[[opt]])
+        }else{
+          return(NULL)
+        }
+      }
+    }
+
+    attributes <- c(
+      "name" = "nodeName",
+      "cex" = "cex",
+      "distance" = "distance",
+      "repulsion" = "repulsion",
+      "zoom" = "zoom",
+      "scenarios" = "scenarios",
+      "limits" = "limits",
+      "main" = "main",
+      "note" = "note",
+      "help" = "help",
+      "background" = "background",
+      "language" = "language",
+      "nodeBipolar" = "nodeBipolar",
+      "linkBipolar" = "linkBipolar",
+      "helpOn" = "helpOn",
+      "frequencies" = "frequencies",
+      "defaultColor" = "defaultColor",
+      "controls" = "controls",
+      "mode" = "mode",
+      "axesLabels" = "axesLabels",
+      "fixed" = "fixed",
+      "showCoordinates" = "showCoordinates",
+      "showArrows" = "showArrows",
+      "showLegend" = "showLegend",
+      "showAxes" = "showAxes",
+      "roundedItems" = "roundedItems",
+      "label" = "nodeLabel",
+      "labelSize" = "nodeLabelSize",
+      "group" = "nodeGroup",
+      "groupText" = "groupText",
+      "size" = "nodeSize",
+      "color" = "nodeColor",
+      "shape" = "nodeShape",
+      "border" = "nodeBorder",
+      "legend" = "nodeLegend",
+      "ntext" = "nodeText",
+      "info" = "nodeInfo",
+      "sort" = "nodeOrder",
+      "decreasing" = "decreasing",
+      "image" = "imageItems",
+      "imageNames" = "imageNames",
+      "lwidth" = "linkWidth",
+      "lweight" = "linkWeight",
+      "lcolor" = "linkColor",
+      "ltext" = "linkText",
+      "intensity" = "linkIntensity"
+    )
+
+    for(item in names(attributes)){
+      arguments[[item]] <- getOpt(attributes[[item]],item)
+    }
+
+    return(do.call(netCoin,arguments))
 }
 
 
@@ -242,7 +254,7 @@ d_netCorr <- function(variables, nodes= NULL, weight=NULL,
   if(length(textFilter)<2) textFilter[2]<- .99
   for(I in  sequence) {
     G$links$text <- ifelse(abs(G$links$value)>=min(textFilter[1], I+textFilter[2]), sprintf("%.2f", G$links$value), "")
-    H <- netCoin(G, linkFilter = paste0("value>",I), lwidth="value",
+    H <- addNetCoin(G, linkFilter = paste0("value>",I), lwidth="value",
                  ltext="text", size="mean", layout=C,
                  main=paste0("Correlation: ", I))
     if(exists("hidden", H$links)) H$links <- H$links[!H$links$hidden, ]
@@ -627,7 +639,7 @@ cobCoin<- function(data, variables=names(data), degree=0, significance=.05, ...)
   if(!exists("lcolor", arguments)) arguments$lcolor<-"Haberman"
   if(!exists("linkBipolar", arguments)) arguments$linkBipolar <- TRUE
   arguments$groupText<-TRUE
-  arguments$data <- data
+  arguments$data <- data[,variables]
   arguments$maxL <- 1
   arguments$commonlabel <- ""
   N <- do.call(surCoin, arguments)
@@ -636,7 +648,7 @@ cobCoin<- function(data, variables=names(data), degree=0, significance=.05, ...)
   control[[2]] <- gsub(":.*","",control[[2]])
   N$links <- N$links[control[[1]]!=control[[2]],]
   N$links <- N$links[N$links$`p(Z)` < significance/2 | N$links$`p(Z)` > (1-significance/2),]
-  N <- netCoin(N, layout=layoutCircle(N$nodes, deg=degree, name=N$options$nodeName))
+  N <- addNetCoin(N, layout=layoutCircle(N$nodes, deg=degree, name=N$options$nodeName))
   return(N)
 }
 

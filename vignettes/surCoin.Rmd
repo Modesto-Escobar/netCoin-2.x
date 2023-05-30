@@ -113,12 +113,12 @@ plot(essCoin)
 knitr::include_graphics("ess-d.png")
 ```
 
-# Using netCoin to enhance output
+# Using addNetCoin to enhance output
 
-To customise the coincidence analysis you can use any of the `netCoin()` arguments. Even more you can use the netCoin function with the previous `essCoin` object as input, instead of `data` and `variables`. For instance, we may want to use the aesthetics color to differentiate the nodes. Each node will take a different fill color if we set the argument `color` to the variable `"name"`. In addition, we can also establish the size of the nodes based on the relative freqencies, to do this the argument size must equal `"%"` The variable `name` in the nodes dataset refers to the name of each node, a combination of the variable name and the category. You can access the nodes data frame from the surCoin object:
+To customise the coincidence analysis you can use any of the `netCoin()` arguments. Even more you can use the addNetCoin function with the previous `essCoin` object as input, instead of `data` and `variables`. For instance, we may want to use the aesthetics color to differentiate the nodes. Each node will take a different fill color if we set the argument `color` to the variable `"name"`. In addition, we can also establish the size of the nodes based on the relative freqencies, to do this the argument size must equal `"%"` The variable `name` in the nodes dataset refers to the name of each node, a combination of the variable name and the category. You can access the nodes data frame from the surCoin object:
 
 ```{r eval=FALSE, warning=FALSE}
-essCoin <- netCoin(essCoin, 
+essCoin <- addNetCoin(essCoin, 
                     color = "variable",
                     size = "%")
 print(essCoin$nodes[1:5,], row.names=FALSE)
@@ -135,7 +135,7 @@ knitr::include_graphics("ess-e.png")
 You may want to differentiate the nodes from their degree using an aesthetics like color or shape. To do this we need to write "degree" in the aesthetics, as the column `degree` is present automatically in the nodes dataset.
 
 ```{r eval=FALSE, warning=FALSE}
-essCoin <- netCoin(essCoin, 
+essCoin <- addNetCoin(essCoin, 
                     shape = "degree")
 
 plot(essCoin)
@@ -154,7 +154,7 @@ You may want to save the output of `surCoin()` or transform the object to be use
 To **save the output** we use the argument `dir` to set the directory where we want the html page to be stored.
 
 ```{r eval=FALSE}
-essCoin <- netCoin(essCoin, 
+essCoin <- addNetCoin(essCoin, 
                     dir = "./temp/ess/"
                     )
 ```

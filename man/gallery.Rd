@@ -9,7 +9,7 @@ Object of class \code{gallery_rd3}.
 }
 
 \usage{
-gallery(nodes, tree = NULL, name = NULL, label = NULL, color = NULL,
+gallery(nodes, name = NULL, label = NULL, color = NULL,
     border = NULL, ntext = NULL, info = NULL, infoFrame = c("right","left"),
     image = NULL, zoom = 1, itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE,
@@ -19,7 +19,6 @@ gallery(nodes, tree = NULL, name = NULL, label = NULL, color = NULL,
 }
 \arguments{
 \item{nodes}{a data frame with at least three columns of names, start and end.}
-\item{tree}{a data frame with two columns: source and target, describing relationships between nodes. It indicates a hierarchy between nodes which can be dynamically explored.}
 \item{name}{column name with image names in the nodes data frame.}
 \item{label}{column name with image labels in the nodes data frame.}
 \item{color}{column name with image background color variable in the nodes data frame.}

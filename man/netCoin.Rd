@@ -88,9 +88,6 @@ drl("da"), circle("ci"), Force-Atlas-2("fo"), fruchterman.reingold("fr"), gem("g
 \item{imageNames}{name of the vector with names for image files in the nodes data frame.}
 \item{dir}{a "character" string representing the directory where the web files will be saved.}
 }
-\note{
-nodes and links arguments can be substituted by a netCoin object to add or change options to it.
-}
 \references{
   Escobar, M. and Martinez-Uribe, L. (2020)
   Network Coincidence Analysis: The \code{netCoin} \code{R} Package.
