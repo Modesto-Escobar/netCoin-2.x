@@ -40,6 +40,8 @@ caring_read_file <- function(filepath){
     }
   }
 
+  colnames(data) <- gsub('"',"'",colnames(data))
+
   for(col in colnames(data)){
     if(is.factor(data[[col]])){
       if(all(!is.na(suppressWarnings(as.numeric(levels(data[[col]])))))){
