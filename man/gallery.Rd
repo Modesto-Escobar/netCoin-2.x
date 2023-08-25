@@ -14,8 +14,9 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
     image = NULL, zoom = 1, itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE, labelTooltip = TRUE,
     help = NULL, helpOn = FALSE, tutorial = FALSE, description = NULL,
-    descriptionWidth = NULL, roundedItems = FALSE, controls = 1:6, cex = 1,
-    defaultColor = "#1f77b4", language = c("en", "es", "ca"), dir = NULL)
+    descriptionWidth = NULL, roundedItems = FALSE, ntextctrl = FALSE,
+    controls = 1:6, cex = 1, defaultColor = "#1f77b4",
+    language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least three columns of names, start and end.}
@@ -40,6 +41,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{description}{a character string indicating a desription text for the graph.}
 \item{descriptionWidth}{a percentage indicating a width for the description panel (25 by default).}
 \item{roundedItems}{Display items with rounded borders.}
+\item{ntextctrl}{Previous tooltips will be closed unless you hold down the control key (FALSE by default).}
 \item{controls}{a numeric vector indicating which controls will be shown. 1 = topbar, 2 = pdf exportation, 3 = xlsx exportation, 4 = table, 5 = netCoin logo, 6 = topbar buttons. NULL hide all controls, negative values deny each control and 0 deny all.}
 \item{cex}{number indicating the amount by which plotting text should be scaled relative to the default.}
 \item{defaultColor}{a character vector giving a valid html color for node representation.}
