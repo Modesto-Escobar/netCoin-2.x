@@ -63,9 +63,9 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
   if(is.character(title2) && length(data[[title2]])){
     templateTitle2 <- paste0('<h3>', data[[title2]],'</h3>')
   }
-  templateText <- '<p></p>'
+  templateText <- '<p class="template-text"></p>'
   if(is.character(text) && length(data[[text]])){
-    templateText <- paste0('<p>',gsub("\\|",", ",data[[text]]),'</p>')
+    templateText <- paste0('<p class="template-text">',gsub("\\|",", ",data[[text]]),'</p>')
   }
   templateWiki <- ''
   if(is.character(wiki) && length(data[[wiki]])){
