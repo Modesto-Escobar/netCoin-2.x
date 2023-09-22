@@ -10,15 +10,25 @@ netGallery <- function(tree, deep = FALSE, initialType = NULL, tableformat = FAL
         name <- net$nodes[i,net$options$nodeName]
         relatives <- list()
         for(type in net$options$nodeTypes){
-          aux1 <- net$tree[net$tree[,2]==name & net$tree[,3]==type,1]
-          aux2 <- net$tree[net$tree[,1]==name & net$tree[,4]==type,2]
-          aux <- union(aux1,aux2)
+          if(name %in% net$tree[,1]){
+            aux <- net$tree[net$tree[,1]==name & net$tree[,4]==type,2]
+          }
+          if(name %in% net$tree[,2]){
+            aux <- net$tree[net$tree[,2]==name & net$tree[,3]==type,1]
+            if(!length(aux)){
+              parent <- net$tree[net$tree[,2]==name,1]
+              for(p in parent){
+                aux <- c(aux,net$tree[net$tree[,1]==p & net$tree[,4]==type,2])
+              }
+            }
+          }
           if(length(aux)){
+            aux <- unique(aux)
             relatives[[type]] <- paste0('<span>',paste0(aux,collapse="</span>, <span>"),'</span>')
           }
         }
-        relatives <- paste0(paste0(names(relatives),": ",relatives),collapse="<br/>")
-        ntext <- sub('<p class="template-text">',paste0('<div class="tree-relatives">',relatives,'<div><p class="template-text">'),ntext,fixed=TRUE)
+        relatives <- paste0(paste0('<b>',names(relatives),':</b> ',relatives),collapse="<br/>")
+        ntext <- sub('<p class="template-text">',paste0('<div class="tree-relatives">',relatives,'</div><p class="template-text">'),ntext,fixed=TRUE)
       }
       return(ntext)
     })

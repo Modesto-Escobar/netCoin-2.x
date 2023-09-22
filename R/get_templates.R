@@ -31,14 +31,20 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
 
   borderRadius <- 'border-radius:12px 12px 0 0;'
   templateImg <- ''
-  if(is.character(img) && length(data[[img]])){
-    for(i in (1:nrow(data))){
-      if(file.exists(data[i,img])){
-        data[i,img] <- paste0("data:",mime(data[i,img]),";base64,",base64encode(data[i,img]))
+  if(is.character(img)){
+    src <- ""
+    if(img=="auto"){
+      src <- "_auto_"
+    }else if(length(data[[img]])){
+      for(i in (1:nrow(data))){
+        if(file.exists(data[i,img])){
+          data[i,img] <- paste0("data:",mime(data[i,img]),";base64,",base64encode(data[i,img]))
+        }
       }
+      src <- data[[img]]
     }
     if(mode==2){
-      templateImg <- paste0('<img style="display: block; width: 100%;" src="',data[[img]],'"/>')
+      templateImg <- paste0('<img style="display: block; width: 100%;" src="',src,'"/>')
     }else{
       fit <- ''
       heightstyle <- ''
@@ -52,7 +58,7 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
         roundedImg <- borderRadius
       }
       borderRadius <- ''
-      templateImg <- paste0('<div style="',roundedImg,heightstyle,'overflow:hidden;"><img style="width:100%;height:100%;display:block;',fit,'" src="',data[[img]],'"/></div>')
+      templateImg <- paste0('<div style="',roundedImg,heightstyle,'overflow:hidden;"><img style="width:100%;height:100%;display:block;',fit,'" src="',src,'"/></div>')
     }
   }
   templateTitle <- ''
@@ -64,8 +70,16 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
     templateTitle2 <- paste0('<h3>', data[[title2]],'</h3>')
   }
   templateText <- '<p class="template-text"></p>'
-  if(is.character(text) && length(data[[text]])){
-    templateText <- paste0('<p class="template-text">',gsub("\\|",", ",data[[text]]),'</p>')
+  if(is.character(text) && !length(setdiff(text,names(data)))){
+    if(length(text)==1){
+      txt <- data[[text]]
+    }else{
+      txt <- apply(data,1,function(d){
+        paste0(d[text],collapse="<br/>")
+      })
+    }
+    txt <- gsub("\\|",", ",txt)
+    templateText <- paste0('<p class="template-text">',txt,'</p>')
   }
   templateWiki <- ''
   if(is.character(wiki) && length(data[[wiki]])){
@@ -99,16 +113,20 @@ get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  te
   }
 
   images <- ""
-  if(is.character(img) && length(data[[img]])){
-    images <- data[[img]]
-    for(i in seq_along(images)){
-      if(is.na(images[i])){
-        images[i] <- ""
-      }else{
-        if(file.exists(images[i])){
-          images[i] <- paste0("data:",mime(images[i]),";base64,",base64encode(images[i]))
+  if(is.character(img)){
+    if(img=="auto"){
+      images <- paste0('<center><img style="max-width:100%;" src="_auto_"/></center>')
+    }else if(length(data[[img]])){
+      images <- data[[img]]
+      for(i in seq_along(images)){
+        if(is.na(images[i])){
+          images[i] <- ""
+        }else{
+          if(file.exists(images[i])){
+            images[i] <- paste0("data:",mime(images[i]),";base64,",base64encode(images[i]))
+          }
+          images[i] <- paste0('<center><img style="max-width:100%;" src="',images[i],'"/></center>')
         }
-        images[i] <- paste0('<center><img style="max-width:100%;" src="',images[i],'"/></center>')
       }
     }
   }
