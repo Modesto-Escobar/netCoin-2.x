@@ -37,8 +37,9 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
       src <- "_auto_"
     }else if(length(data[[img]])){
       for(i in (1:nrow(data))){
-        if(file.exists(data[i,img])){
-          data[i,img] <- paste0("data:",mime(data[i,img]),";base64,",base64encode(data[i,img]))
+        imgpath <- as.character(data[i,img])
+        if(file.exists(imgpath)){
+          data[i,img] <- paste0("data:",mime(imgpath),";base64,",base64encode(imgpath))
         }
       }
       src <- data[[img]]

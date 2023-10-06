@@ -80,7 +80,7 @@ even | large | 4.766506 | 3.18645e-06
 In order to make a graph, two data frames are needed: a nodes data frames with names and other nodes attributes (see `as.nodes` and an edge data frame (see `edgeList`). For more information go to [netCoin](https://cran.r-project.org/package=netCoin).
 
 ## <a id="examples">Examples</a>
-###<a id="inst">Package installation and loading</a>
+### <a id="inst">Package installation and loading</a>
 
 To install and load the updated version of the netCoin package simply run the following commands:
 ```{r eval=FALSE}
@@ -89,7 +89,7 @@ install.packages("netCoin")
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 library(netCoin)
 ```
-###<a id="basic"> Basic coincidence analysis with dice roll data</a>
+### <a id="basic"> Basic coincidence analysis with dice roll data</a>
 
 Once the netCoin package has been installed and loaded, let's now load the dice data and have a look at it:
 ```{r echo=TRUE}
@@ -128,7 +128,7 @@ Net <- netCoin(N,E,dir="dice")
 knitr::include_graphics("Dice.png")
 ```
 
-###<a id="multi"> Multigraph coincidence analysis with data of families of Renaissance Italy </a>
+### <a id="multi"> Multigraph coincidence analysis with data of families of Renaissance Italy</a>
 
 The following example uses data about families of Renaissance Italy from Padgett & Ansell (1983). It consists of a dataframe (families) with information about italian families of the renaissance, and another dataframe (links) with the marriage and business links between families.
 
@@ -175,7 +175,7 @@ multigraphCreate(Marriage=G,Business=H,dir="italian")
 knitr::include_graphics("Padgett.png")
 ```
 
-###<a id="sanderson"> netCoin applied to Sanderson's analysis of species co-ocurrences </a>
+### <a id="sanderson"> netCoin applied to Sanderson's analysis of species co-ocurrences</a>
 This section uses one of the most renowned data examples in ecology. Charles Darwin compiled data about 13 species of finches and where they could be found in 17 of the Galapago islands. Sanderson ....
 
 Here we add a few extra features to our graph:
