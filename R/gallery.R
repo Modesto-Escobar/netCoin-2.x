@@ -24,7 +24,12 @@ netGallery <- function(tree, deep = FALSE, initialType = NULL, tableformat = FAL
           }
           if(length(aux)){
             aux <- unique(aux)
-            relatives[[type]] <- paste0('<span>',paste0(aux,collapse="</span>, <span>"),'</span>')
+            label <- aux
+            if(!is.null(net$options$nodeLabel)){
+              label <- net$nodes[net$nodes[[net$options$nodeName]] %in% aux, net$options$nodeLabel]
+            }
+            aux <- paste0('<span nodename="',aux,'">',label,'</span>')
+            relatives[[type]] <- paste0(aux,collapse=", ")
           }
         }
         relatives <- paste0(paste0('<b>',names(relatives),':</b> ',relatives),collapse="<br/>")

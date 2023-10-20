@@ -54,6 +54,8 @@ caring_read_file <- function(filepath){
 }
 
 caring_create_graphs <- function(data, arguments){
+  initialvariables <- arguments[['variables']]
+
   if(!is.null(arguments[['weight']])){
     arguments[['weight']] <- arguments[['weight']][1]
     if((!arguments[['weight']] %in% colnames(data)) || !is.numeric(data[,arguments[['weight']]])){
@@ -168,6 +170,43 @@ caring_create_graphs <- function(data, arguments){
     }
     net4 <- do.call(allNet,inciArgs)
     multiArgs[['incidences']] = net4
+  }
+  if("regressions" %in% plots){
+    glmArgs <- arguments[intersect(names(arguments),union(formalArgs("glmCoin"),formalArgs("netCoin")))]
+
+    chaine <- arguments[['chaine']]
+    family <- arguments[['family']]
+
+    chaine[initialvariables %in% arguments[['exogenous']]] <- 0
+    family[chaine==0] <- NA
+
+    # data.frame para la elaboración de la fórmula (ecuación)
+    A <- data.frame(v=initialvariables,
+                n=chaine,
+                m=family,
+                stringsAsFactors = FALSE)
+
+    A <- A[order(A$n, as.numeric(rownames(A)), decreasing=TRUE),]
+    formulas <- ""
+
+    # Bucle sobre cada fila del dataframe
+    for (i in seq_len(nrow(A))) {
+      subvariables <- A$v[A$n < A$n[i]]
+      if (length(subvariables) > 0) {
+        ecuacion <- paste(A$v[i], "~", paste(subvariables, collapse = "+"), ",", A$m[i])
+        if (formulas != "") {
+          formulas <- paste(formulas, ecuacion, sep = "\n")
+        } else {
+          formulas <- ecuacion
+        }
+      }
+    }
+
+    glmArgs[['formulas']] <- formulas
+    glmArgs[['data']] <- data[,initialvariables]
+
+    net5 <- do.call(glmCoin,glmArgs)
+    multiArgs[['regressions']] = net5
   }
 
   return(do.call(multigraphCreate,multiArgs))
