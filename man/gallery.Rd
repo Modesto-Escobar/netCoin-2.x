@@ -15,18 +15,18 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
     showLegend = TRUE, frequencies = FALSE, labelTooltip = TRUE,
     help = NULL, helpOn = FALSE, tutorial = FALSE, description = NULL,
     descriptionWidth = NULL, roundedItems = FALSE, ntextctrl = FALSE,
-    controls = 1:6, cex = 1, defaultColor = "#1f77b4",
+    controls = 1:5, cex = 1, defaultColor = "#1f77b4",
     language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
-\item{nodes}{a data frame with at least three columns of names, start and end.}
-\item{name}{column name with image names in the nodes data frame.}
+\item{nodes}{a data frame with at least one column with the names of the gallery's elements.}
+\item{name}{name of the vector with names in the nodes data frame.}
 \item{label}{column name with image labels in the nodes data frame.}
 \item{color}{column name with image background color variable in the nodes data frame.}
 \item{border}{column name with image border width variable in the nodes data frame or a numeric vector.}
 \item{ntext}{column name with html text in the nodes data frame.}
 \item{info}{column name with information to display in a panel in the nodes data frame.}
-\item{infoFrame}{In which panel should the information be displayed? The left panel is only available if the description argument is provided and frequencies are not showing.}
+\item{infoFrame}{In which panel should the information be displayed? The left panel is only available if frequencies are not showing.}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{zoom}{a number between 0.1 and 10 as initial displaying zoom.}
 \item{itemsPerRow}{number of items in each row.}
@@ -42,7 +42,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{descriptionWidth}{a percentage indicating a width for the description panel (25 by default).}
 \item{roundedItems}{Display items with rounded borders.}
 \item{ntextctrl}{Previous tooltips will be closed unless you hold down the control key (FALSE by default).}
-\item{controls}{a numeric vector indicating which controls will be shown. 1 = topbar, 2 = pdf exportation, 3 = xlsx exportation, 4 = table, 5 = netCoin logo, 6 = topbar buttons. NULL hide all controls, negative values deny each control and 0 deny all.}
+\item{controls}{a numeric vector indicating which controls will be shown. 1 = topbar, 2 = xlsx exportation, 3 = table, 4 = netCoin logo, 5 = topbar buttons. NULL hide all controls, negative values deny each control and 0 deny all.}
 \item{cex}{number indicating the amount by which plotting text should be scaled relative to the default.}
 \item{defaultColor}{a character vector giving a valid html color for node representation.}
 \item{language}{a character string indicating the language of the graph (en=english (default); es=spanish; ca=catalan).}

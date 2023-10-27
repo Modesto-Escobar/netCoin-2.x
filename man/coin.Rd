@@ -4,7 +4,7 @@
 Coincidence matrix.
 }
 \description{
-A coincidence object consists of a list with two elements: 1) the number of scenarios ($n), and 2) a coincidence matrix of events, whose main diagonal figures are the frequency of events and outside this diagonal there are conjoint frequencies of these events ($f)
+A coin object is a squared matrix of coincidences with its names and the frequency of events as attributes.
 }
 \usage{
 coin(incidences, minimum = 1, maximum = nrow(incidences),

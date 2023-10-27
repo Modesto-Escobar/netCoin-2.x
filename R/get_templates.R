@@ -45,7 +45,12 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
       src <- data[[img]]
     }
     if(mode==2){
-      templateImg <- paste0('<img style="display: block; width: 100%;" src="',src,'"/>')
+      if(roundedImg){
+        roundedImg <- 'border-radius:50%;object-fit:cover;aspect-ratio:1/1;'
+      }else{
+        roundedImg <- ''
+      }
+      templateImg <- paste0('<img style="display:block;width:100%;',roundedImg,'" src="',src,'"/>')
     }else{
       fit <- ''
       heightstyle <- ''
@@ -144,12 +149,16 @@ known_sites <- data.frame(
   icon=c("https://www.wikipedia.org/static/favicon/wikipedia.ico","https://www.wikidata.org/static/favicon/wikidata.ico","https://foundation.wikimedia.org/favicon.ico","https://abs.twimg.com/favicons/twitter.2.ico","https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico")
 )
 
-renderLinks <- function(data,columns,target="_blank",sites=NULL){
+renderLinks <- function(data,columns,labels=NULL,target="_blank",sites=NULL){
   if(is.null(sites)){
     sites <- known_sites
   }
   if(!is.character(target)){
     target <- '_self'
+  }
+  if(!is.null(labels) && is.null(data[[labels]])){
+    labels <- NULL
+    warning("labels: missing column in 'data'")
   }
   html <- character(nrow(data))
   for(i in seq_len(nrow(data))){
@@ -166,7 +175,13 @@ renderLinks <- function(data,columns,target="_blank",sites=NULL){
         }
       }
     }
-    html[i] <- paste0('<ul>',paste0('<li><a target="',target,'" href="', links, '"><img style="width:30px;vertical-align:bottom;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
+    if(!is.null(labels)){
+      label <- unlist(strsplit(data[i,labels],"|",fixed=TRUE))
+      if(length(label)==length(links)){
+        texts <- label
+      }
+    }
+    html[i] <- paste0('<ul>',paste0('<li><a target="',target,'" href="', links, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
   }
   return(html)
 }
