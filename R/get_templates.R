@@ -93,7 +93,7 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
   }
   if(!identical(templateImg,'') && mode==2){
     celldiv <- '<div style="display: inline-block; width: 50%; vertical-align: top;">'
-    templateContent <- paste0(templateTitle,celldiv,'<div style="',padding,'">',templateTitle2,templateText,templateWiki,'</div></div>',celldiv,templateImg,'</div>')
+    templateContent <- paste0(templateTitle,celldiv,'<div style="max-height:300px;overflow-y:auto;',padding,'">',templateTitle2,templateText,templateWiki,'</div></div>',celldiv,templateImg,'</div>')
   }else{
     templateContent <- paste0(templateImg,templateTitle,'<div style="',padding,'">',templateTitle2,templateText,templateWiki,'</div>')
   }
