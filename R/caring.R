@@ -205,6 +205,15 @@ caring_create_graphs <- function(data, arguments){
     glmArgs[['formulas']] <- formulas
     glmArgs[['data']] <- data[,initialvariables]
 
+    if(!is.null(arguments[['dichotomies']])){
+      for(i in seq_along(arguments[['dichotomies']])){
+        dic <- arguments[['dichotomies']][i]
+        value <- arguments[['valueDicho']][i]
+        glmArgs[['data']][,dic] <- 0
+        glmArgs[['data']][glmArgs[['data']][,dic]==value,dic] <- 1
+      }
+    }
+
     net5 <- do.call(glmCoin,glmArgs)
     multiArgs[['regressions']] = net5
   }
