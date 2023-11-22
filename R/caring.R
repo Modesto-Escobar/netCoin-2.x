@@ -173,11 +173,25 @@ caring_create_graphs <- function(data, arguments){
   }
   if("regressions" %in% plots){
     glmArgs <- arguments[intersect(names(arguments),union(formalArgs("glmCoin"),formalArgs("netCoin")))]
+    glmArgs[['data']] <- data[,initialvariables]
+    exogenous <- arguments[['exogenous']]
+
+    if(!is.null(arguments[['dichotomies']])){
+      for(i in seq_along(arguments[['dichotomies']])){
+        dic <- arguments[['dichotomies']][i]
+        value <- arguments[['valueDicho']][i]
+        newvar <- paste0(dic,"_",value)
+        glmArgs[['data']][,newvar] <- ifelse(glmArgs[['data']][,dic]==value, 1, 0)
+        glmArgs[['data']][,dic] <- NULL
+        initialvariables[initialvariables==dic] <- newvar
+        exogenous[exogenous==dic] <- newvar
+      }
+    }
 
     chaine <- arguments[['chaine']]
     family <- arguments[['family']]
 
-    chaine[initialvariables %in% arguments[['exogenous']]] <- 0
+    chaine[initialvariables %in% exogenous] <- 0
     family[chaine==0] <- NA
 
     # data.frame para la elaboración de la fórmula (ecuación)
@@ -203,16 +217,6 @@ caring_create_graphs <- function(data, arguments){
     }
 
     glmArgs[['formulas']] <- formulas
-    glmArgs[['data']] <- data[,initialvariables]
-
-    if(!is.null(arguments[['dichotomies']])){
-      for(i in seq_along(arguments[['dichotomies']])){
-        dic <- arguments[['dichotomies']][i]
-        value <- arguments[['valueDicho']][i]
-        glmArgs[['data']][,dic] <- 0
-        glmArgs[['data']][glmArgs[['data']][,dic]==value,dic] <- 1
-      }
-    }
 
     net5 <- do.call(glmCoin,glmArgs)
     multiArgs[['regressions']] = net5

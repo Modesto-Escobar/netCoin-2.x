@@ -13,9 +13,9 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
     border = NULL, ntext = NULL, info = NULL, infoFrame = c("right","left"),
     image = NULL, zoom = 1, itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE, labelTooltip = TRUE,
-    help = NULL, helpOn = FALSE, tutorial = FALSE, description = NULL,
-    descriptionWidth = NULL, roundedItems = FALSE, ntextctrl = FALSE,
-    controls = 1:5, cex = 1, defaultColor = "#1f77b4",
+    cexTooltip = 1, help = NULL, helpOn = FALSE, tutorial = FALSE,
+    description = NULL, descriptionWidth = NULL, roundedItems = FALSE,
+    ntextctrl = FALSE, controls = 1:5, cex = 1, defaultColor = "#1f77b4",
     language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
@@ -33,7 +33,8 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
 \item{frequencies}{a logical value true if barplots representing node attributes frequencies will be added to the final graph.}
-\item{labelTooltip}{Show label on mouseover.}
+\item{labelTooltip}{show label on mouseover.}
+\item{cexTooltip}{number indicating the amount by which plotting text should be scaled relative to the default in the label tooltip.}
 \item{showLegend}{a logical value true if the legend is to be shown.}
 \item{help}{a character string indicating a help text of the graph.}
 \item{helpOn}{Should the help be shown at the beginning?}
