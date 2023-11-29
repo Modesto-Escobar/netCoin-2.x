@@ -26,7 +26,7 @@ arguments <- list(
   variables = c("Gender", "Opinion"),
   dichotomies = "Opinion",
   valueDicho = "Yes",
-  plot = "network"
+  plot = c("surCoin","network")
 )
 graph <- caring_create_graphs(data,arguments)
 \dontrun{

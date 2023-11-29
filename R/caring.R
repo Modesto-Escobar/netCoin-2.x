@@ -111,29 +111,30 @@ caring_create_graphs <- function(data, arguments){
   multiArgs <- list(dir = arguments[['dir']])
   arguments[['dir']] <- NULL
 
-  if("network" %in% plots){
+  if("surCoin" %in% plots){
     if(!is.null(arguments[['metric']]) && length(setdiff(arguments[['variables']],arguments[['metric']]))==0){
-      arguments[['variables']] <- arguments[['data']][,arguments[['metric']]]
+      corrArgs <- arguments
+      corrArgs[['variables']] <- arguments[['data']][,arguments[['metric']]]
       keys <- union(names(formals(netCorr)),names(formals(netCoin)))
-      arguments <- arguments[intersect(names(arguments),keys)]
-      net1 <- do.call(netCorr,arguments)
+      corrArgs <- corrArgs[intersect(names(corrArgs),keys)]
+      net1 <- do.call(netCorr,corrArgs)
     }else{
       keys <- union(names(formals(surCoin)),names(formals(netCoin)))
-      arguments <- arguments[intersect(names(arguments),keys)]
-      net1 <- do.call(surCoin,arguments)
+      surArgs <- arguments[intersect(names(arguments),keys)]
+      net1 <- do.call(surCoin,surArgs)
     }
-    multiArgs[['network']] = net1
+    multiArgs[[plots[which(plots=="surCoin")+1]]] = net1
   }
-  if("scatter" %in% plots){
+  if("surScat" %in% plots){
     scatArgs <- arguments[intersect(names(arguments),union(formalArgs("surScat"),formalArgs("netCoin")))]
     if(!length(scatArgs[['nclusters']])){
       scatArgs[['nclusters']] <- min(nrow(data)-1,6):2
     }
     scatArgs[['degreeFilter']] <- NULL
     net2 <- do.call(surScat,scatArgs)
-    multiArgs[['scatter']] = net2
+    multiArgs[[plots[which(plots=="surScat")+1]]] = net2
   }
-  logs <- intersect(c("log-i.2","log-i.3","log-i.4","log-i.5"),plots)
+  logs <- intersect(c("logCoin2","logCoin3","logCoin4","logCoin5"),plots)
   if(length(logs)){
     for(log in logs){
       logArgs <- arguments[intersect(names(arguments),union(formalArgs("logCoin"),formalArgs("netCoin")))]
@@ -156,12 +157,12 @@ caring_create_graphs <- function(data, arguments){
       logArgs[['color']] <- "var"
       logArgs[['order']] <- as.numeric(sub("log-i.","",log,fixed=TRUE))
       net3 <- do.call(logCoin,logArgs)
-      multiArgs[[log]] = net3
+      multiArgs[[plots[which(plots==log)+1]]] = net3
     }
   }
-  if("incidences" %in% plots){
+  if("allNet" %in% plots){
     inciArgs <- arguments[intersect(names(arguments),union(formalArgs("allNet"),formalArgs("netCoin")))]
-    inciArgs[['incidences']] <- arguments[['data']]
+    inciArgs[['incidences']] <- data[,initialvariables]
     if(!inciArgs[['color']] %in% colnames(inciArgs[['incidences']])){
       inciArgs[['color']] <- NULL
     }
@@ -169,9 +170,9 @@ caring_create_graphs <- function(data, arguments){
       inciArgs[['incidences']][,n] <- as.numeric(as.logical(inciArgs[['incidences']][,n]))
     }
     net4 <- do.call(allNet,inciArgs)
-    multiArgs[['incidences']] = net4
+    multiArgs[[plots[which(plots=="allNet")+1]]] = net4
   }
-  if("regressions" %in% plots){
+  if("glmCoin" %in% plots){
     glmArgs <- arguments[intersect(names(arguments),union(formalArgs("glmCoin"),formalArgs("netCoin")))]
     glmArgs[['data']] <- data[,initialvariables]
     exogenous <- arguments[['exogenous']]
@@ -219,7 +220,7 @@ caring_create_graphs <- function(data, arguments){
     glmArgs[['formulas']] <- formulas
 
     net5 <- do.call(glmCoin,glmArgs)
-    multiArgs[['regressions']] = net5
+    multiArgs[[plots[which(plots=="glmCoin")+1]]] = net5
   }
 
   return(do.call(multigraphCreate,multiArgs))
