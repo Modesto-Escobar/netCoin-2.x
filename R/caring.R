@@ -173,13 +173,22 @@ caring_create_graphs <- function(data, arguments){
     multiArgs[[plots[which(plots=="allNet")+1]]] = net4
   }
   if("glmCoin" %in% plots){
+    exogenous <- arguments[['exogenous']]
+    if(!length(exogenous)){
+      stop("missing independent variables")
+    }
+
     glmArgs <- arguments[intersect(names(arguments),union(formalArgs("glmCoin"),formalArgs("netCoin")))]
     glmArgs[['data']] <- data[,initialvariables]
-    exogenous <- arguments[['exogenous']]
 
-    if(!is.null(arguments[['dichotomies']])){
-      for(i in seq_along(arguments[['dichotomies']])){
-        dic <- arguments[['dichotomies']][i]
+    if(!is.null(pmax)){
+      glmArgs[['pmax']] <- pmax
+    }
+
+    dichotomies <- arguments[['dichotomies']]
+    if(!is.null(dichotomies)){
+      for(i in seq_along(dichotomies)){
+        dic <- dichotomies[i]
         value <- arguments[['valueDicho']][i]
         newvar <- paste0(dic,"_",value)
         glmArgs[['data']][,newvar] <- ifelse(glmArgs[['data']][,dic]==value, 1, 0)
@@ -193,6 +202,7 @@ caring_create_graphs <- function(data, arguments){
     family <- arguments[['family']]
 
     chaine[initialvariables %in% exogenous] <- 0
+    family[initialvariables %in% dichotomies] <- "binomial"
     family[chaine==0] <- NA
 
     # data.frame para la elaboración de la fórmula (ecuación)
