@@ -185,7 +185,14 @@ caring_create_graphs <- function(data, arguments){
       glmArgs[['pmax']] <- pmax
     }
 
+    chaine <- arguments[['chaine']]
+    family <- arguments[['family']]
+
+    metric <- arguments[['metric']]
     dichotomies <- arguments[['dichotomies']]
+    textvariables <- setdiff(initialvariables,unique(c(metric,dichotomies,exogenous)))
+    finalvariables <- initialvariables
+
     if(!is.null(dichotomies)){
       for(i in seq_along(dichotomies)){
         dic <- dichotomies[i]
@@ -193,20 +200,35 @@ caring_create_graphs <- function(data, arguments){
         newvar <- paste0(dic,"_",value)
         glmArgs[['data']][,newvar] <- ifelse(glmArgs[['data']][,dic]==value, 1, 0)
         glmArgs[['data']][,dic] <- NULL
-        initialvariables[initialvariables==dic] <- newvar
-        exogenous[exogenous==dic] <- newvar
+        family[initialvariables==dic] <- "binomial"
+        finalvariables[initialvariables==dic] <- newvar
       }
     }
 
-    chaine <- arguments[['chaine']]
-    family <- arguments[['family']]
+    initialchaine <- chaine
+    if(!is.null(textvariables)){
+      for(dic in textvariables){
+        values <- unique(glmArgs[['data']][,dic])
+        for(value in values){
+          newvar <- paste0(dic,"_",value)
+          glmArgs[['data']][,newvar] <- ifelse(glmArgs[['data']][,dic]==value, 1, 0)
+          chaine <- c(chaine,initialchaine[initialvariables==dic])
+          family <- c(family,"binomial")
+          finalvariables <- c(finalvariables,newvar)
+        }
+        keep <- finalvariables!=dic
+        chaine <- chaine[keep]
+        family <- family[keep]
+        finalvariables <- finalvariables[keep]
+        glmArgs[['data']][,dic] <- NULL
+      }
+    }
 
-    chaine[initialvariables %in% exogenous] <- 0
-    family[initialvariables %in% dichotomies] <- "binomial"
+    chaine[finalvariables %in% exogenous] <- 0
     family[chaine==0] <- NA
 
     # data.frame para la elaboración de la fórmula (ecuación)
-    A <- data.frame(v=initialvariables,
+    A <- data.frame(v=finalvariables,
                 n=chaine,
                 m=family,
                 stringsAsFactors = FALSE)
@@ -228,6 +250,7 @@ caring_create_graphs <- function(data, arguments){
     }
 
     glmArgs[['formulas']] <- formulas
+    glmArgs[['note']] <- gsub("\n","</br>",formulas)
 
     net5 <- do.call(glmCoin,glmArgs)
     multiArgs[[plots[which(plots=="glmCoin")+1]]] = net5
