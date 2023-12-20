@@ -1820,7 +1820,6 @@ extract <- function(formulas, data) {
   return(variables)
 }
 
-
 meanPer<-function(data, variables, frame, name=names(frame[1]), frequency= FALSE, percentage= TRUE, weights = NULL){
   if (is.null(weights)) weights <- rep(1, nrow(data))
   columns<-setdiff(names(frame),c(name, "n.","%"))
@@ -1829,17 +1828,20 @@ meanPer<-function(data, variables, frame, name=names(frame[1]), frequency= FALSE
   frame.order<-row.names(frame)
   quantitatives<-c(variables$D,variables$I)
   data<-na.omit(cbind(as.data.frame(data)[,unlist(variables)],weights))
-  if (length(variables$F)>0) {
-    data<-dichotomize(data, variables$F, "")
-    quantitatives<-setdiff(names(data),union(weights,variables$F))
+  for (varF in variables$F) {
+    beginF <- length(data)+1
+    data<-dichotomize(data, varF, "")
+    names(data)[beginF:length(data)] <- paste0(varF,":",names(data)[beginF:length(data)])
   }
-  sta<-data.frame(names=quantitatives)
+  setvariables <- setdiff(names(data),union(weights,variables$F))
+  sta<-data.frame(names=setvariables)
   row.names(sta)<-sta$names
-  if (frequency & !is.null(weights)) sta$N. <-round(apply(data[,quantitatives]*data$weights, 2, sum),0)
+  if (frequency & !is.null(weights)) sta$N. <-round(apply(data[,setvariables]*data$weights, 2, sum),0)
+  sta$N. <- ifelse(sta$names %in% quantitatives, nrow(data), sta$N.)
   if (percentage) {
-    means<-apply(data[,quantitatives], 2, weighted.mean, data$weights)
-    maxs <-apply(data[,quantitatives], 2, max)
-    mins <-apply(data[,quantitatives], 2, min)
+    means<-apply(data[,setvariables], 2, weighted.mean, data$weights)
+    maxs <-apply(data[,setvariables], 2, max)
+    mins <-apply(data[,setvariables], 2, min)
     sta$M.<-(means-mins)/(maxs-mins)*100
   }
   frame<-merge(frame,sta[,-1,drop=F], by="row.names", all.x = TRUE)[,-1]
