@@ -1836,6 +1836,7 @@ meanPer<-function(data, variables, frame, name=names(frame[1]), frequency= FALSE
   setvariables <- setdiff(names(data),union(weights,variables$F))
   sta<-data.frame(names=setvariables)
   row.names(sta)<-sta$names
+  sta$N. <- 0
   if (frequency & !is.null(weights)) sta$N. <-round(apply(data[,setvariables]*data$weights, 2, sum),0)
   sta$N. <- ifelse(sta$names %in% quantitatives, nrow(data), sta$N.)
   if (percentage) {
