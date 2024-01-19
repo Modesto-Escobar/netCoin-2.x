@@ -197,7 +197,7 @@ caring_create_graphs <- function(data, arguments){
       for(i in seq_along(dichotomies)){
         dic <- dichotomies[i]
         value <- arguments[['valueDicho']][i]
-        newvar <- paste0(dic,"_",value)
+        newvar <- gsub(" ","",paste0(dic,"_",value))
         glmArgs[['data']][,newvar] <- ifelse(glmArgs[['data']][,dic]==value, 1, 0)
         glmArgs[['data']][,dic] <- NULL
         family[initialvariables==dic] <- "binomial"
@@ -210,7 +210,7 @@ caring_create_graphs <- function(data, arguments){
       for(dic in textvariables){
         values <- unique(glmArgs[['data']][,dic])
         for(value in values){
-          newvar <- paste0(dic,"_",value)
+          newvar <- gsub(" ","",paste0(dic,"_",value))
           glmArgs[['data']][,newvar] <- ifelse(glmArgs[['data']][,dic]==value, 1, 0)
           chaine <- c(chaine,initialchaine[initialvariables==dic])
           family <- c(family,"binomial")

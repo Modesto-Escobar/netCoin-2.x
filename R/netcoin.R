@@ -17,7 +17,7 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         main = NULL, note = NULL, showCoordinates = FALSE, showArrows = FALSE,
         showLegend = TRUE, frequencies = FALSE, showAxes = FALSE,
         axesLabels = NULL, scenarios = NULL, help = NULL, helpOn = FALSE,
-        mode = c("network","heatmap"), roundedItems = FALSE, controls = 1:4,
+        mode = c("network","heatmap"), roundedItems = FALSE, controls = 1:8,
         cex = 1, background = NULL, defaultColor = "#1f77b4",
         language = c("en","es","ca"), dir = NULL)
 {

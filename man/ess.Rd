@@ -19,7 +19,7 @@ A sample size of 1,000 respondents from the European Social Survey, Round-8.
     }
 }
 \references{
-ESS Round 8: European Social Survey Round 8 Data (2016). Data file edition 2.1. NSD - Norwegian Centre for Research Data, Norway - Data Archive and distributor of ESS data for ESS ERIC. \href{https://ess-search.nsd.no/en/study/f8e11f55-0c14-4ab3-abde-96d3f14d3c76}{doi:10.21338/NSD-ESS8-2016}.
+ESS Round 8: European Social Survey Round 8 Data (2016). Data file edition 2.1. NSD - Norwegian Centre for Research Data, Norway - Data Archive and distributor of ESS data for ESS ERIC. \href{https://ess.sikt.no/en/study/f8e11f55-0c14-4ab3-abde-96d3f14d3c76}{doi:10.21338/NSD-ESS8-2016}.
 }
 \examples{
 data("ess")
