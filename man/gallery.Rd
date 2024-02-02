@@ -2,7 +2,7 @@
 \alias{gallery}
 \title{Images in a grid gallery.}
 \description{
-\code{gallery} produces a gallery_rd3 object. 
+\code{gallery} produces an interactive image gallery. 
 }
 \value{
 Object of class \code{gallery_rd3}.
