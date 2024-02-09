@@ -100,6 +100,37 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
   return(paste0('<div class="info-template" style="font-size:',as.numeric(cex),'em;',margin,widthstyle,'">',templateContent,'</div>'))
 }
 
+get_template2 <- function(data, title=NULL, title2=NULL, text=NULL, wiki=NULL) {
+  templateTitle <- ''
+  if(is.character(title) && length(data[[title]])){
+    templateTitle <- paste0('<h2>',data[[title]],'</h2>')
+  }
+  templateTitle2 <- ''
+  if(is.character(title2) && length(data[[title2]])){
+    templateTitle2 <- paste0('<h3>', data[[title2]],'</h3>')
+  }
+  templateText <- '<p class="template-text"></p>'
+  if(is.character(text) && !length(setdiff(text,names(data)))){
+    if(length(text)==1){
+      txt <- data[[text]]
+    }else{
+      txt <- apply(data,1,function(d){
+        paste0(d[text],collapse="<br/>")
+      })
+    }
+    txt <- gsub("\\|",", ",txt)
+    templateText <- paste0('<p class="template-text">',txt,'</p>')
+  }
+  templateWiki <- ''
+  if(is.character(wiki) && length(data[[wiki]])){
+    templateWiki <- paste0('<h3><img style="width:20px;vertical-align:bottom;margin-right:10px;" src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png"/>Wikipedia: <a target="_blank" href="',data[[wiki]],'">',wiki,'</a></h3>')
+  }
+
+  templateContent <- paste0(templateTitle,"<div>",templateTitle2,templateText,templateWiki,"</div>")
+
+  return(paste0('<div class="info-template">',templateContent,'</div>'))
+}
+
 get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  text=NULL, color="auto", cex=1, mode=1){
   autocolor <- ''
   colorstyle <- ''

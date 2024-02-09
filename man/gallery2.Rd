@@ -10,7 +10,8 @@ Object of class \code{gallery_rd3}.
 
 \usage{
 gallery2(nodes, name = NULL, label = NULL, ntext = NULL,
-    image = NULL, language = c("en", "es", "ca"), dir = NULL)
+  image = NULL, main = NULL, colorScheme = 0,
+  language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least one column with the names of the gallery's elements.}
@@ -18,6 +19,8 @@ gallery2(nodes, name = NULL, label = NULL, ntext = NULL,
 \item{label}{column name with image labels in the nodes data frame.}
 \item{ntext}{column name with html text in the nodes data frame.}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
+\item{main}{upper title of the graph.}
+\item{colorScheme}{Select a color theme for display (0-11).}
 \item{language}{a character string indicating the language of the graph (en=english (default); es=spanish; ca=catalan).}
 \item{dir}{a character string representing the directory where the web files will be saved.}
 }
