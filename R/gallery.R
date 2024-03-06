@@ -2,9 +2,7 @@ gallery <- gallery_rd3
 
 gallery2 <- gallery2_rd3
 
-netGalleryWrapper <- function(tree, deep, initialType, tableformat, treeGallery_mode, ...){
-  arguments <- list(...)
-  net <- treeGallery_mode(tree, deep, initialType, tableformat, ...)
+netGalleryWrapper <- function(net){
   if(!is.null(net$options$nodeTypes) && !is.null(net$options$nodeText)){
     net$nodes[[net$options$nodeText]] <- sapply(seq_len(nrow(net$nodes)),function(i){
       ntext <- net$nodes[i,net$options$nodeText]
@@ -47,11 +45,13 @@ netGalleryWrapper <- function(tree, deep, initialType, tableformat, treeGallery_
 }
 
 netGallery <- function(tree, deep = FALSE, initialType = NULL, tableformat = FALSE, ...){
-  return(netGalleryWrapper(tree, deep, initialType, tableformat, treeGallery_rd3, ...))
+  net <- treeGallery_rd3(tree, deep, initialType, tableformat, ...)
+  return(netGalleryWrapper(net))
 }
 
-netGallery2 <- function(tree, deep = FALSE, initialType = NULL, tableformat = FALSE, ...){
-  return(netGalleryWrapper(tree, deep, initialType, tableformat, treeGallery2_rd3, ...))
+netGallery2 <- function(tree, initialType = NULL, tableformat = FALSE, ...){
+  net <- treeGallery2_rd3(tree, initialType, tableformat, ...)
+  return(netGalleryWrapper(net))
 }
 
 asGallery <- function(net){

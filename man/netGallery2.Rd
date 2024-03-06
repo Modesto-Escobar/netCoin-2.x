@@ -9,32 +9,18 @@ Object of class \code{treeGallery_rd3}.
 }
 
 \usage{
-netGallery2(tree, deep = FALSE, initialType = NULL, tableformat = FALSE, ...)
+netGallery2(tree, initialType = NULL, tableformat = FALSE, ...)
 }
 \arguments{
 \item{tree}{a data frame with two columns: source and target, describing relationships between nodes. It indicates a hierarchy between nodes which can be dynamically explored. Optionally, another two columns describing types can be passed.}
-\item{deep}{The tree is especified in a structure that preserves paths. Each column will be a tree level, colnames as node types.}
-\item{initialType}{A character vector indicating which node type will be shown at start. No effects in 'deep' mode.}
-\item{tableformat}{If the tree is especified as a table, one column per level. No effects in 'deep' mode.}
+\item{initialType}{A character vector indicating which node type will be shown at start.}
+\item{tableformat}{If the tree is especified as a table, one column per level.}
 \item{...}{Any \link{gallery_rd3} argument.}
 }
 \author{
 Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
-# simply linked tree
-tree <- data.frame(
-  parent=c("a","a","b","b","b","ab","ab","ab","ab","ba","ba","baa","ba"),
-  child=c("aa","ab","ba","bb","bc","aba","abb","abc","abd","baa","bab","baaa","aba")
-)
-
-gallery <- netGallery2(tree)
-
-\dontrun{
-plot(gallery)
-}
-
-
 # Create some film data
 tree <- data.frame(
   film = c("The Shawshank Redemption", "The Godfather", "The Dark Knight", "The Godfather Part II",
@@ -53,22 +39,6 @@ tree <- data.frame(
 
 gallery <- netGallery2(tree, initialType="film", tableformat=TRUE)
 
-\dontrun{
-plot(gallery)
-}
-
-
-# example with path preservation
-tree <- rbind(
-c("a1","b1","c1|c2"),
-c("a2","b2","c3|c4"),
-c("a3","b2","c4|c5"),
-c("a4","b3|b4","c6|c7|c8")
-)
-
-colnames(tree) <- c("a","b","c")
-
-gallery <- netGallery2(tree, deep=TRUE)
 \dontrun{
 plot(gallery)
 }
