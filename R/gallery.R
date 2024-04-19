@@ -30,6 +30,9 @@ netGalleryWrapper <- function(net){
               names(labels) <- net$nodes[[net$options$nodeName]]
               label <- labels[aux]
             }
+            indices <- seq_len(nrow(net$nodes))-1
+            names(indices) <- net$nodes[[net$options$nodeName]]
+            aux <- indices[aux]
             aux <- paste0('<span nodename="',aux,'">',label,'</span>')
             relatives[[type]] <- paste0(aux,collapse=", ")
           }
