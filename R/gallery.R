@@ -10,6 +10,7 @@ netGalleryWrapper <- function(net){
         name <- net$nodes[i,net$options$nodeName]
         relatives <- list()
         for(type in net$options$nodeTypes){
+          aux <- character(0)
           if(name %in% net$tree[,1]){
             aux <- net$tree[net$tree[,1]==name & net$tree[,4]==type,2]
           }
