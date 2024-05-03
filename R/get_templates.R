@@ -252,3 +252,82 @@ mime <- function(name) {
   mime <- unname(mimemap[tolower(ext)])
   return(mime)
 }
+
+translateColumns <- function(language){
+  language <- language[1]
+  if(language=="es"){
+    return(c("Q", "Nombre", "Descripci\uF3n", "Nacimiento", "Lugar nacimiento", "Pa\uEDs nacimiento", "Defunci\uF3n", "Lugar defunci\uF3n", "Pa\uEDs defunci\uF3n", "G\uE9nero", "Ocupaci\uF3n", "wiki"))
+  }else if(language=="ca"){
+    return(c("Q", "Nom", "Descripci\uF3", "Naixement", "Lloc naixement", "Pa\uEDs naixement", "Defunci\uF3", "Lloc defunci\uF3", "Pa\uEDs defunci\uF3", "G\uE8nere", "Ocupaci\uF3", "wiki"))
+  }
+  return(c("Q", "Name", "Description", "Birth", "Birth Place", "Birth Country", "Death", "Death Place", "Death Country", "Gender", "Occupation", "wiki"))
+}
+
+makeT <- function(data, imageDir=NULL, imageDefault=NULL, language=c("en","es","ca")) {  
+  f_D <- c("entity", "entityLabel", "entityDescription", "byear", "bactualplaceLabel", "bcountryLabel", "dyear", "dactualplaceLabel", "dcountryLabel", "gender", "occupation", "wikipedias")
+  if(length(setdiff(f_D,colnames(data)))){
+    stop("data: wrong data input, missing columns")
+  }
+  D <- as.data.frame(data[, f_D])
+
+  language <- language[1]
+  f_E <- translateColumns(language)
+  linksname <- "LINKS"
+  if(language=="es"){
+    linksname <- "ENLACES"
+  }else if(language=="ca"){
+    linksname <- "ENLLA\uC7OS"
+  }
+  names(D) <- f_E
+
+  D[[12]] <- gsub("\\|.*","", D[[12]]) # wiki
+  D$wikidata <- paste0("https://m.wikidata.org/wiki/", D[[1]])
+  D[[3]] <- paste0(toupper(substr(D[[3]], 1, 1)), substr(D[[3]], 2, nchar(D[[3]]))) # description
+
+  D$td <- ifelse(is.na(D[[7]]), 
+               paste0(D[[2]], " (", D[[4]],"-)"), 
+               paste0(D[[2]], " (", D[[4]],"-",D[[7]],")"))
+
+  D$img <- NA
+  if(!is.null(imageDir) && file.exists(imageDir)){
+    for(type in c("jpg","jpeg","gif","png","svg")){
+      subset <- is.na(D$img)
+      if(sum(subset)){
+        images <- file.path(imageDir,paste0(D[subset,1],".",type))
+        imgexists <- file.exists(images)
+        if(sum(imgexists)){
+          D$img[subset & imgexists] <- images[imgexists]
+        }
+      }
+    }
+  }
+  if(!is.null(imageDefault) && file.exists(imageDefault[1])){
+    D$img[is.na(D$img)] <- imageDefault[1]
+  }
+
+  D$links    <- paste0('</p><h3>',linksname,':</h3>', renderLinks(D, c("wikidata", "wiki"), NULL, "mainframe"))
+  D$info     <- get_template2(D, title="td", text="links")
+  
+  return(D[, c(f_E[c(-1,-12)], "img", "info")])
+}
+
+makeT2 <- function(entityLabel, image=NA, entityDescription=NA,
+    byear=NA, bplace=NA, bcountry=NA, dyear=NA, dplace=NA, dcountry= NA,
+    gender=NA, occupation=NA, language=c("en","es","ca")) {
+  if(!is.vector(entityLabel)) {
+    stop("entityLabel: must be a character vector")
+  }
+
+  entity <- NA
+  wikipedias <- NA
+  D <- data.frame(entity, entityLabel, entityDescription, byear, bplace, bcountry, dyear, dplace, dcountry, gender, occupation, wikipedias)
+
+  translatedColumns <- translateColumns(language)
+  names(D) <- translatedColumns
+
+  image[is.na(image) | !file.exists(image)] <- NA
+  D$img <- image
+  D$info <- get_template2(D, title=names(D)[2])
+
+  return(D[,c(-1,-12)])
+}
