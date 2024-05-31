@@ -9,14 +9,16 @@ Object of class \code{gallery_rd3}.
 }
 
 \usage{
-gallery2(nodes, name = NULL, label = NULL, ntext = NULL,
-  image = NULL, main = NULL, note = NULL, colorScheme = 0,
-  language = c("en", "es", "ca"), dir = NULL)
+gallery2(nodes, name = NULL, label = NULL, order = NULL, decreasing = FALSE,
+  ntext = NULL, image = NULL, main = NULL, note = NULL,
+  colorScheme = 0, language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least one column with the names of the gallery's elements.}
 \item{name}{name of the vector with names in the nodes data frame.}
 \item{label}{column name with image labels in the nodes data frame.}
+\item{order}{name of the column with node order in the nodes data frame.}
+\item{decreasing}{decreasing or increasing sort of the nodes.}
 \item{ntext}{column name with html text in the nodes data frame.}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{main}{upper title of the graph.}

@@ -123,7 +123,7 @@ get_template2 <- function(data, title=NULL, title2=NULL, text=NULL, wiki=NULL) {
   }
   templateWiki <- ''
   if(is.character(wiki) && length(data[[wiki]])){
-    templateWiki <- paste0('<h3><img style="width:20px;vertical-align:bottom;margin-right:10px;" src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png"/>Wikipedia: <a target="_blank" href="',data[[wiki]],'">',wiki,'</a></h3>')
+    templateWiki <- paste0('<h3><img style="width:20px;vertical-align:bottom;margin-right:10px;" src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png"/>Wikipedia: <a target="mainframe" href="',data[[wiki]],'">',wiki,'</a></h3>')
   }
 
   templateContent <- paste0(templateTitle,"<div>",templateTitle2,templateText,templateWiki,"</div>")
