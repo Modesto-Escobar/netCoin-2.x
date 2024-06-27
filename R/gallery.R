@@ -25,17 +25,20 @@ netGalleryWrapper <- function(net){
           }
           if(length(aux)){
             aux <- unique(aux)
-            label <- aux
-            if(!is.null(net$options$nodeLabel) && (net$options$nodeLabel!=net$options$nodeName)){
-              labels <- net$nodes[[net$options$nodeLabel]]
-              names(labels) <- net$nodes[[net$options$nodeName]]
-              label <- labels[aux]
+            aux <- aux[aux!=name]
+            if(length(aux)){
+              label <- aux
+              if(!is.null(net$options$nodeLabel) && (net$options$nodeLabel!=net$options$nodeName)){
+                labels <- net$nodes[[net$options$nodeLabel]]
+                names(labels) <- net$nodes[[net$options$nodeName]]
+                label <- labels[aux]
+              }
+              indices <- seq_len(nrow(net$nodes))-1
+              names(indices) <- net$nodes[[net$options$nodeName]]
+              aux <- indices[aux]
+              aux <- paste0('<span nodename="',aux,'">',label,'</span>')
+              relatives[[type]] <- paste0(aux,collapse=", ")
             }
-            indices <- seq_len(nrow(net$nodes))-1
-            names(indices) <- net$nodes[[net$options$nodeName]]
-            aux <- indices[aux]
-            aux <- paste0('<span nodename="',aux,'">',label,'</span>')
-            relatives[[type]] <- paste0(aux,collapse=", ")
           }
         }
         relatives <- paste0(paste0('<b>',names(relatives),':</b> ',relatives),collapse="<br/>")
