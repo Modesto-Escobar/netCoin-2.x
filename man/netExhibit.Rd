@@ -1,15 +1,16 @@
-\name{netGallery2}
+\name{netExhibit}
+\alias{netExhibit}
 \alias{netGallery2}
 \title{Images in a grid gallery.}
 \description{
-\code{netGallery2} produces an interactive image gallery (alternative display). 
+\code{netExhibit} produces an interactive image gallery (alternative display). 
 }
 \value{
 Object of class \code{treeGallery_rd3}.
 }
 
 \usage{
-netGallery2(tree, initialType = NULL, tableformat = FALSE, ...)
+netExhibit(tree, initialType = NULL, tableformat = FALSE, ...)
 }
 \arguments{
 \item{tree}{a data frame with two columns: source and target, describing relationships between nodes. It indicates a hierarchy between nodes which can be dynamically explored. Optionally, another two columns describing types can be passed.}
@@ -37,7 +38,7 @@ tree <- data.frame(
     "Elijah Wood|Viggo Mortensen|Ian McKellen", "Clint Eastwood|Eli Wallach|Lee Van Cleef")
 )
 
-gallery <- netGallery2(tree, initialType="film", tableformat=TRUE)
+gallery <- netExhibit(tree, initialType="film", tableformat=TRUE)
 
 \dontrun{
 plot(gallery)

@@ -1,6 +1,10 @@
 gallery <- gallery_rd3
 
-gallery2 <- gallery2_rd3
+gallery2 <- function(...){
+  warning("Using 'gallery2' function is deprecated. Use 'exhibit' instead.")
+  do.call(gallery2_rd3,list(...))
+}
+exhibit <- gallery2_rd3
 
 netGalleryWrapper <- function(net){
   if(!is.null(net$options$nodeTypes) && !is.null(net$options$nodeText)){
@@ -24,6 +28,7 @@ netGalleryWrapper <- function(net){
             }
           }
           if(length(aux)){
+            aux <- aux[!is.na(aux)]
             aux <- unique(aux)
             aux <- aux[aux!=name]
             if(length(aux)){
@@ -57,6 +62,12 @@ netGallery <- function(tree, deep = FALSE, initialType = NULL, tableformat = FAL
 }
 
 netGallery2 <- function(tree, initialType = NULL, tableformat = FALSE, ...){
+  warning("Using 'netGallery2' function is deprecated. Use 'netExhibit' instead.")
+  net <- treeGallery2_rd3(tree, initialType, tableformat, ...)
+  return(netGalleryWrapper(net))
+}
+
+netExhibit <- function(tree, initialType = NULL, tableformat = FALSE, ...){
   net <- treeGallery2_rd3(tree, initialType, tableformat, ...)
   return(netGalleryWrapper(net))
 }

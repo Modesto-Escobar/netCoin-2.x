@@ -1,16 +1,17 @@
-\name{gallery2}
+\name{exhibit}
+\alias{exhibit}
 \alias{gallery2}
 \title{Images in a grid gallery.}
 \description{
-\code{gallery2} produces an interactive image gallery (alternative display).
+\code{exhibit} produces an interactive image gallery (alternative display).
 }
 \value{
 Object of class \code{gallery_rd3}.
 }
 
 \usage{
-gallery2(nodes, name = NULL, label = NULL, order = NULL, decreasing = FALSE,
-  ntext = NULL, image = NULL, main = NULL, note = NULL,
+exhibit(nodes, name = NULL, label = NULL, order = NULL, decreasing = FALSE,
+  ntext = NULL, image = NULL, main = NULL, note = NULL, export = FALSE,
   colorScheme = 0, language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
@@ -23,6 +24,7 @@ gallery2(nodes, name = NULL, label = NULL, order = NULL, decreasing = FALSE,
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
+\item{export}{A button will appear to export gallery as excel.}
 \item{colorScheme}{Select a color theme for display (0-11).}
 \item{language}{a character string indicating the language of the graph (en=english (default); es=spanish; ca=catalan).}
 \item{dir}{a character string representing the directory where the web files will be saved.}
@@ -34,5 +36,5 @@ Modesto Escobar, Department of Sociology and Communication, University of Salama
 data("finches")
 finches$species <- system.file("extdata", finches$species,
         package="netCoin") # copy path to the species field
-gallery2(finches, image="species")
+exhibit(finches, image="species")
 }
