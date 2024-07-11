@@ -15,15 +15,19 @@ netGalleryWrapper <- function(net){
         relatives <- list()
         for(type in net$options$nodeTypes){
           aux <- character(0)
-          if(name %in% net$tree[,1]){
-            aux <- net$tree[net$tree[,1]==name & net$tree[,4]==type,2]
-          }
-          if(name %in% net$tree[,2]){
-            aux <- net$tree[net$tree[,2]==name & net$tree[,3]==type,1]
-            if(!length(aux)){
-              parent <- net$tree[net$tree[,2]==name,1]
-              for(p in parent){
-                aux <- c(aux,net$tree[net$tree[,1]==p & net$tree[,4]==type,2])
+          if(length(net$nodes_relatives)){
+            aux <- net$nodes_relatives[[i]][net$nodes_relativesTypes2[[i]]==type] 
+          }else{
+            if(name %in% net$tree[,1]){
+              aux <- net$tree[net$tree[,1]==name & net$tree[,4]==type,2]
+            }
+            if(name %in% net$tree[,2]){
+              aux <- net$tree[net$tree[,2]==name & net$tree[,3]==type,1]
+              if(!length(aux)){
+                parent <- net$tree[net$tree[,2]==name,1]
+                for(p in parent){
+                  aux <- c(aux,net$tree[net$tree[,1]==p & net$tree[,4]==type,2])
+                }
               }
             }
           }
@@ -46,8 +50,10 @@ netGalleryWrapper <- function(net){
             }
           }
         }
-        relatives <- paste0(paste0('<b>',names(relatives),':</b> ',relatives),collapse="<br/>")
-        ntext <- sub('<p class="template-text">',paste0('<div class="tree-relatives">',relatives,'</div><p class="template-text">'),ntext,fixed=TRUE)
+        if(length(relatives)){
+          relatives <- paste0(paste0('<b>',names(relatives),':</b> ',relatives),collapse="<br/>")
+          ntext <- sub('<p class="template-text">',paste0('<div class="tree-relatives">',relatives,'</div><p class="template-text">'),ntext,fixed=TRUE)
+        }
       }
       return(ntext)
     })
