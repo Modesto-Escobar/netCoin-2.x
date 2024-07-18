@@ -11,8 +11,9 @@ Object of class \code{gallery_rd3}.
 
 \usage{
 exhibit(nodes, name = NULL, label = NULL, order = NULL, decreasing = FALSE,
-  ntext = NULL, image = NULL, main = NULL, note = NULL, export = FALSE,
-  colorScheme = 0, language = c("en", "es", "ca"), dir = NULL)
+  ntext = NULL, mainframeHeight = NULL, image = NULL, zoom = NULL,
+  main = NULL, note = NULL, export = FALSE, colorScheme = 0,
+  language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least one column with the names of the gallery's elements.}
@@ -21,7 +22,9 @@ exhibit(nodes, name = NULL, label = NULL, order = NULL, decreasing = FALSE,
 \item{order}{name of the column with node order in the nodes data frame.}
 \item{decreasing}{decreasing or increasing sort of the nodes.}
 \item{ntext}{column name with html text in the nodes data frame.}
+\item{mainframeHeight}{a number between 0.1 and 1 to reduce mainframe height.}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
+\item{zoom}{a number between 0.1 and 1 to reduce item sizes.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
 \item{export}{A button will appear to export gallery as excel.}
