@@ -10,15 +10,16 @@ Object of class \code{gallery_rd3}.
 }
 
 \usage{
-exhibit(nodes, name = NULL, label = NULL, order = NULL, decreasing = FALSE,
-  ntext = NULL, mainframeHeight = NULL, image = NULL, zoom = NULL,
-  main = NULL, note = NULL, export = FALSE, colorScheme = 0,
+exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
+  decreasing = FALSE, ntext = NULL, mainframeHeight = NULL, image = NULL,
+  zoom = NULL, main = NULL, note = NULL, export = FALSE, colorScheme = 0,
   language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least one column with the names of the gallery's elements.}
 \item{name}{name of the vector with names in the nodes data frame.}
 \item{label}{column name with image labels in the nodes data frame.}
+\item{subtitle}{column name with image subtitles in the nodes data frame.}
 \item{order}{name of the column with node order in the nodes data frame.}
 \item{decreasing}{decreasing or increasing sort of the nodes.}
 \item{ntext}{column name with html text in the nodes data frame.}
