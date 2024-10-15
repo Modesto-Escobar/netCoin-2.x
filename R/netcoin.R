@@ -326,7 +326,7 @@ allNet<-function(incidences, weight = NULL, subsample = FALSE, pairwise = FALSE,
     arguments$links<-edgeList(C, procedures, criteria, level, Bonferroni, minL, maxL, support, 
                               directed, diagonal, sortL, decreasingL)
     for(lattr in c("lwidth","lweight","lcolor","ltext"))
-      if(!is.null(arguments[[lattr]])) arguments[[lattr]]<-i.method(c.method(arguments[[lattr]]))
+      if(!is.null(arguments[[lattr]])) arguments[[lattr]]<-i.method(c_method(arguments[[lattr]]))
     if(is.character(arguments$layout)){
       if(tolower(substr(arguments$layout,1,2))=="mc")arguments$layout<-layoutMCA(incidences)
       else if(tolower(substr(arguments$layout,1,2))=="pc")arguments$layout<-layoutPCA(C)
@@ -356,8 +356,8 @@ surCoin<-function(data,variables=names(data), commonlabel=NULL,
   if((criteria=="Z" | criteria=="hyp") & maxL==Inf) maxL=.5
   varOrder  <- variables # To order variables later before coin
   #Check methods. No necessary because edgeList call these routines.
-  #procedures<-i.method(c.method(procedures))
-  #criteria<-i.method(c.method(criteria))
+  #procedures<-i.method(c_method(procedures))
+  #criteria<-i.method(c_method(criteria))
   procedures<-union(procedures,unlist(arguments[c("lwidth","lweight","lcolor","ltext")]))
   
   #Metrics 
@@ -469,7 +469,7 @@ surCoin<-function(data,variables=names(data), commonlabel=NULL,
     E<-edgeList(C, procedures, criteria, level, Bonferroni, minL, maxL, support, 
                 directed, diagonal, sortL, decreasingL, pairwise)
     for(lattr in c("lwidth","lweight","lcolor","ltext"))
-      if(!is.null(arguments[[lattr]])) arguments[[lattr]]<-i.method(c.method(arguments[[lattr]]))
+      if(!is.null(arguments[[lattr]])) arguments[[lattr]]<-i.method(c_method(arguments[[lattr]]))
     
     if(!is.null(arguments$layout)) {
       layout2 <- layout <- arguments$layout
@@ -510,7 +510,7 @@ surCoin<-function(data,variables=names(data), commonlabel=NULL,
         for(col in as.character(O2[[name]]))
           O2[as.character(O2[[name]])==col,colnames(nodes)] <- nodes[as.character(nodes[[name]])==col,]
       }
-      O<-rbind.all.columns(O,O2)
+      O<-rbind_all_columns(O,O2)
 
       #Metric links elaboration
       methods<-union(procedures,criteria)
@@ -538,7 +538,7 @@ surCoin<-function(data,variables=names(data), commonlabel=NULL,
       D<-D[D[criteria] > minL & D[criteria] < maxL,]
       colnames(D)<-sub("^Z$","p(Z)",colnames(D))
       if(is.null(E))E<-D
-      else E<-rbind.all.columns(E,D)
+      else E<-rbind_all_columns(E,D)
 
       #Layout
       if (inherits(layout,"matrix")){
@@ -787,9 +787,9 @@ edgeList <- function(data, procedures="Haberman", criteria="Z", level = .95, Bon
   }
   if (substr(tolower(procedures)[1],1,2)!="sh") { # For coin objects
     if (!inherits(data,"coin")) stop("Error: input must be a coin object (see coin function)")
-    funcs<-c.method(procedures)
-    if(!is.null(sort)) funcs<-union(c.method(sort),funcs)
-    criteria<-c.method(criteria)
+    funcs<-c_method(procedures)
+    if(!is.null(sort)) funcs<-union(c_method(sort),funcs)
+    criteria<-c_method(criteria)
     todas<-union(funcs,criteria)
     matrices<-sim(data,todas,level=level, pairwise=pairwise)
     funcs<-i.method(funcs)
@@ -836,7 +836,7 @@ edgeList <- function(data, procedures="Haberman", criteria="Z", level = .95, Bon
       Mat$c.probable<-factor(Mat$c.probable,levels=c(0:8),
                              labels=c("Null","Mere","Probable","Significant","Quite significant","Very significant","Subtotal","Suptotal","Total"))
     if (!is.null(sort)) {
-      if (substr(tolower(procedures)[1],1,2)!="sh") Mat<-Mat[order(Mat[[i.method(c.method(sort))]],decreasing = decreasing),]
+      if (substr(tolower(procedures)[1],1,2)!="sh") Mat<-Mat[order(Mat[[i.method(c_method(sort))]],decreasing = decreasing),]
       else Mat<-Mat[order(Mat$value,decreasing=decreasing),]
     }
   }
@@ -846,7 +846,7 @@ edgeList <- function(data, procedures="Haberman", criteria="Z", level = .95, Bon
   return(Mat)
 }
 
-c.method<-function(method) {
+c_method<-function(method) {
   if(is.null(method))return(NULL)
   method<-toupper(method)
   if ("ALL"==method[1]) method<-c("M","T","G","S","B","J","D","A","O","K","N","Y","P","V","C","R","E","L","H","Z","f","F","X","I","0","Q","U")
@@ -905,7 +905,7 @@ checkLevel <- function(level){
 sim<-function (input, procedures="Jaccard", level=.95, distance=FALSE, minimum=1, maximum=Inf, sort=FALSE, decreasing=FALSE, 
                weight=NULL, pairwise=FALSE) {
   level <- checkLevel(level)
-  method<-c.method(procedures)
+  method<-c_method(procedures)
   if (is.matrix(input) && !inherits(input,"coin")) {
     if (is.null(colnames(input))) dimnames(input)<-list(NULL,paste("X",1:ncol(input),sep=""))
     input<-as.data.frame(input)
@@ -1472,7 +1472,7 @@ getByLanguage <- function(varlist,language){
   return(unname(varlist[language]))
 }
 
-rbind.all.columns <- function(x, y) {
+rbind_all_columns <- function(x, y) {
   x.diff <- setdiff(colnames(x), colnames(y))
   y.diff <- setdiff(colnames(y), colnames(x))
   
@@ -1785,10 +1785,10 @@ family<-function(formula) {
   FAM <- ifelse(as.numeric(gregexpr(",",formula))==-1,
            "",
            substr(formula,start=as.numeric(gregexpr(",",formula))+1,1E6))
-  family<-c.family(FAM)
+  family<-c_family(FAM)
   return(family)
 }
-c.family<-function(method=NULL) {
+c_family<-function(method=NULL) {
   if (is.null(method) | method=="") family<-"GAU"
   else {
     family<-substr(toupper(method),1,3)  
@@ -1891,8 +1891,8 @@ logCoin<-function(data, variables=names(data), exogenous=NULL, noFirstCat=NULL, 
   formula   <- comb(setdiff(variables,exogenous), exogenous, "weight", order)
   varOrder  <- variables # To order variables later before coin
   #Check methods. No necessary because edgeList call these routines.
-  #procedures<-i.method(c.method(procedures))
-  #criteria<-i.method(c.method(criteria))
+  #procedures<-i.method(c_method(procedures))
+  #criteria<-i.method(c_method(criteria))
   #procedures<-union(procedures,unlist(arguments[c("lwidth","lweight","lcolor","ltext")]))
   
   #Names  

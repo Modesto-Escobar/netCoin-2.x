@@ -1,12 +1,12 @@
 \name{toIgraph}
 \alias{toIgraph}
 \title{igraph object.}
-\description{\code{igraph} object from a \code{network_rd3} object.}
+\description{\code{igraph} object from a \code{netCoin} object.}
 \usage{
 toIgraph(net)
 }
 \arguments{
-  \item{net}{is a \code{network_rd3} object. See \code{\link{network_rd3}}}
+  \item{net}{is a \code{netCoin} object. See \code{\link{netCoin}}}
 }
 \value{An \code{igraph} object.}
 \author{

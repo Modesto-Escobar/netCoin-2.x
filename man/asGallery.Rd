@@ -12,7 +12,7 @@ Object of class \code{gallery_rd3}.
 asGallery(net)
 }
 \arguments{
-  \item{net}{is a \code{network_rd3} object. See \code{\link{network_rd3}}}
+  \item{net}{is a \code{netCoin} object. See \code{\link{netCoin}}}
 }
 \author{
 Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
