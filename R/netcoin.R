@@ -840,7 +840,10 @@ edgeList <- function(data, procedures="Haberman", criteria="Z", level = .95, Bon
       else Mat<-Mat[order(Mat$value,decreasing=decreasing),]
     }
   }
-  else return(NULL)
+  else {
+    warning("Check max and min values")
+    return(NULL)
+  }
   names(Mat)[names(Mat)=="Z"]<-"p(Z)"
   names(Mat)[names(Mat)=="Fisher"]<-"p(Fisher)"
   return(Mat)
