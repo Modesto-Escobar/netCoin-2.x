@@ -22,7 +22,7 @@ Create a drop-down vignette for nodes from different items (for galleries).
 data("sociologists")
 sociologists$html <- get_template2(sociologists, title="name",
   title2="birth_country", text="school")
-plot(gallery2(sociologists, ntext="html"))
+plot(exhibit(sociologists, ntext="html"))
 }
 }
 \author{

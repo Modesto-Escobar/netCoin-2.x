@@ -16,7 +16,7 @@ netExhibit(tree, initialType = NULL, tableformat = FALSE, ...)
 \item{tree}{a data frame with two columns: source and target, describing relationships between nodes. It indicates a hierarchy between nodes which can be dynamically explored. Optionally, another two columns describing types can be passed.}
 \item{initialType}{A character vector indicating which node type will be shown at start.}
 \item{tableformat}{If the tree is especified as a table, one column per level.}
-\item{...}{Any \link{gallery2} argument.}
+\item{...}{Any \link{exhibit} argument.}
 }
 \author{
 Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
