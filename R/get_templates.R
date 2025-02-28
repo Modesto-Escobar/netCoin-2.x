@@ -90,6 +90,7 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
   templateWiki <- ''
   if(is.character(wiki) && length(data[[wiki]])){
     templateWiki <- paste0('<h3><img style="width:20px;vertical-align:bottom;margin-right:10px;" src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png"/>Wikipedia: <a target="_blank" href="',data[[wiki]],'">',wiki,'</a></h3>')
+    templateWiki[!checkwiki(data[[wiki]])] <- ""
   }
   if(!identical(templateImg,'') && mode==2){
     celldiv <- '<div style="display: inline-block; width: 50%; vertical-align: top;">'
@@ -124,6 +125,7 @@ get_template2 <- function(data, title=NULL, title2=NULL, text=NULL, wiki=NULL) {
   templateWiki <- ''
   if(is.character(wiki) && length(data[[wiki]])){
     templateWiki <- paste0('<h3><img style="width:20px;vertical-align:bottom;margin-right:10px;" src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png"/>Wikipedia: <a target="mainframe" href="',data[[wiki]],'">',wiki,'</a></h3>')
+    templateWiki[!checkwiki(data[[wiki]])] <- ""
   }
 
   templateContent <- paste0(templateTitle,"<div>",templateTitle2,templateText,templateWiki,"</div>")
@@ -330,4 +332,8 @@ makeT2 <- function(entityLabel, image=NA, entityDescription=NA,
   D$info <- get_template2(D, title=names(D)[2])
 
   return(D[,c(-1,-12)])
+}
+
+checkwiki <- function(wikis){
+  grepl("^(http(s)?://)?[a-z][a-z](\\.m)?\\.wikipedia\\.org",wikis)
 }
