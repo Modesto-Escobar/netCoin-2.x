@@ -12,8 +12,9 @@ Object of class \code{gallery_rd3}.
 \usage{
 exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
   decreasing = FALSE, ntext = NULL, mainframeHeight = NULL, image = NULL,
-  zoom = NULL, main = NULL, note = NULL, tutorial = FALSE, tableButton = FALSE,
-  export = FALSE, colorScheme = 0, language = c("en", "es", "ca"), dir = NULL)
+  zoom = NULL, main = NULL, note = NULL, frequencies = FALSE, tutorial = FALSE,
+  tableButton = FALSE, export = FALSE, colorScheme = 0,
+  language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least one column with the names of the gallery's elements.}
@@ -28,6 +29,7 @@ exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
 \item{zoom}{a number between 0.1 and 1 to reduce item sizes.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
+\item{frequencies}{a logical value true if barplots representing node attributes frequencies will be added to the final graph.}
 \item{tutorial}{Should tutorial be displayed?}
 \item{tableButton}{A button will appear to show the data as a table.}
 \item{export}{A button will appear to export gallery as excel.}
