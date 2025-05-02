@@ -1,4 +1,5 @@
 get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wiki=NULL, width=300, color="auto", cex=1, roundedImg=FALSE, mode=1) {
+  data <- as.data.frame(data)
   autocolor <- ''
   colorstyle <- ''
   fontcolor <- ''
@@ -102,6 +103,7 @@ get_template <- function(data, title=NULL, title2=NULL, text=NULL, img=NULL, wik
 }
 
 get_template2 <- function(data, title=NULL, title2=NULL, text=NULL, wiki=NULL) {
+  data <- as.data.frame(data)
   templateTitle <- ''
   if(is.character(title) && length(data[[title]])){
     templateTitle <- paste0('<h2>',data[[title]],'</h2>')
@@ -134,6 +136,7 @@ get_template2 <- function(data, title=NULL, title2=NULL, text=NULL, wiki=NULL) {
 }
 
 get_panel_template <- function(data, title=NULL, description=NULL, img=NULL,  text=NULL, color="auto", cex=1, mode=1){
+  data <- as.data.frame(data)
   autocolor <- ''
   colorstyle <- ''
   fontcolor <- ''
@@ -183,6 +186,7 @@ known_sites <- data.frame(
 )
 
 renderLinks <- function(data,columns,labels=NULL,target="_blank",sites=NULL){
+  data <- as.data.frame(data)
   if(is.null(sites)){
     sites <- known_sites
   }
@@ -199,11 +203,15 @@ renderLinks <- function(data,columns,labels=NULL,target="_blank",sites=NULL){
     links <- links[!is.na(links)]
     texts <- links
     icons <- rep('https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg',length(links))
+    targets <- target
     for(j in seq_along(links)){
       for(k in seq_len(nrow(sites))){
         if(grepl(sites[k,'url'],links[j])){
           texts[j] <- sites[k,'name']
           icons[j] <- sites[k,'icon']
+          if(!is.null(sites$target)){
+            targets[j] <- sites[k,'target']
+          }
           break
         }
       }
@@ -214,7 +222,7 @@ renderLinks <- function(data,columns,labels=NULL,target="_blank",sites=NULL){
         texts <- label
       }
     }
-    html[i] <- paste0('<ul>',paste0('<li><a target="',target,'" href="', links, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
+    html[i] <- paste0('<ul>',paste0('<li><a target="',targets,'" href="', links, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
   }
   return(html)
 }
@@ -340,6 +348,7 @@ checkwiki <- function(wikis){
 
 pop_up <- function(data, title="name", title2=NULL, info=TRUE, entity="entity", links=c("wikidata", "wiki"), 
                    wikilangs="en") {
+  data <- as.data.frame(data)
   sites <- data.frame(
     url=c("wikipedia.org","wikidata.org","brumario.usal.es","museoreinasofia.es","viaf.org", "bne.es", "historia-hispanica.rah.es", "id.loc.gov", "isni.org"),
     name=c("Wikipedia","Wikidata","USAL","MNCARS","VIAF", "BNE", "RAH", "LOC", "ISNI"),
@@ -350,7 +359,8 @@ pop_up <- function(data, title="name", title2=NULL, info=TRUE, entity="entity", 
            "https://sociocav.usal.es/me/pics/BNE.png",
            "https://sociocav.usal.es/me/pics/RAH.png",           
            "https://sociocav.usal.es/me/pics/LOC.png",           
-           "https://isni.org/images/isni-logo.png")
+           "https://isni.org/images/isni-logo.png"),
+    target=c("mainframe","mainframe","mainframe","_blank","mainframe","_blank","mainframe","_blank","_blank")
   )
   
   langs <- unlist(strsplit(wikilangs, "\\|"))
@@ -391,9 +401,16 @@ pop_up <- function(data, title="name", title2=NULL, info=TRUE, entity="entity", 
     
   }
 
+  linksname <- "LINKS"
+  if(langs[1]=="es"){
+    linksname <- "ENLACES"
+  }else if(langs[1]=="ca"){
+    linksname <- "ENLLA\uC7OS"
+  }
+
   linksList <- renderLinks(data, links, NULL, "mainframe", sites=sites)
   data$links <- ifelse(is.na(data$wiki) & is.na(data$wikidata), data$info,
-                       paste0(data$info, '</p><h3>ENLACES:</h3>', linksList))
+                       paste0(data$info, '</p><h3>',linksname,':</h3>', linksList))
   data$pop_up <- get_template2(data, title=title, title2=title2, text="links")
   data[, union(c("links", "linksList", "info", "names", "wiki", "wikidata"), links)] <- NULL
   return(data)
