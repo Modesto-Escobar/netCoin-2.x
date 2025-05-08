@@ -360,7 +360,7 @@ pop_up <- function(data, title="name", title2=NULL, info=TRUE, entity="entity", 
            "https://sociocav.usal.es/me/pics/RAH.png",           
            "https://sociocav.usal.es/me/pics/LOC.png",           
            "https://isni.org/images/isni-logo.png"),
-    target=c("mainframe","mainframe","mainframe","_blank","mainframe","_blank","mainframe","_blank","_blank")
+    target=c("mainframe","mainframe","mainframe","_blank","_blank","mainframe","mainframe","_blank","mainframe")
   )
   
   langs <- unlist(strsplit(wikilangs, "\\|"))
