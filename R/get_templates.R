@@ -378,7 +378,7 @@ pop_up <- function(data, title="name", title2=NULL, info=TRUE, entity="entity", 
         wikis$info <- NA
       }
       data <- merge(data, wikis, by.x=entity, by.y="entity", all.x=TRUE, sort=FALSE)
-      data$wiki <- ifelse(is.na(data$pages) | data$pages=="", NA, data$pages)
+      data$wiki <- ifelse(is.na(data$wiki) | data$wiki=="", NA, data$wiki)
       data$info <- ifelse(is.na(data$info), "", data$info)
       data$pages <- wikis <- names <- NULL
     }
