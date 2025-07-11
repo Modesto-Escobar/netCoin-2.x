@@ -12,7 +12,7 @@ Object of class \code{gallery_rd3}.
 \usage{
 exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
   decreasing = FALSE, ntext = NULL,
-  mainframeHeight = NULL, mainframeWidth = NULL,
+  mainframeHeight = NULL, mainframeWidth = NULL, mainframeImage = 0,
   image = NULL, zoom = NULL, main = NULL, note = NULL,
   frequencies = FALSE, tutorial = FALSE, tableButton = FALSE, export = FALSE,
   colorScheme = 0, language = c("en", "es", "ca"), dir = NULL)
@@ -27,6 +27,7 @@ exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
 \item{ntext}{column name with html text in the nodes data frame.}
 \item{mainframeHeight}{a number between 0.1 and 1 to reduce mainframe height.}
 \item{mainframeWidth}{a number to proportionally change mainframe width.}
+\item{mainframeImage}{a number to display image in mainframe. 0 = auto (default), 1 = before text, 2 = top right}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{zoom}{a number between 0.1 and 1 to reduce item sizes.}
 \item{main}{upper title of the graph.}
