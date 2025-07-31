@@ -1,0 +1,86 @@
+---
+title: "Galleries with netCoin package"
+author: "Modesto Escobar, David Barrios, Carlos Prieto (University of Salamanca)"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Galleries with netCoin package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Connected Image Galleries
+
+## Description
+
+The `netCoin` package represents and manages information from an image database with attributes that hierarchically connect them.
+
+Components:
+
+- **Images:** Images.
+- **Information:** Table, Name, Tooltip, Information Window.
+- **Utilities:** Image Search, Filter, Display Customization, Bar Charts.
+
+## Examples
+
+Load the pakcage
+```{r}
+library(netCoin)
+```
+
+A simple gallery representing finches species in Galapagos Islands
+```{r message=FALSE, warning=FALSE}
+data("finches")
+finches$species <- system.file("extdata", finches$species,
+             package="netCoin") # copy path to the species field
+# You can specify the column with image paths trough the 'image' parameter
+g <- gallery(finches, image="species", main="Species in Galapagos Islands",
+             note="Data source: Sanderson (2000)")
+plot(g)
+```
+
+```{r echo=FALSE}
+knitr::include_graphics("gallery.png")
+```
+
+The same gallery with another theme
+```{r message=FALSE, warning=FALSE}
+g <- exhibit(finches, image="species", main="Species in Galapagos Islands",
+             note="Data source: Sanderson (2000)")
+plot(g)
+```
+
+```{r echo=FALSE}
+knitr::include_graphics("exhibit.png")
+```
+
+Connected image gallery
+```{r message=FALSE, warning=FALSE}
+# tree of relations between items
+tree <- data.frame(
+  shape = c("circle","triangle","square"),
+  color = c("circle_red|circle_green|circle_blue",
+    "triangle_red|triangle_green|triangle_blue",
+    "square_red|square_green|square_blue")
+)
+
+# specify images for items
+nodes <- list()
+nodes$shape <- data.frame(name=c("circle","triangle","square"))
+nodes$shape$image=system.file("extdata", paste0(nodes$shape$name,".svg"),
+      package="netCoin")
+nodes$color <- data.frame(name=c("circle_red","circle_green","circle_blue",
+    "triangle_red","triangle_green","triangle_blue",
+    "square_red","square_green","square_blue"))
+nodes$color$image=system.file("extdata", paste0(nodes$color$name,".svg"),
+      package="netCoin")
+
+# create gallery
+g <- netExhibit(tree, initialType="shape", tableformat=TRUE,
+  nodes=nodes, image="image")
+plot(g)
+```
+
+```{r echo=FALSE}
+knitr::include_graphics("netExhibit.png")
+```
