@@ -155,7 +155,7 @@ caring_create_graphs <- function(data, arguments){
         logArgs[['pmax']] <- pmax
       }
       logArgs[['color']] <- "var"
-      logArgs[['order']] <- as.numeric(sub("log-i.","",log,fixed=TRUE))
+      logArgs[['order']] <- as.numeric(sub("logCoin","",log,fixed=TRUE))
       net3 <- do.call(logCoin,logArgs)
       multiArgs[[plots[which(plots==log)+1]]] = net3
     }

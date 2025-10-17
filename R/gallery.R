@@ -6,6 +6,8 @@ gallery2 <- function(...){
 }
 exhibit <- gallery2_rd3
 
+gallery3 <- gallery3_rd3
+
 netGalleryWrapper <- function(net){
   if(!is.null(net$options$nodeTypes) && !is.null(net$options$nodeText)){
     net$nodes[[net$options$nodeText]] <- sapply(seq_len(nrow(net$nodes)),function(i){
