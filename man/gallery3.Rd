@@ -12,8 +12,9 @@ Object of class \code{gallery_rd3}.
 gallery3(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
     decreasing = FALSE, ntext = NULL,
     mainframeHeight = NULL, mainframeWidth = NULL, mainframeImage = 0,
-    image = NULL, imageCopy = NULL, zoom = NULL, main = NULL, note = NULL,
-    search = TRUE, cex = 1, language = c("en", "es", "ca"), dir = NULL)
+    image = NULL, imageCopy = NULL, imageRatio = NULL, zoom = NULL,
+    main = NULL, note = NULL, search = TRUE,
+    cex = 1, language = c("en", "es", "ca"), dir = NULL)
 }
 \arguments{
 \item{nodes}{a data frame with at least one column with the names of the gallery's elements.}
@@ -28,6 +29,7 @@ gallery3(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
 \item{mainframeImage}{a number to display image in mainframe. 0 = auto (default), 1 = before text, 2 = top right}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{imageCopy}{column name which indicates the image copyright and attribution in the nodes data frame.}
+\item{imageRatio}{the aspect ratio of the images. Is the ratio of its width to its height. 3/4 by default.}
 \item{zoom}{a number between 0.1 and 1 to reduce item sizes.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
