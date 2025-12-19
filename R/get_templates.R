@@ -185,13 +185,18 @@ known_sites <- data.frame(
   icon=c("https://www.wikipedia.org/static/favicon/wikipedia.ico","https://www.wikidata.org/static/favicon/wikidata.ico","https://foundation.wikimedia.org/favicon.ico","https://abs.twimg.com/favicons/twitter.2.ico","https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico")
 )
 
-renderLinks <- function(data,columns,labels=NULL,target="_blank",parallels=FALSE,sites=NULL){
+renderLinks <- function(data, columns, labels=NULL, target="_blank", title=NULL, parallels=FALSE, sites=NULL){
   data <- as.data.frame(data)
   if(is.null(sites)){
     sites <- known_sites
   }
   if(!is.character(target)){
     target <- '_self'
+  }
+  if(is.character(title)){
+    title <- paste0('<h3>',title,'</h3>')
+  }else{
+    title <- ''
   }
   if(!is.null(labels) && is.null(data[[labels]])){
     labels <- NULL
@@ -232,9 +237,9 @@ renderLinks <- function(data,columns,labels=NULL,target="_blank",parallels=FALSE
       icons2 <- icons[(mid+1):length(links)]
       texts1 <- texts[1:mid]
       texts2 <- texts[(mid+1):length(links)]
-      html[i] <- paste0('<div class="links-2-columns"><ul>',paste0('<li><a target="',targets1,'" href="', links1, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons1, '"/>', texts1, '</a></li>', collapse=""),'</ul><ul>',paste0('<li><a target="',targets2,'" href="', links2, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons2, '"/>', texts2, '</a></li>', collapse=""),'</ul></div>')
+      html[i] <- paste0('<div class="links-2-columns">',title,'<ul>',paste0('<li><a target="',targets1,'" href="', links1, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons1, '"/>', texts1, '</a></li>', collapse=""),'</ul><ul>',paste0('<li><a target="',targets2,'" href="', links2, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons2, '"/>', texts2, '</a></li>', collapse=""),'</ul></div>')
     }else{
-      html[i] <- paste0('<ul>',paste0('<li><a target="',targets,'" href="', links, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
+      html[i] <- paste0(title,'<ul>',paste0('<li><a target="',targets,'" href="', links, '"><img style="width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:5px;" src="', icons, '"/>', texts, '</a></li>', collapse=""),'</ul>')
     }
   }
   return(html)

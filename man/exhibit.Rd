@@ -13,7 +13,8 @@ Object of class \code{gallery_rd3}.
 exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
     decreasing = FALSE, ntext = NULL,
     mainframeHeight = NULL, mainframeWidth = NULL, mainframeImage = 0,
-    image = NULL, imageCopy = NULL, zoom = NULL, main = NULL, note = NULL,
+    image = NULL, imageCopy = NULL, noFilterCols = NULL,
+    zoom = NULL, main = NULL, note = NULL,
     frequencies = FALSE, tutorial = FALSE, tableButton = FALSE, export = FALSE,
     search = TRUE, colorScheme = 0,  language = c("en", "es", "ca"), dir = NULL)
 }
@@ -30,6 +31,7 @@ exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
 \item{mainframeImage}{a number to display image in mainframe. 0 = auto (default), 1 = before text, 2 = top right}
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{imageCopy}{column name which indicates the image copyright and attribution in the nodes data frame.}
+\item{noFilterCols}{disable filtering by especified column names.}
 \item{zoom}{a number between 0.1 and 1 to reduce item sizes.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
