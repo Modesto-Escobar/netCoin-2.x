@@ -27,7 +27,7 @@ An object of \code{cooc} class with a coocurrence matrix. It has two attributes:
 \item{m}{Sum of maximum occurences in each row of the ocurrence matrix}
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 ## Tossing two coins five times.

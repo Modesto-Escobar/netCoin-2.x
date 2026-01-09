@@ -2,7 +2,7 @@
 \alias{layoutCircle}
 \title{Produce a circle layout of any number of nodes.}
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \value{
 This function returns the input data frame of nodes with the resulting layout applied.

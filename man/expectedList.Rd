@@ -13,7 +13,7 @@ expectedList(data, names = NULL, min = 1, confidence=FALSE)
 }
 \value{A links data frame with coincidences and expected values.}
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 # A character column (with separator)

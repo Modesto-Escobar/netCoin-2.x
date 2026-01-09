@@ -20,7 +20,7 @@ savePajek(net, file="file.net", arcs=NULL, edges=NULL,
 \item{vectors}{Names of netCoin$nodes to be included and considered as vectors in the Pajek file.}
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 \dontrun{

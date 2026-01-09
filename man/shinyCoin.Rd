@@ -9,7 +9,7 @@ shinyCoin(x)
   \item{x}{is a \code{netCoin}, \code{barCoin} or \code{timeCoin} object.}
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 \dontrun{

@@ -27,6 +27,6 @@ a data frame wich includes a column of html formatted vignettes called 'info'.
 Create a vignette from some specific information supplied (for galleries).
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 

@@ -21,7 +21,7 @@ Data frame with classical sociological works writen by authors in the sociologis
 Own elaboration from manuals of sociology.
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \references{
 See \code{\link{events}.}

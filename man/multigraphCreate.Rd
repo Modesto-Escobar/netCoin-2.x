@@ -2,7 +2,7 @@
 \alias{multigraphCreate}
 \title{Produce interactive multi graphs.}
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \value{
 This function returns a \code{mGraph} object.

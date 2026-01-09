@@ -53,7 +53,7 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{dir}{a character string representing the directory where the web files will be saved.}
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 data("finches")

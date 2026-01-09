@@ -95,7 +95,7 @@ drl("da"), circle("ci"), Force-Atlas-2("fo"), fruchterman.reingold("fr"), gem("g
   \doi{10.18637/jss.v093.i11}.
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 # A character column (with separator)

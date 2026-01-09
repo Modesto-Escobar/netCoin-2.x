@@ -39,7 +39,7 @@ Possible measures in procedures are
 A similarity/distance matrix.
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 # From a random incidence matrix I(25X4)

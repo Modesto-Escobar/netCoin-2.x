@@ -18,7 +18,7 @@ mobileEdges(data, name = 1, number = 2, difference=0)
 A data frame in which the two first columns are source and target. The rest of the columns are sim.=(1+threshold-real difference) and dist.=(difference between numbers)
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 # From a random incidence matrix I(25X4)

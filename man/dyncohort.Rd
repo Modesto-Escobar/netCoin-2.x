@@ -32,7 +32,7 @@ Periods could be the life of people, in whose case start is their birth year.
 }
 
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 
 

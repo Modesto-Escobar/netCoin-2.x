@@ -34,7 +34,7 @@ pieCoin(x, colors = c("#000000","#8dc7e6", "#ffffff","#005587"),
 a \code{pieCoin} object.
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 ## Hair by Eye by Sex table from M. Friendly (2000)

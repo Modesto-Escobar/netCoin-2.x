@@ -68,8 +68,7 @@ To obtain similarity and other measures matrices, the function \code{\link{sim}}
 In order to make a graph, two data frames are needed: a nodes data frames with names and other nodes attributes (see \code{\link{asNodes}}) and an edge data frame (see \code{\link{edgeList}}). For more information go to \code{\link{netCoin}}.
 }
 % \section{Introduction}{Introduction example}
-\section{Author}{Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
-}
+\section{Author}{Modesto Escobar, Department of Sociology and Communication, University of Salamanca.}
 \references{
 Escobar, M. (2009): "Redes Semanticas en Textos Periodisticos: Propuestas Tecnicas para su Representacion", en \emph{Empiria}, 17, 13-39.
 

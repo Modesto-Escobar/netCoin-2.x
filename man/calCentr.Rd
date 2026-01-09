@@ -32,7 +32,7 @@ By default, measures = "all", thus all the measures will be calculated. The func
 This function creates a list containing two elements: 1) a data.frame (nodes) with all the centrality measures applied to the graph and 2) another data.frame (graph) with this measures applied to the whole network. 
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 # A character column (with separator)

@@ -15,7 +15,7 @@ saveGhml(net, file="netCoin.graphml")
 \item{file}{The name of the file. If not extension, .gexf is used as default.}
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 \dontrun{

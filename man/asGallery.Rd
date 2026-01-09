@@ -15,7 +15,7 @@ asGallery(net)
   \item{net}{is a \code{netCoin} object. See \code{\link{netCoin}}}
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 data("Galapagos")

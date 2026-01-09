@@ -18,7 +18,7 @@ propCoin(x, margin= 0, decimals=1)
 Table like 'x' expressed relative to 'margin'.
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \examples{
 ## Random incidence matrix: 25 scenarios, 4 events.

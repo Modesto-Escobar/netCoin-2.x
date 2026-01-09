@@ -36,7 +36,7 @@ A netCoin object has three elements:
 Periods could be the life of people, in whose case start is their birth and end their death year.
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 \seealso{
 \code{\link{timeCoin}} and \code{\link{dyncohort}}

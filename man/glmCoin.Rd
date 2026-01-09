@@ -38,7 +38,7 @@ This function creates a netCoin object (or igraph) and, if stated, a folder in t
 }
 
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
 }
 
 \examples{

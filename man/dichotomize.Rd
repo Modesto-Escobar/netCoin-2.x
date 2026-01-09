@@ -34,7 +34,7 @@ A data frame composed by the original plus the added dichotmous columns.
   \doi{10.18637/jss.v093.i11}.
 }
 \author{
-Modesto Escobar, Department of Sociology and Communication, University of Salamanca, and Luis Martinez Uribe, Fundacion Juan March. See \url{https://sociocav.usal.es/blog/modesto-escobar/}
+Modesto Escobar, Department of Sociology and Communication, University of Salamanca, and Luis Martinez Uribe, Fundacion Juan March.
 }
 \examples{
 # A character column
