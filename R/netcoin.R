@@ -9,9 +9,9 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         border = NULL, legend = NULL, sort = NULL, decreasing = FALSE,
         ntext = NULL, info = NULL, image = NULL, imageNames = NULL,
         centrality = NULL,
-        nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
+        nodeBipolar = FALSE, nodeScaleLimits = NULL, nodeFilter = NULL, degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
-        intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
+        intensity = NULL, linkBipolar = FALSE, linkScaleLimits = NULL, linkFilter = NULL,
         repulsion = 25, distance = 10, zoom = 1,
         fixed = showCoordinates, limits = NULL,
         main = NULL, note = NULL, showCoordinates = FALSE, showArrows = FALSE,
@@ -48,10 +48,10 @@ netCoin <- function(nodes = NULL, links = NULL, tree = NULL,
         border = border, legend = legend,
         sort = sort, decreasing = decreasing, ntext = ntext, info = info,
         image = image, imageNames = imageNames,
-        nodeBipolar = nodeBipolar, nodeFilter = nodeFilter, degreeFilter = degreeFilter,
+        nodeBipolar = nodeBipolar, nodeScaleLimits = nodeScaleLimits, nodeFilter = nodeFilter, degreeFilter = degreeFilter,
         source = "Source", target = "Target",
         lwidth = lwidth, lweight = lweight, lcolor = lcolor, ltext = ltext,
-        intensity = intensity, linkBipolar = linkBipolar, linkFilter = linkFilter,
+        intensity = intensity, linkBipolar = linkBipolar, linkScaleLimits = linkScaleLimits, linkFilter = linkFilter,
         repulsion = repulsion, distance = distance, zoom = zoom,
         fixed = fixed, limits = limits,
         main = main, note = note, showCoordinates = showCoordinates, showArrows = showArrows,
@@ -1661,7 +1661,23 @@ glmCoin <- function(formulas, data, weights=NULL, pmax=.05, twotail=FALSE, showA
                   frequency = FALSE, percentage = TRUE, 
                   color="variable", lwidth="z.value", circle= NA, language=c("en","es","ca"),
                   igraph=FALSE, ...){
-  if (is.character(weights)) weights<-data[[weights]]
+  cleanVariables <- function(x){
+    x <- iconv(x,to="ASCII//TRANSLIT")
+    x <- gsub(" ",".",x)
+    return(gsub("[^a-zA-z_]",".",x))
+  }
+  originalNames <- colnames(data)
+  colnames(data) <- cleanVariables(colnames(data))
+  cleanedNamesIndex <- which(originalNames!=colnames(data))
+  aux <- originalNames[cleanedNamesIndex]
+  cleanedNamesIndex <- cleanedNamesIndex[order(nchar(aux),decreasing=TRUE)] # reorder to check first longest strings
+  for(i in cleanedNamesIndex){
+    formulas <- gsub(originalNames[i],colnames(data)[i],formulas,fixed=TRUE)
+  }
+  if (is.character(weights)){
+    weights <- cleanVariables(weights)
+    weights<-data[[weights]]
+  }
   Links <- data.frame(A=NA,B=NA,C=NA,D=NA, E=NA, G=NA, H=NA)[-1,]
   names(Links)  <- headreg(language)
   if (lwidth=="z.value" & language[1]!="en") lwidth<-"val.z"
@@ -1676,11 +1692,17 @@ glmCoin <- function(formulas, data, weights=NULL, pmax=.05, twotail=FALSE, showA
     m <- net_lm(formulas[instance], familias[instance], data, weights, pmax, twotail)
     if (nrow(m)>0) {
       names(m) <- headreg(language)[-7]
-      m[[headreg(language)[7]]] <- gsub("`","",formulas[instance])
+      formula <- gsub("`","",formulas[instance])
+      for(i in cleanedNamesIndex){
+        m[,'Source'] <- gsub(colnames(data)[i],originalNames[i],m[,'Source'],fixed=TRUE)
+        m[,'Target'] <- gsub(colnames(data)[i],originalNames[i],m[,'Target'],fixed=TRUE)
+        formula <- gsub(colnames(data)[i],originalNames[i],formula,fixed=TRUE)
+      }
+      m[[headreg(language)[7]]] <- formula
       Links <-rbind(Links,m)
     }
   }
-  
+
   if (!("nodes" %in% names(list(...)))) {
     Nodes<-data.frame(name=iconv(union(Links$Source,Links$Target),to="UTF-8"),
                 variable=gsub(":.*","",iconv(union(Links$Source,Links$Target),to="UTF-8"))

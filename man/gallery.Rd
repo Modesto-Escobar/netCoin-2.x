@@ -11,8 +11,8 @@ Object of class \code{gallery_rd3}.
 \usage{
 gallery(nodes, name = NULL, label = NULL, color = NULL,
     border = NULL, ntext = NULL, info = NULL, infoFrame = c("right","left"),
-    image = NULL, imageCopy = NULL, noFilterCols = NULL,
-    zoom = 1, itemsPerRow = NULL, main = NULL, note = NULL,
+    image = NULL, imageCopy = NULL, noFilterCols = NULL, zoom = NULL,
+    scale = 1, itemsPerRow = NULL, main = NULL, note = NULL,
     showLegend = TRUE, frequencies = FALSE, labelTooltip = TRUE,
     cexTooltip = 1, help = NULL, helpOn = FALSE, tutorial = FALSE,
     description = NULL, descriptionWidth = NULL, roundedItems = FALSE,
@@ -31,7 +31,8 @@ gallery(nodes, name = NULL, label = NULL, color = NULL,
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{imageCopy}{column name which indicates the image copyright and attribution in the nodes data frame.}
 \item{noFilterCols}{disable filtering by especified column names.}
-\item{zoom}{a number between 0.1 and 10 as initial displaying zoom.}
+\item{zoom}{Deprecated. Replaced by argument 'scale'.}
+\item{scale}{a number between 0.1 and 10 as initial displaying scale.}
 \item{itemsPerRow}{number of items in each row.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}

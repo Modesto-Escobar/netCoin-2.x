@@ -14,7 +14,7 @@ exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
     decreasing = FALSE, ntext = NULL,
     mainframeHeight = NULL, mainframeWidth = NULL, mainframeImage = 0,
     image = NULL, imageCopy = NULL, noFilterCols = NULL,
-    zoom = NULL, main = NULL, note = NULL,
+    zoom = NULL, scale = NULL, main = NULL, note = NULL,
     frequencies = FALSE, tutorial = FALSE, tableButton = FALSE, export = FALSE,
     search = TRUE, colorScheme = 0,  language = c("en", "es", "ca"), dir = NULL)
 }
@@ -32,7 +32,8 @@ exhibit(nodes, name = NULL, label = NULL, subtitle = NULL, order = NULL,
 \item{image}{column name which indicates the image paths in the nodes data frame.}
 \item{imageCopy}{column name which indicates the image copyright and attribution in the nodes data frame.}
 \item{noFilterCols}{disable filtering by especified column names.}
-\item{zoom}{a number between 0.1 and 1 to reduce item sizes.}
+\item{zoom}{Deprecated. Replaced by argument 'scale'.}
+\item{scale}{a number between 0.1 and 1 as initial displaying scale.}
 \item{main}{upper title of the graph.}
 \item{note}{lower title of the graph.}
 \item{frequencies}{a logical value true if barplots representing node attributes frequencies will be added to the final graph.}

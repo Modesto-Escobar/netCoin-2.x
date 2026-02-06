@@ -17,9 +17,11 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
         border = NULL, legend = NULL, sort = NULL, decreasing = FALSE,
         ntext = NULL, info = NULL, image = NULL, imageNames = NULL,
         centrality = NULL,
-        nodeBipolar = FALSE, nodeFilter = NULL, degreeFilter = NULL,
+        nodeBipolar = FALSE, nodeScaleLimits = NULL, nodeFilter = NULL,
+        degreeFilter = NULL,
         lwidth = NULL, lweight = NULL, lcolor = NULL, ltext = NULL,
-        intensity = NULL, linkBipolar = FALSE, linkFilter = NULL,
+        intensity = NULL, linkBipolar = FALSE, linkScaleLimits = NULL,
+        linkFilter = NULL,
         repulsion = 25, distance = 10, zoom = 1,
         fixed = showCoordinates, limits = NULL,
         main = NULL, note = NULL, showCoordinates = FALSE, showArrows = FALSE,
@@ -58,7 +60,9 @@ netCoin(nodes = NULL, links = NULL, tree = NULL,
 \item{linkFilter}{condition for filtering links.}
 \item{degreeFilter}{numeric vector to filter the resulting network by degree.}
 \item{nodeBipolar}{a logical value that polarizes negative and positive node values in the graphical representation. Default = FALSE.}
+\item{nodeScaleLimits}{vector indicating the node scale limits, must be a numeric vector of length 2 or 3.}
 \item{linkBipolar}{a logical value that polarizes negative and positive link values in the graphical representation. Default = FALSE.}
+\item{linkScaleLimits}{vector indicating the link scale limits, must be a numeric vector of length 2 or 3.}
 \item{defaultColor}{a character vector giving a valid html color.}
 \item{repulsion}{a percentage for repulsion between nodes.}
 \item{distance}{a percentage for distance of links.}
