@@ -9,12 +9,13 @@ Object of class \code{gallery_rd3}.
 }
 
 \usage{
-addTutorial(x, image = NULL, description = NULL)
+addTutorial(x, image = NULL, description = NULL, help = FALSE)
 }
 \arguments{
 \item{x}{object of class \code{gallery_rd3}.}
 \item{image}{character vector indicating the image path, header for the tutorial.}
 \item{description}{a character string indicating a desription text to insert in the tutorial.}
+\item{help}{Should you press the help button to show the tutorial? ('FALSE' by default)}
 }
 \author{
 Modesto Escobar, Department of Sociology and Communication, University of Salamanca.
