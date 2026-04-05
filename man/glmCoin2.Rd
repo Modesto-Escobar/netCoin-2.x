@@ -14,16 +14,16 @@ glmCoin2(formulas, data, weights=NULL, pmax=.05,
 }
 \arguments{
   \item{formulas}{
-A set of formulas separated, folowed by the family and a return.
+A set of formulas separated, folowed by the family and a return (\\n).
 For example:
-model <- "counts ~ outcome + treatment, poisson
+model <- "counts ~ outcome + treatment, poisson \n 
           counts ~ outcome, poisson"
-}
+The possible families are \emph{gaussian} (default), \emph{poisson}, \emph{binomial} and \emph{multinomial}.}
   \item{data}{Data frame containing the variables in the model.}
   \item{weights}{Optional vector of weights to be used in the fitting process.}
   \item{pmax}{Selection of links with Pr(>|z|) less than p (one-tail by default).}
   \item{robust}{Robust estimation of standard errors if TRUE.}
-  \item{twotail}{Logical value indicating if twotail test must be appied. Defaul=FALSE.}
+  \item{twotail}{Logical value indicating if twotail test must be appied. Default=FALSE.}
   \item{showArrows}{a logical value true if the directional arrows are to be shown. Default = FALSE.}
   \item{frequency}{a logical value true if frequencies are to be shown. Default=FALSE.}
   \item{percentage}{a logical value true if percentages are to be shown. Default=TRUE.}

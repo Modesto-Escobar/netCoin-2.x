@@ -1,10 +1,11 @@
 # Mon Jan  5 20:04:05 2026 ------------------------------
-# Modesto Escobar + copilot
+# Modesto Escobar + copilot + Gemini 
 
 # ============================================================ #
 # GW contrasts and Nodes/Links summary (R Base + marginaleffects)
 # Unified with: auto-quasi, robust weights, binomial labels,
 # Nodes sanitization and scaling to % in binomial (GW + slopes).
+# MULTINOMIAL SUPPORT ADDED (nnet::multinom)
 # ============================================================ #
 
 # ------------------------ Utilities ------------------------- #
@@ -121,7 +122,7 @@
 # --------------------------- Specifications parser --------------------------- #
 
 # Detectors
-.is_model <- function(x) inherits(x, c("lm","glm","mlm"))
+.is_model <- function(x) inherits(x, c("lm","glm","mlm","multinom"))
 .is_list_of_models <- function(x) {
   is.list(x) && !.is_model(x) && length(x) > 0L && all(vapply(x, .is_model, logical(1L)))
 }
@@ -163,13 +164,23 @@
 .safe_eval_family <- function(fam_str) {
   if (!nzchar(fam_str)) return(NULL)
   fam_str <- sub("^family\\s*=\\s*", "", fam_str)
+  
+  # 1. Factor out the base BEFORE adding the parentheses
+  base <- sub("\\s*\\(.*$", "", fam_str)
+  
+  # 2. Special support for “multinomial” strings (we're nipping that in the bud here)
+  if (base == "multinomial") return("multinomial")
+  
+  # 3. If it's not a multinomial, we make sure it has parentheses
   if (!grepl("\\(", fam_str)) fam_str <- paste0(fam_str, "()")
+  
   allowed <- c("gaussian","binomial","poisson","Gamma","inverse.gaussian",
                "quasi","quasibinomial","quasipoisson")
-  base <- sub("\\s*\\(.*$", "", fam_str)
+  
   if (!(base %in% allowed)) {
-    stop(sprintf("Family not allowed: '%s'. Allowed: %s", base, paste(allowed, collapse = ", ")))
+    stop(sprintf("Family not allowed: '%s'. Allowed: %s, multinomial", base, paste(allowed, collapse = ", ")))
   }
+  
   env <- new.env(parent = emptyenv())
   env$gaussian <- stats::gaussian
   env$binomial <- stats::binomial
@@ -185,7 +196,6 @@
   if (inherits(fam, "try-error")) stop(sprintf("The family could not be evaluated: %s", fam_str))
   fam
 }
-
 .parse_specs <- function(spec) {
   lines <- if (length(spec) == 1L) unlist(strsplit(spec, "\n")) else spec
   lines <- trimws(lines)
@@ -206,8 +216,6 @@
 }
 
 # --------------------------- Adjustment from specifications --------------------------- #
-# Accepts: default_family, weights (vector o NULL), auto_quasi (bool).
-# If weights is a vector, it is injected as a column ".wg__" into data_w and glm/lm is called with weights=.wg__.
 .fit_models_from_specs <- function(spec, data, default_family = gaussian(), weights = NULL, auto_quasi = TRUE) {
   entries <- .parse_specs(spec)
   if (is.null(data)) stop("You must pass `data=` to adjust models from specifications.")
@@ -239,6 +247,10 @@
   
   mods <- lapply(entries, function(e) {
     fam_use <- e$family
+    f_use <- e$formula
+    # THE MAGIC TRICK! We tell the formula to remember this environment 
+    # so that marginaleffects doesn't get lost looking for the data later.
+    environment(f_use) <- environment()
     
     # If the family is in the spec and is binomial, apply auto-quasi
     if (isTRUE(auto_quasi) && .is_binomial_family(fam_use)) {
@@ -250,27 +262,33 @@
       fam_str <- tolower(trimws(fam_use))
       if (fam_str == "binomial") {
         fam_use <- if (isTRUE(auto_quasi)) stats::quasibinomial() else stats::binomial()
+      } else if (fam_str == "multinomial") {
+        fam_use <- "multinomial"
       } else if (fam_str == "gaussian") {
         fam_use <- stats::gaussian()
       } else if (fam_str == "poisson") {
         fam_use <- stats::poisson()
       } else if (fam_str == "gamma") {
         fam_use <- stats::Gamma()
-      } # Other families are left to the experienced user
+      }
     }
     
-    # Model adjustment
-    if (is.null(fam_use)) {
+    # Model adjustment (We use eval(bquote(...)) to destroy the reference to the variable 'e')
+    if (identical(fam_use, "multinomial")) {
+      if (!requireNamespace("nnet", quietly = TRUE)) stop("Install 'nnet' for multinomial models.")
+      if (is.null(w)) eval(bquote(nnet::multinom(formula = .(f_use), data = data_w, trace = FALSE)))
+      else            eval(bquote(nnet::multinom(formula = .(f_use), data = data_w, weights = .wg__, trace = FALSE)))
+    } else if (is.null(fam_use)) {
       if (identical(default_family_use, gaussian())) {
-        if (is.null(w)) stats::lm(formula = e$formula, data = data_w)
-        else            stats::lm(formula = e$formula, data = data_w, weights = .wg__)
+        if (is.null(w)) eval(bquote(stats::lm(formula = .(f_use), data = data_w)))
+        else            eval(bquote(stats::lm(formula = .(f_use), data = data_w, weights = .wg__)))
       } else {
-        if (is.null(w)) stats::glm(formula = e$formula, data = data_w, family = default_family_use)
-        else            stats::glm(formula = e$formula, data = data_w, family = default_family_use, weights = .wg__)
+        if (is.null(w)) eval(bquote(stats::glm(formula = .(f_use), data = data_w, family = .(default_family_use))))
+        else            eval(bquote(stats::glm(formula = .(f_use), data = data_w, family = .(default_family_use), weights = .wg__)))
       }
     } else {
-      if (is.null(w)) stats::glm(formula = e$formula, data = data_w, family = fam_use)
-      else            stats::glm(formula = e$formula, data = data_w, family = fam_use, weights = .wg__)
+      if (is.null(w)) eval(bquote(stats::glm(formula = .(f_use), data = data_w, family = .(fam_use))))
+      else            eval(bquote(stats::glm(formula = .(f_use), data = data_w, family = .(fam_use), weights = .wg__)))
     }
   })
   
@@ -297,9 +315,10 @@ contrastes_gw <- function(model, group_var, weights = NULL, vcov = "HC1") {
   # Target
   fchar <- as.character(stats::formula(model))
   target <- if (length(fchar) >= 2) fchar[2] else NA_character_
-  # Detectar binomial
-  is_binom <- inherits(model, "glm") && !is.null(model$family) &&
-    grepl("binomial", model$family$family, fixed = TRUE)
+  
+  # To detect binomial y multinomial
+  is_binom <- inherits(model, "glm") && !is.null(model$family) && grepl("binomial", model$family$family, fixed = TRUE)
+  is_multinom <- inherits(model, "multinom")
   
   # --- Weights (robust) ---
   if (!is.null(weights)) {
@@ -356,14 +375,37 @@ contrastes_gw <- function(model, group_var, weights = NULL, vcov = "HC1") {
   if (any(is.na(indices))) stop("Weights could not be aligned with 'margin' levels")
   vector_pesos_fijo <- df_pesos$prop[indices]
   
-  # GW Hypothesis: subtract the global weighted average
+  # GW Hypothesis: subtract the global weighted average (adapted for Multinomial groups)
   funcion_gw <- function(x) {
     est <- x$estimate
-    gm <- sum(est * vector_pesos_fijo)
-    est - gm
+    res <- numeric(length(est))
+    
+    if ("group" %in% names(x)) {
+      for (g in unique(x$group)) {
+        idx <- which(x$group == g)
+        w_g <- vector_pesos_fijo[idx]
+        w_g <- w_g / sum(w_g) # rescale weights within the group
+        gm_g <- sum(est[idx] * w_g)
+        res[idx] <- est[idx] - gm_g
+      }
+    } else {
+      w_norm <- vector_pesos_fijo / sum(vector_pesos_fijo)
+      gm <- sum(est * w_norm)
+      res <- est - gm
+    }
+    return(res)
   }
+  
   res <- marginaleffects::hypotheses(margenes, hypothesis = funcion_gw)
   resultado_final <- as.data.frame(res)
+  
+  # --- SOLUTION: Restore the category columns that the hypotheses() function deleted ---
+  for (col_cat in c("group", "class", "response")) {
+    if ((col_cat %in% names(marg_df)) && !(col_cat %in% names(resultado_final))) {
+      resultado_final[[col_cat]] <- marg_df[[col_cat]]
+    }
+  }
+  # ----------------------------------------------------------------------------------------
   
   # --- Scaled to % if the model is binomial ---
   if (is_binom && nrow(resultado_final) > 0) {
@@ -380,10 +422,20 @@ contrastes_gw <- function(model, group_var, weights = NULL, vcov = "HC1") {
     apply(niveles_mat, 1, function(z) paste(as.character(z), collapse = "*"))
   }
   resultado_final$Source <- paste0(var_combo, ":", niveles_comb)
-  resultado_final$Target <- target
+  
+  # Configure Target to support multinomial models (searching for “group,” “class,” or “response”)
+  if ("group" %in% names(resultado_final)) {
+    resultado_final$Target <- paste0(target, ":", resultado_final$group)
+  } else if ("class" %in% names(resultado_final)) {
+    resultado_final$Target <- paste0(target, ":", resultado_final$class)
+  } else if ("response" %in% names(resultado_final)) {
+    resultado_final$Target <- paste0(target, ":", resultado_final$response)
+  } else {
+    resultado_final$Target <- target
+  }
   
   # Cleaning
-  rm_cols <- intersect(c("variable","term","contrast","predicted_lo","predicted_hi","predicted"), names(resultado_final))
+  rm_cols <- intersect(c("variable","term","contrast","predicted_lo","predicted_hi","predicted","group", "class", "response"), names(resultado_final))
   if (length(rm_cols) > 0) resultado_final <- resultado_final[, setdiff(names(resultado_final), rm_cols), drop = FALSE]
   resultado_final
 }
@@ -410,8 +462,7 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
   # Target (response) and binomial detection
   fchar  <- as.character(stats::formula(model))
   target <- if (length(fchar) >= 2) fchar[2] else NA_character_
-  is_binom <- inherits(model, "glm") && !is.null(model$family) &&
-    grepl("binomial", model$family$family, fixed = TRUE)
+  is_binom <- inherits(model, "glm") && !is.null(model$family) && grepl("binomial", model$family$family, fixed = TRUE)
   y <- if (!is.na(target) && target %in% names(mf)) mf[[target]] else NULL
   
   # --- Weights (robust) ---
@@ -446,7 +497,7 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
     sqrt(sum(w * (x - m)^2, na.rm = TRUE) / sum(w[!is.na(x)], na.rm = TRUE))
   }
   
-  # Extremes for normalization (min/max or quantiles)
+  # Extremes for normalization
   range_fun <- function(x, outliers, ql, qh) {
     x <- x[is.finite(x)]
     if (length(x) == 0) return(c(NA_real_, NA_real_))
@@ -458,29 +509,19 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
     }
   }
   
-  # Determine positive category in binomial (if applicable)
+  # Determine positive category in binomial (forma robusta)
   pred_cat <- NA_character_
   if (is_binom && !is.null(y)) {
-    # Base por tipo de respuesta
-    pred_cat <- .positive_label_from_y(y)
-    
-    # Optional adjustment with avg_predictions (if it returns a single 'group', without overriding logical ones)
-    ap_try <- try(marginaleffects::avg_predictions(model, wts = w, vcov = vcov), silent = TRUE)
-    if (!inherits(ap_try, "try-error")) {
-      ap_df <- as.data.frame(ap_try)
-      if ("group" %in% names(ap_df)) {
-        ug <- unique(as.character(ap_df$group))
-        if (length(ug) == 1L) {
-          if (is.logical(y) && ug[1L] %in% c("1","TRUE")) {
-            pred_cat <- "TRUE"
-          } else {
-            pred_cat <- ug[1L]
-          }
-        }
-      }
+    if (is.factor(y)) {
+      pred_cat <- levels(y)[2] # En glm binomial se predice el segundo nivel
+    } else if (is.logical(y)) {
+      pred_cat <- "TRUE"
+    } else {
+      # Si es 0/1, toma el segundo valor ordenado (el 1)
+      pred_cat <- as.character(sort(unique(na.omit(y)))[2]) 
     }
   }
-  target_label <- if (is_binom && !is.na(pred_cat)) .cat_label(target, pred_cat, sep = ":") else target
+  target_label <- if (is_binom && !is.na(pred_cat)) paste0(target, ":", pred_cat) else target
   
   # Terms in the order of the model
   trm         <- stats::terms(model)
@@ -492,7 +533,6 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
   res_list <- list()
   for (lab in term_labels) {
     if (grepl(":", lab, fixed = TRUE)) {
-      # Interaction: all must be factors with >=2 levels
       parts <- strsplit(lab, ":", fixed = TRUE)[[1]]
       ok <- TRUE
       for (p in parts) {
@@ -535,10 +575,21 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
             pct_cols <- intersect(c("estimate","std.error","conf.low","conf.high"), names(cont_df))
             for (cc in pct_cols) cont_df[[cc]] <- cont_df[[cc]] * 100
           }
-          # Labels and cleaning
+          
+          # Labels and cleaning (Soporte robusto para Multinomial Target)
           cont_df$Source <- if (isTRUE(stdcov)) paste0(lab, " (std)") else lab
-          cont_df$Target <- target_label
-          for (nm in c("variable","term")) if (nm %in% names(cont_df)) cont_df[[nm]] <- NULL
+          
+          if ("group" %in% names(cont_df)) {
+            cont_df$Target <- paste0(target, ":", cont_df$group)
+          } else if ("class" %in% names(cont_df)) {
+            cont_df$Target <- paste0(target, ":", cont_df$class)
+          } else if ("response" %in% names(cont_df)) {
+            cont_df$Target <- paste0(target, ":", cont_df$response)
+          } else {
+            cont_df$Target <- target_label
+          }
+          
+          for (nm in c("variable","term", "group", "class", "response")) if (nm %in% names(cont_df)) cont_df[[nm]] <- NULL
           res_list[[length(res_list) + 1]] <- cont_df
         } else {
           warning(sprintf("avg_slopes failed '%s': %s", lab, as.character(cont_res)))
@@ -547,7 +598,7 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
     }
   }
   
-  # Apilado de Links (unión de columnas)
+  # Apilado de Links
   if (length(res_list) == 0) {
     Links <- data.frame(Source=character(0), Target=character(0), stringsAsFactors = FALSE)
   } else {
@@ -562,10 +613,10 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
     }
     rownames(Links) <- NULL
   }
-  # Link stacking (column joining)
-  rm_cols <- intersect(c("variable","term","contrast","predicted_lo","predicted_hi","predicted"), names(Links))
+  
+  rm_cols <- intersect(c("variable","term","contrast","predicted_lo","predicted_hi","predicted", "group", "class", "response"), names(Links))
   if (length(rm_cols) > 0) Links <- Links[, setdiff(names(Links), rm_cols), drop = FALSE]
-  Links <- Links[, c("Source","Target", setdiff(names(Links), c("Source","Target"))), drop = FALSE]
+  if(nrow(Links) > 0) Links <- Links[, c("Source","Target", setdiff(names(Links), c("Source","Target"))), drop = FALSE]
   
   # ---------------------------- #
   # 2) NODES (frequencies/% + means)
@@ -636,27 +687,30 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
     }
   }
   
-  # Response (binomial: positive category)
+  # Response (binomial or multinomial positive category)
   if (!is.na(target) && target %in% names(mf)) {
     if (is.factor(mf[[target]])) {
       df_tmp <- data.frame(grp = mf[[target]], w = w)
       agg <- stats::aggregate(w ~ grp, data = df_tmp, FUN = function(z) sum(z, na.rm = TRUE))
       names(agg) <- c("grp","Frequency")
+      # Filtramos por pred_cat SOLO si es binomial explícito. Si es multinomial, crea Nodos para todos.
       if (is_binom && !is.na(pred_cat)) {
         keep <- which(as.character(agg$grp) == pred_cat)
         agg  <- if (length(keep) > 0) agg[keep, , drop = FALSE] else agg[0, , drop = FALSE]
       }
-      node_df <- data.frame(
-        name = paste0(target, ":", as.character(agg$grp)),
-        variable = target,
-        Frequency = agg$Frequency,
-        check.names = FALSE, stringsAsFactors = FALSE
-      )
-      node_df[["%"]] <- (node_df$Frequency / w_tot) * 100
-      node_df$Type <- "response_factor"
-      node_df$Mean <- NA_real_; node_df$Min <- NA_real_; node_df$Max <- NA_real_
-      node_df[[target]] <- as.character(agg$grp)
-      sum_rows[[length(sum_rows) + 1]] <- node_df
+      if (nrow(agg) > 0) {
+        node_df <- data.frame(
+          name = paste0(target, ":", as.character(agg$grp)),
+          variable = target,
+          Frequency = agg$Frequency,
+          check.names = FALSE, stringsAsFactors = FALSE
+        )
+        node_df[["%"]] <- (node_df$Frequency / w_tot) * 100
+        node_df$Type <- "response_factor"
+        node_df$Mean <- NA_real_; node_df$Min <- NA_real_; node_df$Max <- NA_real_
+        node_df[[target]] <- as.character(agg$grp)
+        sum_rows[[length(sum_rows) + 1]] <- node_df
+      }
     } else if (is.numeric(mf[[target]])) {
       x <- mf[[target]]
       u <- sort(unique(na.omit(x)))
@@ -696,17 +750,19 @@ contrastes_gw_one <- function(model, weights = NULL, vcov = "HC1",
       names(agg) <- c("grp","Frequency")
       keep <- which(as.character(agg$grp) == "TRUE")
       agg  <- if (length(keep) > 0) agg[keep, , drop = FALSE] else agg[0, , drop = FALSE]
-      node_df <- data.frame(
-        name = paste0(target, ":", as.character(agg$grp)),
-        variable = target,
-        Frequency = agg$Frequency,
-        check.names = FALSE, stringsAsFactors = FALSE
-      )
-      node_df[["%"]] <- (node_df$Frequency / w_tot) * 100
-      node_df$Type <- "response_factor"
-      node_df$Mean <- NA_real_; node_df$Min <- NA_real_; node_df$Max <- NA_real_
-      node_df[[target]] <- as.character(agg$grp)
-      sum_rows[[length(sum_rows) + 1]] <- node_df
+      if (nrow(agg) > 0) {
+        node_df <- data.frame(
+          name = paste0(target, ":", as.character(agg$grp)),
+          variable = target,
+          Frequency = agg$Frequency,
+          check.names = FALSE, stringsAsFactors = FALSE
+        )
+        node_df[["%"]] <- (node_df$Frequency / w_tot) * 100
+        node_df$Type <- "response_factor"
+        node_df$Mean <- NA_real_; node_df$Min <- NA_real_; node_df$Max <- NA_real_
+        node_df[[target]] <- as.character(agg$grp)
+        sum_rows[[length(sum_rows) + 1]] <- node_df
+      }
     }
   }
   
@@ -750,7 +806,6 @@ contr.gw <- function(model,
                      weights = NULL, vcov = "HC1",
                      drop_empty = TRUE, stdcov = FALSE,
                      outliers = TRUE, q_low = 0.05, q_high = 0.95,
-                     # --- Nuevos parámetros ---
                      data = NULL, family = gaussian(),
                      .names = NULL,
                      .key = "name",
@@ -759,6 +814,7 @@ contr.gw <- function(model,
                      .links_dedup = FALSE,
                      .keep_models = FALSE,
                      .auto_quasi = TRUE) {
+  
   .nodes_merge <- match.arg(.nodes_merge)
   
   # Solve vector of weights with respect to `data`
@@ -794,55 +850,52 @@ contr.gw <- function(model,
         }
         names(modelos) <- .names
       } else {
-        names(modelos) <- paste0("modelo_", seq_along(modelos))
+        names(modelos) <- paste0("Model_", seq_along(modelos))
       }
     }
   } else if (.is_model(model)) {
-    modelos <- list(model)
-    nm <- tryCatch(deparse(stats::formula(model)), error = function(e) "modelo_1")
-    names(modelos) <- nm
+    modelos <- list(Model_1 = model)
+    if (!is.null(.names) && length(.names) == 1) names(modelos) <- .names
   } else {
-    stop("`model` must be: lm/glm, list of them, or formula specifications (character).")
+    stop("`model` must be a model object, a list of models, or a vector of string-type specifications.")
   }
   
-  # Run single model version for each
-  by_model <- lapply(names(modelos), function(nm) {
-    m <- modelos[[nm]]
-    out <- contrastes_gw_one(m,
-                             weights = weights, vcov = vcov,
+  # Process each model and collect Nodes/Links
+  all_nodes <- list()
+  all_links <- list()
+  
+  for (i in seq_along(modelos)) {
+    m_name <- names(modelos)[i]
+    res <- contrastes_gw_one(modelos[[i]], weights = w_vector, vcov = vcov,
                              drop_empty = drop_empty, stdcov = stdcov,
                              outliers = outliers, q_low = q_low, q_high = q_high)
-    if (!is.list(out) || is.null(out$Nodes) || is.null(out$Links))
-      stop("`contrastes_gw_one()` should return list(Nodes=..., Links=...).")
-    out$Nodes <- if (!is.data.frame(out$Nodes)) as.data.frame(out$Nodes) else out$Nodes
-    out$Links <- if (!is.data.frame(out$Links)) as.data.frame(out$Links) else out$Links
-    out$Links$.modelo <- nm
-    out
-  })
-  names(by_model) <- names(modelos)
-  
-  # Merge Nodes
-  nodes_agg <- NULL
-  for (nm in names(by_model)) {
-    nodes_agg <- .merge_nodes(nodes_agg, by_model[[nm]]$Nodes,
-                              .key = .key, .mode = .nodes_merge, .sum_cols = .sum_cols)
-  }
-  
-  # Stack Links (column union) + optional deduplication
-  links_all <- .rbind_union(lapply(by_model, function(x) x$Links))
-  if (.links_dedup && nrow(links_all) > 0) {
-    key_cols <- c("Source","Target","Estimate",".modelo")
-    key_cols <- key_cols[key_cols %in% names(links_all)]
-    if (length(key_cols) >= 2) {
-      key_str <- do.call(paste, c(links_all[key_cols], sep = "\r"))
-      keep    <- !duplicated(key_str)
-      links_all <- links_all[keep, , drop = FALSE]
-      rownames(links_all) <- NULL
+    if (nrow(res$Links) > 0) {
+      res$Links$Model <- m_name
+      all_links[[length(all_links) + 1]] <- res$Links
+    }
+    if (nrow(res$Nodes) > 0) {
+      all_nodes[[length(all_nodes) + 1]] <- res$Nodes
     }
   }
   
-  out <- list(Nodes = nodes_agg, Links = links_all)
-  if (.keep_models) out$by_model <- by_model
-  out
+  # Assemble unified matrix
+  Links <- .rbind_union(all_links)
+  Nodes <- NULL
+  if (length(all_nodes) > 0) {
+    Nodes <- all_nodes[[1]]
+    if (length(all_nodes) > 1) {
+      for (j in 2:length(all_nodes)) {
+        Nodes <- .merge_nodes(Nodes, all_nodes[[j]], .key = .key, .mode = .nodes_merge, .sum_cols = .sum_cols)
+      }
+    }
+  }
+  
+  if (isTRUE(.links_dedup) && nrow(Links) > 0) {
+    Links <- unique(Links)
+  }
+  
+  out <- list(Nodes = Nodes, Links = Links)
+  if (isTRUE(.keep_models)) out$models <- modelos
+  
+  return(out)
 }
-
