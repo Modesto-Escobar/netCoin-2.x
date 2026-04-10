@@ -5,31 +5,29 @@
 produces a netCoin object from a set of glm regressions.
 }
 \usage{
-glmCoin2(formulas, data, weights=NULL, pmax=.05,
-        robust=FALSE, twotail=FALSE, showArrows=TRUE,
-        frequency = FALSE, percentage = TRUE, 
-        color="variable", lwidth="s.value", lcolor="estimate",
-        circle= NA, language=c("en","es","ca"),
-        igraph=FALSE, ...)
+glmCoin2(formulas, data, weights=NULL, pmax=.05, 
+                    twotail=FALSE, showArrows=TRUE,
+                    frequency = FALSE, percentage = TRUE, 
+                    color="variable", lwidth="z.value", 
+                    circle= NA, language=c("en","es","ca"),
+                    igraph=FALSE, ...)
 }
 \arguments{
   \item{formulas}{
-A set of formulas separated, folowed by the family and a return (\\n).
+A set of formulas separated, folowed by the family and a return.
 For example:
-model <- "counts ~ outcome + treatment, poisson \n 
+model <- "counts ~ outcome + treatment, poisson
           counts ~ outcome, poisson"
-The possible families are \emph{gaussian} (default), \emph{poisson}, \emph{binomial} and \emph{multinomial}.}
+}
   \item{data}{Data frame containing the variables in the model.}
   \item{weights}{Optional vector of weights to be used in the fitting process.}
   \item{pmax}{Selection of links with Pr(>|z|) less than p (one-tail by default).}
-  \item{robust}{Robust estimation of standard errors if TRUE.}
-  \item{twotail}{Logical value indicating if twotail test must be appied. Default=FALSE.}
+  \item{twotail}{Logical value indicating if twotail test must be appied. Defaul=FALSE.}
   \item{showArrows}{a logical value true if the directional arrows are to be shown. Default = FALSE.}
   \item{frequency}{a logical value true if frequencies are to be shown. Default=FALSE.}
   \item{percentage}{a logical value true if percentages are to be shown. Default=TRUE.}
   \item{color}{Nodes' attribute to be used for expressing color ("variable" by default).}
-  \item{lwidth}{Nodes' attribute to be used for widht of arrows ("s.value" by default).}
-  \item{lcolor}{Nodes' attribute to be used for color of arrows ("estimate" by default).}
+  \item{lwidth}{Nodes' attribute to be used for widht of arrows ("z.value" by default).}
   \item{circle}{Degre of rotation in case of fixed circled dependent variables.}
   \item{language}{Language of the graph controls.}
   \item{igraph}{Produces an igraph object instead of a netCoin object if TRUE.}

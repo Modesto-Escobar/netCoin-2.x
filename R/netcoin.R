@@ -1657,7 +1657,7 @@ shinyCoin <- function(x){
 }
 
 # Atencion a lwidth y en lenguaje espanol o catalan
-glmCoin <- function(formulas, data, weights=NULL, pmax=.05, twotail=FALSE, showArrows=TRUE,
+glmCoin2 <- function(formulas, data, weights=NULL, pmax=.05, twotail=FALSE, showArrows=TRUE,
                   frequency = FALSE, percentage = TRUE, 
                   color="variable", lwidth="z.value", circle= NA, language=c("en","es","ca"),
                   igraph=FALSE, ...){
